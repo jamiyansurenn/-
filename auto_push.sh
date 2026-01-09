@@ -1,7 +1,7 @@
 #!/bin/bash
 # Автоматаар бүх кодыг GitHub руу push хийх (SSH)
 
-set -e  # Алдаа гарвал зогсох
+# set -e устгасан - алдаа гарвал үргэлжлүүлэх
 
 echo "🚀 Автомат GitHub Push Script"
 echo "================================"
@@ -20,22 +20,30 @@ if [ ! -d ".git" ]; then
     git init
 fi
 
-# Remote нэмэх/шинэчлэх (SSH)
+# Remote нэмэх/шинэчлэх (HTTPS - Personal Access Token ашиглах)
 echo "🔗 Remote repository тохируулж байна..."
 git remote remove origin 2>/dev/null || true
-git remote add origin git@github.com:jamiyansurenn/-.git
+git remote add origin https://github.com/jamiyansurenn/-.git
 
 # Бүх файл нэмэх
 echo "📦 Бүх файл нэмж байна..."
 git add .
 
-# Commit хийх (хэрэв өөрчлөлт байгаа бол)
+# Commit хийх
 echo "💾 Commit хийж байна..."
-if git diff --staged --quiet; then
-    echo "ℹ️  Өөрчлөлт байхгүй, commit хийх шаардлагагүй"
+if ! git diff --staged --quiet || ! git diff --quiet; then
+    # Staged эсвэл unstaged өөрчлөлт байгаа бол commit хийх
+    git commit -m "Initial commit: Full stack corporate website with i18n support (MN/EN/中文)" 2>/dev/null || \
+    git commit -m "Update: Full stack corporate website" 2>/dev/null || \
+    git commit --allow-empty -m "Initial commit: Full stack corporate website" 2>/dev/null || true
 else
-    git commit -m "Initial commit: Full stack corporate website with i18n support (MN/EN/中文)" || \
-    git commit -m "Update: Full stack corporate website" || true
+    # Commit байхгүй бол empty commit хийх
+    if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+        echo "ℹ️  Эхний commit хийж байна..."
+        git commit --allow-empty -m "Initial commit: Full stack corporate website with i18n support (MN/EN/中文)"
+    else
+        echo "ℹ️  Өөрчлөлт байхгүй"
+    fi
 fi
 
 # Main branch
@@ -46,7 +54,16 @@ git branch -M main 2>/dev/null || true
 echo ""
 echo "🚀 GitHub руу push хийж байна..."
 echo "================================"
-git push -u origin main --force 2>&1 || git push -u origin main 2>&1
+echo "⚠️  Username: jamiyansurenn"
+echo "⚠️  Password: Personal Access Token оруулах шаардлагатай!"
+echo ""
+git push -u origin main 2>&1 || {
+    echo ""
+    echo "❌ Push хийхэд алдаа гарлаа!"
+    echo "💡 Personal Access Token үүсгэж, password-ийн оронд ашиглана уу!"
+    echo "   GitHub → Settings → Developer settings → Personal access tokens"
+    exit 1
+}
 
 echo ""
 echo "✅ Амжилттай! Бүх код GitHub дээр байна! 🎉"
