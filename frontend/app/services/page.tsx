@@ -1,0 +1,63 @@
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import AnimateOnScroll from '@/components/AnimateOnScroll';
+import { getServices } from '@/lib/api';
+import Link from 'next/link';
+import Image from 'next/image';
+import { getImageUrl } from '@/lib/imagePlaceholder';
+
+export default async function ServicesPage() {
+  const services = await getServices().catch(() => ({ data: [] }));
+
+  return (
+    <>
+      <Header />
+      <main>
+        <section className="hero">
+          <div className="container">
+            <h1>Үйлчилгээнүүд</h1>
+          </div>
+        </section>
+
+        <section>
+          <div className="container">
+            {services.data && services.data.length > 0 ? (
+              <div className="grid">
+                {services.data.map((service: any, index: number) => {
+                  const imageUrl = getImageUrl(service.image, 'service', index);
+                  return (
+                  <AnimateOnScroll key={service.id} delay={index * 100}>
+                    <div className="card">
+                      <div style={{ position: 'relative', width: '100%', height: '250px', overflow: 'hidden' }}>
+                        <Image
+                          src={imageUrl}
+                          alt={service.title}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                    <div style={{ padding: '1.5rem' }}>
+                      <h3 style={{ marginBottom: '1rem' }}>{service.title}</h3>
+                      <p style={{ marginBottom: '1rem', color: '#666' }}>{service.description}</p>
+                      <Link href={`/services/${service.slug}`} className="btn">
+                        Дэлгэрэнгүй
+                      </Link>
+                    </div>
+                  </div>
+                  </AnimateOnScroll>
+                  );
+                })}
+              </div>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+                <p style={{ fontSize: '1.2rem', color: '#666' }}>Үйлчилгээ олдсонгүй</p>
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
