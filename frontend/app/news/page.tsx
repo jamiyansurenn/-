@@ -10,7 +10,14 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 export const dynamic = 'force-dynamic';
 
 export default async function NewsPage() {
-  const news = await getNews().catch(() => ({ data: [] }));
+  let news = { data: [] };
+
+  try {
+    news = await getNews().catch(() => ({ data: [] }));
+  } catch (error) {
+    // Handle errors gracefully - page will render with empty data
+    news = { data: [] };
+  }
 
   return (
     <>

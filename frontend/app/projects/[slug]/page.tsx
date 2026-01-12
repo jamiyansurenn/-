@@ -9,8 +9,15 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 export const dynamic = 'force-dynamic';
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const project = await getProjectBySlug(slug).catch(() => ({ data: null }));
+  let project = { data: null };
+  
+  try {
+    const { slug } = await params;
+    project = await getProjectBySlug(slug).catch(() => ({ data: null }));
+  } catch (error) {
+    // Handle any errors gracefully
+    project = { data: null };
+  }
 
   if (!project.data) {
     notFound();

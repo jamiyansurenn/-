@@ -10,7 +10,14 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 export const dynamic = 'force-dynamic';
 
 export default async function ProjectsPage() {
-  const projects = await getProjects().catch(() => ({ data: [] }));
+  let projects = { data: [] };
+
+  try {
+    projects = await getProjects().catch(() => ({ data: [] }));
+  } catch (error) {
+    // Handle errors gracefully - page will render with empty data
+    projects = { data: [] };
+  }
 
   return (
     <>

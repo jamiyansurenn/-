@@ -10,27 +10,37 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  // Wrap API calls in try-catch to prevent 404 errors
-  let companyInfo = { data: null };
-  let services = { data: [] };
-  let projects = { data: [] };
-  let news = { data: [] };
+  // Initialize with safe defaults - page will always render
+  let companyInfo: { data: any } = { data: null };
+  let services: { data: any[] } = { data: [] };
+  let projects: { data: any[] } = { data: [] };
+  let news: { data: any[] } = { data: [] };
 
   try {
+    // Use Promise.allSettled to ensure all promises complete
     const results = await Promise.allSettled([
-      getCompanyInfo(),
-      getServices(),
-      getProjects(true),
-      getNews(true, 3),
+      getCompanyInfo().catch(() => ({ data: null })),
+      getServices().catch(() => ({ data: [] })),
+      getProjects(true).catch(() => ({ data: [] })),
+      getNews(true, 3).catch(() => ({ data: [] })),
     ]);
 
-    companyInfo = results[0].status === 'fulfilled' ? results[0].value : { data: null };
-    services = results[1].status === 'fulfilled' ? results[1].value : { data: [] };
-    projects = results[2].status === 'fulfilled' ? results[2].value : { data: [] };
-    news = results[3].status === 'fulfilled' ? results[3].value : { data: [] };
+    // Safely extract data from each result
+    if (results[0].status === 'fulfilled') {
+      companyInfo = results[0].value || { data: null };
+    }
+    if (results[1].status === 'fulfilled') {
+      services = results[1].value || { data: [] };
+    }
+    if (results[2].status === 'fulfilled') {
+      projects = results[2].value || { data: [] };
+    }
+    if (results[3].status === 'fulfilled') {
+      news = results[3].value || { data: [] };
+    }
   } catch (error) {
-    // Silently handle errors - page will render with empty data
-    console.error('Error fetching data:', error);
+    // Final safety net - page will render with empty data
+    // This should never happen due to Promise.allSettled, but just in case
   }
 
   return (
@@ -77,22 +87,22 @@ export default async function Home() {
               <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
                 <AnimateOnScroll delay={100}>
                   <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '2rem' }}>
-                    {companyInfo.data.aboutUs || 'Бидний тухай мэдээлэл...'}
+                    {(companyInfo.data as any)?.aboutUs || 'Бидний тухай мэдээлэл...'}
                   </p>
                 </AnimateOnScroll>
-                {companyInfo.data.vision && (
+                {(companyInfo.data as any)?.vision && (
                   <AnimateOnScroll delay={200}>
                     <div style={{ marginBottom: '2rem' }}>
                       <h3>Алсын хараа</h3>
-                      <p>{companyInfo.data.vision}</p>
+                      <p>{(companyInfo.data as any).vision}</p>
                     </div>
                   </AnimateOnScroll>
                 )}
-                {companyInfo.data.mission && (
+                {(companyInfo.data as any)?.mission && (
                   <AnimateOnScroll delay={300}>
                     <div>
                       <h3>Зорилго</h3>
-                      <p>{companyInfo.data.mission}</p>
+                      <p>{(companyInfo.data as any).mission}</p>
                     </div>
                   </AnimateOnScroll>
                 )}

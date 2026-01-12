@@ -9,8 +9,15 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 export const dynamic = 'force-dynamic';
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const news = await getNewsBySlug(slug).catch(() => ({ data: null }));
+  let news = { data: null };
+  
+  try {
+    const { slug } = await params;
+    news = await getNewsBySlug(slug).catch(() => ({ data: null }));
+  } catch (error) {
+    // Handle any errors gracefully
+    news = { data: null };
+  }
 
   if (!news.data) {
     notFound();

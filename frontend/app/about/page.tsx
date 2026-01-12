@@ -9,10 +9,24 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
-  const [companyInfo, teamMembers] = await Promise.all([
-    getCompanyInfo().catch(() => ({ data: null })),
-    getTeamMembers().catch(() => ({ data: [] })),
-  ]);
+  let companyInfo = { data: null };
+  let teamMembers = { data: [] };
+
+  try {
+    const results = await Promise.allSettled([
+      getCompanyInfo().catch(() => ({ data: null })),
+      getTeamMembers().catch(() => ({ data: [] })),
+    ]);
+
+    if (results[0].status === 'fulfilled') {
+      companyInfo = results[0].value || { data: null };
+    }
+    if (results[1].status === 'fulfilled') {
+      teamMembers = results[1].value || { data: [] };
+    }
+  } catch (error) {
+    // Handle errors gracefully - page will render with empty data
+  }
 
   return (
     <>
