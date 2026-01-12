@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 
 // Force dynamic rendering to prevent build-time static generation errors
+// This ensures pages render at request time, not build time
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
