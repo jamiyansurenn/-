@@ -1,17 +1,39 @@
 import axios from 'axios';
 
+// Get API URL with fallback
+const getApiUrl = () => {
+  const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  // Remove trailing slash if present
+  return url.replace(/\/$/, '');
+};
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
+  baseURL: getApiUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
   timeout: 10000, // 10 second timeout
 });
 
+// Log API URL in development (for debugging)
+if (typeof window === 'undefined' && process.env.NODE_ENV !== 'production') {
+  console.log('API Base URL:', getApiUrl());
+}
+
 // Add response interceptor to handle errors gracefully
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Log error for debugging (server-side only)
+    if (typeof window === 'undefined') {
+      console.error('API Error:', {
+        url: error.config?.url,
+        baseURL: error.config?.baseURL,
+        status: error.response?.status,
+        message: error.message,
+      });
+    }
+    
     // Always return a resolved promise with error data
     // This prevents unhandled promise rejections
     return Promise.resolve({

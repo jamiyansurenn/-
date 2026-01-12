@@ -11,6 +11,12 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
+  // Debug: Log API URL (server-side only)
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('[DEBUG] API URL:', apiUrl);
+  }
+
   // Initialize with safe defaults - page will always render
   let companyInfo: { data: any } = { data: null };
   let services: { data: any[] } = { data: [] };
