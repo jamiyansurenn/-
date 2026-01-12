@@ -33,6 +33,8 @@ const placeholderImages = {
   default: [
     'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop',
     'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=800&h=600&fit=crop',
   ],
 };
 

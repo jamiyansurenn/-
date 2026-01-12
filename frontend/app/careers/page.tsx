@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AnimateOnScroll from '@/components/AnimateOnScroll';
 import Link from 'next/link';
+import { getImageUrl } from '@/lib/imagePlaceholder';
 
 export default async function CareersPage() {
   // Job positions - can be moved to database later
@@ -75,8 +76,24 @@ export default async function CareersPage() {
     <>
       <Header />
       <main>
-        <section className="hero">
-          <div className="container">
+        <section className="hero" style={{ 
+          position: 'relative', 
+          overflow: 'hidden',
+          backgroundImage: `url(${getImageUrl(undefined, 'default', 3)})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}>
+          <div style={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            bottom: 0, 
+            zIndex: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.4)'
+          }}></div>
+          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
             <AnimateOnScroll>
               <h1>Нээлттэй ажлын байр</h1>
               <p>Манай компанид нэгдэж, хамтдаа хөгжицгөөе</p>
