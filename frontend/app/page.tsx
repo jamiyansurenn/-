@@ -10,12 +10,28 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const [companyInfo, services, projects, news] = await Promise.all([
-    getCompanyInfo().catch(() => ({ data: null })),
-    getServices().catch(() => ({ data: [] })),
-    getProjects(true).catch(() => ({ data: [] })),
-    getNews(true, 3).catch(() => ({ data: [] })),
-  ]);
+  // Wrap API calls in try-catch to prevent 404 errors
+  let companyInfo = { data: null };
+  let services = { data: [] };
+  let projects = { data: [] };
+  let news = { data: [] };
+
+  try {
+    const results = await Promise.allSettled([
+      getCompanyInfo(),
+      getServices(),
+      getProjects(true),
+      getNews(true, 3),
+    ]);
+
+    companyInfo = results[0].status === 'fulfilled' ? results[0].value : { data: null };
+    services = results[1].status === 'fulfilled' ? results[1].value : { data: [] };
+    projects = results[2].status === 'fulfilled' ? results[2].value : { data: [] };
+    news = results[3].status === 'fulfilled' ? results[3].value : { data: [] };
+  } catch (error) {
+    // Silently handle errors - page will render with empty data
+    console.error('Error fetching data:', error);
+  }
 
   return (
     <>
