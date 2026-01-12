@@ -5,6 +5,9 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 
+// Force dynamic rendering to prevent build-time static generation errors
+export const dynamic = 'force-dynamic';
+
 export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const service = await getServiceBySlug(slug).catch(() => ({ data: null }));
