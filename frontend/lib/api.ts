@@ -33,7 +33,7 @@ api.interceptors.response.use(
         message: error.message,
       });
     }
-    
+
     // Always return a resolved promise with error data
     // This prevents unhandled promise rejections
     return Promise.resolve({
@@ -61,24 +61,24 @@ function safeGetData(response: any) {
 // - status: HTTP status code
 export const getCompanyInfo = async () => {
   try {
-    const response = await api.get('/company-info/public');
-    
+    const response: any = await api.get('/company-info/public');
+
     // Check if response has error (from interceptor)
     if (response.error) {
-      return { 
-        data: null, 
+      return {
+        data: null,
         error: response.error,
-        status: response.status || 500 
+        status: response.status || 500
       };
     }
-    
+
     const data = safeGetData(response);
     return { data };
   } catch (error: any) {
-    return { 
-      data: null, 
+    return {
+      data: null,
       error: error.message || 'Network error',
-      status: 500 
+      status: 500
     };
   }
 };
@@ -94,28 +94,28 @@ export const getServices = async () => {
 
 export const getServiceBySlug = async (slug: string) => {
   try {
-    const response = await api.get(`/services/public/${slug}`);
-    
+    const response: any = await api.get(`/services/public/${slug}`);
+
     if (response.error) {
-      return { 
-        data: null, 
+      return {
+        data: null,
         error: response.error,
-        status: response.status || 500 
+        status: response.status || 500
       };
     }
-    
+
     const data = safeGetData(response);
-    
+
     if (response.status === 404) {
       return { data: null };
     }
-    
+
     return { data };
   } catch (error: any) {
-    return { 
-      data: null, 
+    return {
+      data: null,
       error: error.message || 'Network error',
-      status: 500 
+      status: 500
     };
   }
 };
@@ -131,28 +131,28 @@ export const getProjects = async (featured?: boolean) => {
 
 export const getProjectBySlug = async (slug: string) => {
   try {
-    const response = await api.get(`/projects/public/${slug}`);
-    
+    const response: any = await api.get(`/projects/public/${slug}`);
+
     if (response.error) {
-      return { 
-        data: null, 
+      return {
+        data: null,
         error: response.error,
-        status: response.status || 500 
+        status: response.status || 500
       };
     }
-    
+
     const data = safeGetData(response);
-    
+
     if (response.status === 404) {
       return { data: null };
     }
-    
+
     return { data };
   } catch (error: any) {
-    return { 
-      data: null, 
+    return {
+      data: null,
       error: error.message || 'Network error',
-      status: 500 
+      status: 500
     };
   }
 };
@@ -168,30 +168,30 @@ export const getNews = async (featured?: boolean, limit?: number) => {
 
 export const getNewsBySlug = async (slug: string) => {
   try {
-    const response = await api.get(`/news/public/${slug}`);
-    
+    const response: any = await api.get(`/news/public/${slug}`);
+
     // Check if response has error (from interceptor)
     if (response.error) {
-      return { 
-        data: null, 
+      return {
+        data: null,
         error: response.error,
-        status: response.status || 500 
+        status: response.status || 500
       };
     }
-    
+
     const data = safeGetData(response);
-    
+
     // 404 means resource not found (not an API error)
     if (response.status === 404) {
       return { data: null }; // No error field = resource not found
     }
-    
+
     return { data };
   } catch (error: any) {
-    return { 
-      data: null, 
+    return {
+      data: null,
       error: error.message || 'Network error',
-      status: 500 
+      status: 500
     };
   }
 };

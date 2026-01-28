@@ -9,8 +9,8 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
-  let companyInfo = { data: null };
-  let teamMembers = { data: [] };
+  let companyInfo: { data: any } = { data: null };
+  let teamMembers: { data: any } = { data: [] };
 
   try {
     const results = await Promise.allSettled([
@@ -32,20 +32,20 @@ export default async function AboutPage() {
     <>
       <Header />
       <main>
-        <section className="hero" style={{ 
-          position: 'relative', 
+        <section className="hero" style={{
+          position: 'relative',
           overflow: 'hidden',
           backgroundImage: `url(${getImageUrl(undefined, 'default', 1)})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}>
-          <div style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0, 
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             zIndex: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.4)'
           }}></div>
@@ -129,33 +129,33 @@ export default async function AboutPage() {
                 {teamMembers.data.map((member: any, index: number) => {
                   const imageUrl = getImageUrl(member.image, 'team', index);
                   return (
-                  <AnimateOnScroll key={member.id} delay={index * 100}>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                      <div style={{ 
-                        position: 'relative', 
-                        width: '150px', 
-                        height: '150px', 
-                        borderRadius: '50%',
-                        margin: '1.5rem auto',
-                        overflow: 'hidden',
-                      }}>
-                        <Image
-                          src={imageUrl}
-                          alt={member.name}
-                          fill
-                          style={{ objectFit: 'cover' }}
-                          sizes="150px"
-                        />
+                    <AnimateOnScroll key={member.id} delay={index * 100}>
+                      <div className="card" style={{ textAlign: 'center' }}>
+                        <div style={{
+                          position: 'relative',
+                          width: '150px',
+                          height: '150px',
+                          borderRadius: '50%',
+                          margin: '1.5rem auto',
+                          overflow: 'hidden',
+                        }}>
+                          <Image
+                            src={imageUrl}
+                            alt={member.name}
+                            fill
+                            style={{ objectFit: 'cover' }}
+                            sizes="150px"
+                          />
+                        </div>
+                        <div style={{ padding: '1.5rem' }}>
+                          <h3 style={{ marginBottom: '0.5rem' }}>{member.name}</h3>
+                          <p style={{ color: 'var(--primary-orange, #FF6B35)', marginBottom: '1rem', fontWeight: '500' }}>
+                            {member.position}
+                          </p>
+                          {member.bio && <p style={{ color: '#666', fontSize: '0.9rem' }}>{member.bio}</p>}
+                        </div>
                       </div>
-                    <div style={{ padding: '1.5rem' }}>
-                      <h3 style={{ marginBottom: '0.5rem' }}>{member.name}</h3>
-                      <p style={{ color: 'var(--primary-orange, #FF6B35)', marginBottom: '1rem', fontWeight: '500' }}>
-                        {member.position}
-                      </p>
-                      {member.bio && <p style={{ color: '#666', fontSize: '0.9rem' }}>{member.bio}</p>}
-                    </div>
-                  </div>
-                  </AnimateOnScroll>
+                    </AnimateOnScroll>
                   );
                 })}
               </div>
