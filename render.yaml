@@ -16,20 +16,6 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ORIGIN
-        value: https://daatsin-tsamkhag-frontend.onrender.com
+        sync: false # Set this to your Vercel Frontend URL (e.g. https://your-project.vercel.app)
     healthCheckPath: /api
 
-  # Frontend Service
-  - type: web
-    name: daatsin-tsamkhag-frontend
-    env: node
-    plan: free
-    buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm run start
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: NEXT_PUBLIC_API_URL
-        value: https://daatsin-tsamkhag-backend.onrender.com
-      - key: PORT
-        value: 10000
