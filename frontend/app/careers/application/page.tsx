@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AnimateOnScroll from '@/components/AnimateOnScroll';
 import { createContactMessage } from '@/lib/api';
+import { getImageUrl } from '@/lib/imagePlaceholder';
 
 export default function ApplicationPage() {
   const [formData, setFormData] = useState({
@@ -195,8 +196,24 @@ export default function ApplicationPage() {
     <>
       <Header />
       <main>
-        <section className="hero">
-          <div className="container">
+        <section className="hero" style={{
+          position: 'relative',
+          overflow: 'hidden',
+          backgroundImage: `url(${getImageUrl(undefined, 'default', 3)})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.4)'
+          }}></div>
+          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
             <AnimateOnScroll>
               <h1>ДААЦЫН ЦАМХАГ ГРУПП ХХК-ИЙН АНКЕТ</h1>
               <p>Ажлын анкет бөглөх</p>
@@ -246,7 +263,7 @@ export default function ApplicationPage() {
 
                 {/* Basic Info */}
                 <h2 style={{ marginBottom: '1rem', color: 'var(--primary-orange)' }}>НЭГ. ЕРӨНХИЙ МЭДЭЭЛЭЛ</h2>
-                
+
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem' }}>

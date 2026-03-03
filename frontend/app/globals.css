@@ -282,8 +282,6 @@ section {
   margin-bottom: 4rem;
   position: relative;
   display: inline-block;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: 2.5rem;
   font-weight: 800;
 }
@@ -425,8 +423,8 @@ footer a:hover {
 .form-group select {
   width: 100%;
   padding: 1rem 1.2rem;
-  border: 2px solid transparent;
-  background-color: var(--off-white);
+  border: 1px solid var(--border-color);
+  background-color: var(--white);
   border-radius: var(--radius-md);
   font-family: inherit;
   font-size: 1rem;
