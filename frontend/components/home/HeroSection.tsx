@@ -5,10 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import styles from '@/app/home.module.css';
+import { getImageUrl } from '@/lib/imagePlaceholder';
 
 const heroImages = [
-    '/images/projects/hos_tsamhag.jpeg',
-    '/images/projects/b7.png',
+    getImageUrl(undefined, 'building', 1),
+    getImageUrl(undefined, 'construction', 0),
+    getImageUrl(undefined, 'building', 4),
 ];
 
 export default function HeroSection() {
