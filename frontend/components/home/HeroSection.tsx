@@ -28,12 +28,11 @@ export default function HeroSection() {
 
     return (
         <section className={`hero ${styles.heroSection}`}>
-            <AnimatePresence>
+            {heroImages.map((img, index) => (
                 <motion.div
-                    key={currentImageIndex}
+                    key={img}
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                    animate={{ opacity: currentImageIndex === index ? 1 : 0 }}
                     transition={{ duration: 2, ease: 'easeInOut' }}
                     style={{
                         position: 'absolute',
@@ -41,13 +40,13 @@ export default function HeroSection() {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        backgroundImage: `url('${heroImages[currentImageIndex]}')`,
+                        backgroundImage: `url('${img}')`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         zIndex: -2,
                     }}
                 />
-            </AnimatePresence>
+            ))}
             <div className={styles.heroOverlay}></div>
             <div className={`container ${styles.heroContent}`}>
                 <motion.div
