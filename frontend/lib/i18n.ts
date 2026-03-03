@@ -55,6 +55,15 @@ export const translations = {
       history: {
         title: 'Түүхэн замнал',
         subtitle: 'Манай компанийн хөгжлийн замнал',
+        timeline: [
+          { year: '2009', title: 'Үйл ажиллагаа эхлэв', description: 'Манай байгууллага нь 2009 онд үүсгэн байгуулагдсан бөгөөд, барилга дэд бүтцийн салбарын хөгжлийн гол хэрэглэгдэхүүн болох өргөн тээвэрлэх машин механизм цамхагт кран, гүүрэн кран ачаа болон хүн зөөврийн угсралт буулгалт, засвар үйлчилгээ, нийлүүлэлт, түрээсийн үйлчилгээ болон барилга угсралтын ажлыг мэргэжлийн өндөр түвшинд чадварлаг баг хамт олон бүрдүүлэн үйл ажиллагаагаа тогтвортой явуулж байна.' },
+          { year: '2015', title: 'БАГАНАТ ӨРГӨӨ, Sky town2', description: 'Улаанбаатар хот, Баянзүрх дүүрэг, 38-р хороонд байрлах "Баганат Өргөө" хотхоны 407,408 байрны барилга угсралт, цамхагт краны нэгдсэн үйлчилгээ, дотор засалын хамт хийж гүйцэтгэв.' },
+          { year: '2016', title: 'Sky town2, International school', description: 'SKY TOWN-2, ФИНАНС ЛАЙН, цамхагт кран угсралт, буулгалт, засвар үйлчилгээ техникийн магадлал болон дотоод засал чимэглэл хийж гүйцэтгэв. International school of Ulaanbaatar сургуулийн ажилчдын орон сууцны барилга угсралт болон цамхагт кран угсралт буулгалт, подём, люлка- зэрэг өргөх механизмын ажлыг хийж гүйцэтгэв.' },
+          { year: '2017', title: 'Хөшигтийн хөндийн шинэ нисэх буудал', description: 'Төв аймгийн сэргэлэн хотод байрлах Хөшигтийн хөндийн шинэ нисэх буудал төслийн барилга угсралтын ажлыг хийж гүйцэтгэв.' },
+          { year: '2023', title: 'Мал аж ахуй', description: 'Бид "Эрүүл монгол хүн" хөтөлбөрийн хүрээнд элдэв химийн найрлага бодис ороогүй сүү сүүн бүтээгдэхүүн, мах махан бүтээгдэхүүнийг бэлчээрээс хэрэглэгчийн гарт шууд нийлүүлэх зорилт тавин ажиллаж байна.' },
+          { year: '2023-2026', title: 'ЦАМХАГ жуулчны бааз', description: 'Монгол улсын томоохон эдийн засгийг бүрдүүлэгч болох аялал жуулчлалын талбарт Завхан аймгийн, Тосонцэнгэл суманд "Цамхаг" жуулчны баазыг байгуулаад байна. Уг төсөл нь 2026 он гэхэд бүрэн хөгжиж дуусах юм.' },
+          { year: '2024-2025', title: 'ШИНЭ АМГАЛАН 6 төсөл', description: 'Шинэ Амгалан цогцолбор хорооллын үргэлжлэл болох 6 дугаар ээлжийн Б7, Б8 блок маань 300 айлын орон сууцны төслийн ажил эхлээд барилга угсралтын ажил хэвийн үргэлжилж байна.' },
+        ]
       },
       director: {
         title: 'Захирлын мэндчилгээ',
@@ -148,6 +157,15 @@ export const translations = {
       history: {
         title: 'History',
         subtitle: 'Our company development journey',
+        timeline: [
+          { year: '2009', title: 'Operations Began', description: 'Our organization was founded in 2009, and as a key component of construction infrastructure development, we have been stably operating a professional team providing high-level services in wide-transport machinery, tower crane, bridge crane, passenger and freight hoist installation, maintenance, supply, rental services, and construction works.' },
+          { year: '2015', title: 'BAGANAT ORGOO, Sky Town 2', description: 'Completed construction, integrated tower crane services, and interior finishing for buildings 407 and 408 of the "Baganat Orgoo" town located in the 38th khoroo, Bayanzurkh district, Ulaanbaatar city.' },
+          { year: '2016', title: 'Sky Town 2, International School', description: 'Completed tower crane installation, dismantling, maintenance, technical assessment, and interior decoration for SKY TOWN-2 and FINANCE LINE. Carried out residential construction works for employees of the International School of Ulaanbaatar, as well as lifting mechanism works including tower crane, hoist, and cradle installation.' },
+          { year: '2017', title: 'Khushigt Valley New Airport', description: 'Completed construction work for the new Khushigt Valley airport project located in Sergelen soum, Tuv province.' },
+          { year: '2023', title: 'Animal Husbandry', description: 'Within the framework of the "Healthy Mongolian" program, we aim to directly supply dairy and meat products without chemical compositions from pasture to consumers.' },
+          { year: '2023-2026', title: 'TSAMKHAG Tourist Camp', description: 'We have established the "Tsamkhag" tourist camp in Tosontsengel soum, Zavkhan province, contributing to the tourism sector which is a major part of Mongolia\'s economy. The project will be fully developed by 2026.' },
+          { year: '2024-2025', title: 'SHINE AMGALAN 6 Project', description: 'Blocks B7 and B8, which are the 6th phase continuation of the Shine Amgalan complex, a 300-household housing project, have started and construction works are proceeding normally.' },
+        ]
       },
       director: {
         title: "Director's Message",
@@ -241,6 +259,15 @@ export const translations = {
       history: {
         title: '历史',
         subtitle: '我们公司的发展历程',
+        timeline: [
+          { year: '2009', title: '开始运营', description: '我们的组织成立于2009年，作为建筑基础设施发展的关键组成部分，我们拥有一支专业的团队，在宽体运输机械、塔式起重机、桥式起重机、客货提升机的安装、维护、供应、租赁服务及建筑工程等领域提供高水平的稳定服务。' },
+          { year: '2015', title: 'BAGANAT ORGOO, Sky Town 2', description: '完成了位于乌兰巴托市巴彦祖尔赫区第38号小区"Baganat Orgoo"小区407和408号楼的建设、综合塔机服务及室内装饰。' },
+          { year: '2016', title: 'Sky Town 2, 全球学校', description: '完成了SKY TOWN-2和FINANCE LINE的塔机安装、拆卸、维护、技术评估及室内装饰。承接了乌兰巴托国际学校员工住宅建设及吊装机构（塔机、提升机、吊篮）的安装工作。' },
+          { year: '2017', title: '呼什格谷新机场', description: '完成了位于中央省色尔格楞县呼什格谷新机场项目的建设工作。' },
+          { year: '2023', title: '畜牧业', description: '在"健康蒙古人"计划框架内，我们的目标是将无化学成分的乳制品和肉类制品从牧场直接供应给消费者。' },
+          { year: '2023-2026', title: '察姆哈格旅游营地', description: '我们在扎布汗省托松岑格勒县建立了"察姆哈格"旅游营地，为蒙古经济重要组成部分的旅游业做出了贡献。该项目将于2026年全面建成。' },
+          { year: '2024-2025', title: '新阿姆加兰第6期项目', description: '作为新阿姆加兰综合体延续的第6期项目B7和B8区，共300户住宅项目已启动，建设工作正正常进行。' },
+        ]
       },
       director: {
         title: '董事致辞',

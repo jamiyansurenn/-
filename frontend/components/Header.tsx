@@ -32,12 +32,8 @@ export default function Header() {
       <div className="container">
         <nav>
           <Link href="/" className="header-brand">
-            <div className="logo-wrapper">
-              <Logo width={60} height={60} className="logo-image" priority />
-            </div>
-            <div className="company-name">
-              <h1>ДААЦЫН ЦАМХАГ</h1>
-              <span>Групп</span>
+            <div className="logo-wrapper" style={{ height: '80px', display: 'flex', alignItems: 'center' }}>
+              <Logo width={80} height={80} className="logo-image" priority />
             </div>
           </Link>
           <ul>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Language } from '@/lib/i18n';
 
@@ -11,6 +12,7 @@ const languages: { code: Language; label: string; flag: string }[] = [
 ];
 
 export default function LanguageSwitcher() {
+  const router = useRouter();
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -20,8 +22,8 @@ export default function LanguageSwitcher() {
   const handleLanguageChange = (newLang: Language) => {
     setLanguage(newLang);
     setIsOpen(false);
-    // Trigger page refresh to update all text
-    window.location.reload();
+    // Refresh Next.js server components so they pick up the new cookie
+    router.refresh();
   };
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
@@ -38,7 +40,7 @@ export default function LanguageSwitcher() {
   }, [isOpen, handleClickOutside]);
 
   return (
-    <div 
+    <div
       ref={dropdownRef}
       style={{ position: 'relative' }}
       onMouseEnter={() => setIsOpen(true)}
@@ -47,49 +49,36 @@ export default function LanguageSwitcher() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         style={{
-          padding: '0.5rem 1rem',
+          padding: '0.5rem',
           background: 'transparent',
-          border: '1px solid var(--primary-orange)',
-          borderRadius: '4px',
-          color: 'var(--primary-orange)',
+          border: 'none',
           cursor: 'pointer',
-          fontSize: '0.9rem',
-          fontWeight: '500',
-          transition: 'all 0.2s',
           display: 'flex',
           alignItems: 'center',
-          gap: '0.5rem',
-          minWidth: '100px',
+          justifyContent: 'center',
+          transition: 'all 0.2s',
+          fontSize: '1.5rem',
+          borderRadius: '50%',
         }}
         className="language-switcher"
+        aria-label="Select Language"
       >
-        <span style={{ fontSize: '1.2rem' }}>{currentLang.flag}</span>
-        <span>{currentLang.label}</span>
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          fill="currentColor"
-          style={{
-            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'transform 0.2s',
-            marginLeft: '0.3rem',
-          }}
-        >
-          <path d="M5 7L1 3h8z" />
-        </svg>
+        <span>{currentLang.flag}</span>
       </button>
       {isOpen && (
         <div
           style={{
             position: 'absolute',
             top: 'calc(100% + 4px)',
-            right: 0,
+            right: '50%',
+            transform: 'translateX(50%)',
             background: '#fff',
-            minWidth: '150px',
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '0.5rem',
             boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
-            borderRadius: '6px',
-            padding: '0.5rem 0',
+            borderRadius: '30px',
+            padding: '0.25rem 0.5rem',
             zIndex: 1000,
             border: '1px solid #eee',
           }}
@@ -98,34 +87,34 @@ export default function LanguageSwitcher() {
             <button
               key={lang.code}
               onClick={() => handleLanguageChange(lang.code)}
+              title={lang.label}
               style={{
-                width: '100%',
-                padding: '0.75rem 1.5rem',
+                width: '40px',
+                height: '40px',
+                padding: '0',
                 background: language === lang.code ? '#fff5f0' : 'transparent',
-                color: language === lang.code ? 'var(--primary-orange)' : 'var(--text-dark)',
-                border: 'none',
+                border: language === lang.code ? '1px solid var(--primary-orange)' : '1px solid transparent',
+                borderRadius: '50%',
                 cursor: 'pointer',
-                fontSize: '0.9rem',
-                fontWeight: language === lang.code ? '600' : '400',
-                transition: 'all 0.2s',
+                fontSize: '1.5rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.5rem',
-                textAlign: 'left',
+                justifyContent: 'center',
+                transition: 'all 0.2s',
+                opacity: language === lang.code ? 1 : 0.6,
               }}
               onMouseEnter={(e) => {
                 if (language !== lang.code) {
-                  e.currentTarget.style.backgroundColor = '#f9f9f9';
+                  e.currentTarget.style.opacity = '1';
                 }
               }}
               onMouseLeave={(e) => {
                 if (language !== lang.code) {
-                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.opacity = '0.6';
                 }
               }}
             >
-              <span style={{ fontSize: '1.2rem' }}>{lang.flag}</span>
-              <span>{lang.label}</span>
+              <span>{lang.flag}</span>
             </button>
           ))}
         </div>

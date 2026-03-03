@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 10);
-  
+
   const admin = await prisma.user.upsert({
     where: { email: 'admin@moncon.mn' },
     update: {},
@@ -62,7 +62,7 @@ async function main() {
       order: 2,
     },
   ];
-  
+
   for (const service of services) {
     await prisma.service.upsert({
       where: { slug: service.slug },
@@ -74,19 +74,36 @@ async function main() {
   // Create sample projects
   const projects = [
     {
-      title: 'Төсөл 1',
-      description: 'Төслийн тайлбар',
-      slug: 'project-1',
+      title: 'Хос Цамхаг Апартмент',
+      description: 'Эрдэнэт хотод баригдаж буй 12 давхар бүхий орчин үеийн цогцолбор',
+      content: 'Орчин үеийн хэв маягийг илтгэсэн Хос Цамхаг апартмент нь оршин суугчдын тав тухыг бүрэн хангасан, европ стандартын материал бүхий тансаг зэрэглэлийн хуучин болон шинэ хотын төвд байршилтай төсөл юм.',
+      image: '/images/projects/hos_tsamhag.jpeg',
+      slug: 'hos-tsamhag',
       status: 'PUBLISHED',
       featured: true,
       order: 1,
     },
+    {
+      title: 'B7 Апартмент',
+      description: 'Тав тух, стандарт нийцсэн тансаг зэрэглэлийн B7 төсөл',
+      content: 'Дээд зэрэглэлийн материал, орчин үеийн архитектурын шилдэг шийдэл бүхий апартмент.',
+      image: '/images/projects/b7.png',
+      slug: 'b7-apartment',
+      status: 'PUBLISHED',
+      featured: true,
+      order: 2,
+    },
   ];
-  
+
   for (const project of projects) {
     await prisma.project.upsert({
       where: { slug: project.slug },
-      update: {},
+      update: {
+        title: project.title,
+        description: project.description,
+        content: project.content,
+        image: project.image,
+      },
       create: project,
     });
   }
@@ -103,7 +120,7 @@ async function main() {
       publishedAt: new Date(),
     },
   ];
-  
+
   for (const news of newsItems) {
     await prisma.news.upsert({
       where: { slug: news.slug },

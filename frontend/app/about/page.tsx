@@ -4,11 +4,13 @@ import AnimateOnScroll from '@/components/AnimateOnScroll';
 import { getCompanyInfo, getTeamMembers } from '@/lib/api';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
+import { getTranslations } from '@/lib/getLanguage';
 
 // Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
+  const t = await getTranslations();
   let companyInfo: { data: any } = { data: null };
   let teamMembers: { data: any } = { data: [] };
 
@@ -51,7 +53,7 @@ export default async function AboutPage() {
           }}></div>
           <div className="container" style={{ position: 'relative', zIndex: 1 }}>
             <AnimateOnScroll>
-              <h1>Бидний тухай</h1>
+              <h1>{t.pages.about.title}</h1>
             </AnimateOnScroll>
           </div>
         </section>
@@ -63,7 +65,7 @@ export default async function AboutPage() {
                 {companyInfo.data.aboutUs && (
                   <AnimateOnScroll delay={100}>
                     <div style={{ marginBottom: '3rem' }}>
-                      <h2 style={{ marginBottom: '1.5rem' }}>Бидний тухай</h2>
+                      <h2 style={{ marginBottom: '1.5rem' }}>{t.pages.about.title}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
                         {companyInfo.data.aboutUs}
                       </p>

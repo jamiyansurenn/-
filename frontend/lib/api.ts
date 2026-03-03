@@ -60,23 +60,31 @@ function safeGetData(response: any) {
 // - error: error message if API error occurred
 // - status: HTTP status code
 export const getCompanyInfo = async () => {
+  const fallbackData = {
+    aboutUs: 'Даацын Цамхаг Групп нь 2009 оноос хойш барилгын салбарт тасралтгүй үйл ажиллагаа явуулж байгаа бөгөөд салбартаа тэргүүлэгч компаниудын нэг болон хөгжсөөр байна. Бидний гол зорилго бол хэрэглэгчиддээ чанартай, найдвартай, аюулгүй байдлыг хангасан барилга угсралт болон тоног төхөөрөмжийн үйлчилгээг хүргэхэд оршино.\n\nБид барилгын өргөх машин механизм болох цамхагт кран, гүүрэн кран, өргүүрийн угсралт, түрээс, засвар үйлчилгээг цогцоор нь үзүүлдэг.',
+    vision: 'Бид Монгол улсынхаа бүтээн байгуулалтад үнэтэй хувь нэмэр оруулагч, салбартаа манлайлагч, хэрэглэгчдийн итгэлт түнш байхыг зорино.',
+    mission: 'Аюулгүй ажиллагааг эрхэмлэн, чанарыг тэргүүнд тавьж, орчин үеийн дэвшилтэт технологийн дагуу найдвартай үйлчилгээг харилцагчдадаа хүргэнэ.',
+    values: '• Аюулгүй байдал - Хүний амь нас, эрүүл мэндийг эрхэмлэнэ.\n• Чанар - Стандартад нийцсэн чанартай бүтээгдэхүүн, үйлчилгээ.\n• Найдвартай байдал - Цаг хугацаандаа найдвартай гүйцэтгэл.\n• Хамтын ажиллагаа - Итгэлцэлд суурилсан түншлэл.',
+    history: 'Бид 2009 онд барилга өргөх механизмийн салбарт үйл ажиллагаагаа эхлүүлсэн цагаас хойш олон зуун төслүүдэд амжилттай оролцож ирсэн. Бид өнөөдрийг хүртэл Улаанбаатар хотын болон орон нутгийн томоохон бүтээн байгуулалтуудад өөрсдийн хувь нэмрээ оруулсаар байна.'
+  };
+
   try {
     const response: any = await api.get('/company-info/public');
 
     // Check if response has error (from interceptor)
     if (response.error) {
       return {
-        data: null,
+        data: fallbackData,
         error: response.error,
         status: response.status || 500
       };
     }
 
-    const data = safeGetData(response);
+    const data = safeGetData(response) || fallbackData;
     return { data };
   } catch (error: any) {
     return {
-      data: null,
+      data: fallbackData,
       error: error.message || 'Network error',
       status: 500
     };
@@ -84,11 +92,17 @@ export const getCompanyInfo = async () => {
 };
 
 export const getServices = async () => {
+  const fallbackServices = [
+    { id: 1, slug: 'crane-rental', title: 'Цамхагт кран түрээс', description: 'Олон улсын стандартад нийцсэн өндөр даацын цамхагт крануудын урт болон богино хугацааны түрээсийн үйлчилгээ.', image: '' },
+    { id: 2, slug: 'crane-installation', title: 'Угсралт, буулгалт', description: 'Мэргэжлийн инженер техникийн ажилтнууд аюулгүй байдлын стандартын дагуу краны угсралт, буулгалтыг хийж гүйцэтгэнэ.', image: '' },
+    { id: 3, slug: 'construction', title: 'Барилга угсралт', description: 'Орон сууц, олон нийт, үйлдвэрлэлийн зориулалттай барилга байгууламжийн угсралтын ажил.', image: '' }
+  ];
   try {
     const response = await api.get('/services/public');
-    return { data: safeGetData(response) || [] };
+    const data = safeGetData(response);
+    return { data: data && data.length > 0 ? data : fallbackServices };
   } catch (error: any) {
-    return { data: [] };
+    return { data: fallbackServices };
   }
 };
 
@@ -121,11 +135,17 @@ export const getServiceBySlug = async (slug: string) => {
 };
 
 export const getProjects = async (featured?: boolean) => {
+  const fallbackProjects = [
+    { id: 1, slug: 'hos-tsamhag', title: 'Хос Цамхаг төсөл', description: 'Орчин үеийн шийдэл бүхий дээд зэрэглэлийн барилга угсралтын төсөл.', image: '/images/projects/hos_tsamhag.jpeg' },
+    { id: 2, slug: 'b7-apartment', title: 'B7 Апартмент', description: 'Тав тухтай орчинг бүрдүүлсэн, бүрэн цутгамал орон сууц.', image: '/images/projects/b7.png' },
+    { id: 3, slug: 'airport', title: 'Хөшигтийн хөндийн нисэх буудал', description: 'Улсын хэмжээний томоохон байгууламжийн кран угсралтын ажил.', image: '' }
+  ];
   try {
     const response = await api.get('/projects/public', { params: { featured } });
-    return { data: safeGetData(response) || [] };
+    const data = safeGetData(response);
+    return { data: data && data.length > 0 ? data : fallbackProjects };
   } catch (error: any) {
-    return { data: [] };
+    return { data: fallbackProjects };
   }
 };
 
@@ -158,11 +178,16 @@ export const getProjectBySlug = async (slug: string) => {
 };
 
 export const getNews = async (featured?: boolean, limit?: number) => {
+  const fallbackNews = [
+    { id: 1, slug: 'new-crane-2026', title: 'Шинэ загварын цамхагт кран оруулж ирлээ', excerpt: 'Бид үйл ажиллагаагаа өргөжүүлэн, шинэ үеийн аюулгүй байдлын систем бүхий крануудыг нэвтрүүллээ.', image: '', publishedAt: new Date().toISOString() },
+    { id: 2, slug: 'award-2025', title: 'Шилдэг барилгын туслан гүйцэтгэгчээр шалгарлаа', excerpt: 'Даацын Цамхаг Групп ХХК нь 2025 оны салбарын шилдэг байгууллагаар шалгарлаа.', image: '', publishedAt: new Date().toISOString() }
+  ];
   try {
     const response = await api.get('/news/public', { params: { featured, limit } });
-    return { data: safeGetData(response) || [] };
+    const data = safeGetData(response);
+    return { data: data && data.length > 0 ? data : fallbackNews };
   } catch (error: any) {
-    return { data: [] };
+    return { data: fallbackNews };
   }
 };
 
@@ -197,11 +222,17 @@ export const getNewsBySlug = async (slug: string) => {
 };
 
 export const getTeamMembers = async () => {
+  const fallbackTeam = [
+    { id: 1, name: 'Б. Бат-Эрдэнэ', position: 'Ерөнхий Захирал', bio: 'Салбартаа 20 гаруй жил ажилласан туршлагатай.' },
+    { id: 2, name: 'Д. Оюун', position: 'Хүний нөөцийн захирал', bio: 'Багийн үнэт зүйлийг бүрдүүлэхэд гол анхаарлаа хандуулан ажилладаг.' },
+    { id: 3, name: 'Г. Мөнхбат', position: 'Ерөнхий Инженер', bio: 'Тоног төхөөрөмжийн найдвартай, аюулгүй байдлыг бүрэн хариуцдаг.' }
+  ];
   try {
     const response = await api.get('/team-members/public');
-    return { data: safeGetData(response) || [] };
+    const data = safeGetData(response);
+    return { data: data && data.length > 0 ? data : fallbackTeam };
   } catch (error: any) {
-    return { data: [] };
+    return { data: fallbackTeam };
   }
 };
 

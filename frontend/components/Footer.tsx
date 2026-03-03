@@ -6,12 +6,13 @@ export default function Footer() {
     <footer>
       <div className="container">
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-            <Logo width={50} height={50} />
-            <h3>ДААЦЫН ЦАМХАГ Групп</h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1.5rem' }}>
+            <div className="footer-logo-bg" style={{ padding: '8px', background: 'rgba(255,255,255,0.95)', display: 'flex', justifyContent: 'center' }}>
+              <Logo width={120} height={120} />
+            </div>
           </div>
-          <p style={{ color: '#ccc', lineHeight: '1.8' }}>Бидний тухай мэдээлэл</p>
-          <p style={{ color: '#ccc', marginTop: '1rem', fontSize: '0.9rem' }}>
+          <p style={{ color: '#94A3B8', lineHeight: '1.8', fontSize: '1.05rem' }}>Бидний тухай мэдээлэл</p>
+          <p style={{ color: '#64748B', marginTop: '1.5rem', fontSize: '0.95rem', fontStyle: 'italic' }}>
             Даацтай бизнес ба даацтай амьдрал
           </p>
         </div>
@@ -43,15 +44,18 @@ export default function Footer() {
         </div>
         <div>
           <h3>Холбоо барих</h3>
-          <p style={{ color: '#ccc', marginBottom: '0.5rem' }}>📧 info@daatsiintsamkhag.mn</p>
-          <p style={{ color: '#ccc', marginBottom: '0.5rem' }}>📞 +976 7766-0933</p>
-          <p style={{ color: '#ccc', fontSize: '0.9rem', lineHeight: '1.6' }}>
-            📍 Улаанбаатар хот, Баянзүрх дүүрэг, 38-р хороо, Шинэ Амгалан Б2, 307-р байр, 16 давхар 1601 тоот
-          </p>
+          <div className="footer-contact">
+            <p><span>📧</span> info@daatsiintsamkhag.mn</p>
+            <p><span>📞</span> +976 7766-0933</p>
+            <p style={{ alignItems: 'flex-start' }}>
+              <span style={{ marginTop: '4px' }}>📍</span>
+              <span style={{ lineHeight: '1.6' }}>Улаанбаатар хот, Баянзүрх дүүрэг, 38-р хороо, Шинэ Амгалан Б2, 307-р байр, 16 давхар 1601 тоот</span>
+            </p>
+          </div>
         </div>
       </div>
-      <div style={{ textAlign: 'center', marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid #333' }}>
-        <p style={{ color: '#999' }}>&copy; {new Date().getFullYear()} ДААЦЫН ЦАМХАГ Групп. Бүх эрх хуулиар хамгаалагдсан.</p>
+      <div style={{ textAlign: 'center', marginTop: '4rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <p style={{ color: '#64748B', fontSize: '0.9rem' }}>&copy; {new Date().getFullYear()} ДААЦЫН ЦАМХАГ Групп. Бүх эрх хуулиар хамгаалагдсан.</p>
       </div>
     </footer>
   );
