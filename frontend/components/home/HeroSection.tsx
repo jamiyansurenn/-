@@ -8,9 +8,10 @@ import styles from '@/app/home.module.css';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 
 const heroImages = [
-    getImageUrl(undefined, 'building', 1),
-    getImageUrl(undefined, 'construction', 0),
-    getImageUrl(undefined, 'building', 4),
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop', // Modern glass building
+    'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=2000&auto=format&fit=crop', // Apartment building
+    'https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=2070&auto=format&fit=crop', // Interior / Home
+    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2073&auto=format&fit=crop', // Real estate
 ];
 
 export default function HeroSection() {
@@ -27,13 +28,13 @@ export default function HeroSection() {
 
     return (
         <section className={`hero ${styles.heroSection}`}>
-            <AnimatePresence mode="popLayout">
+            <AnimatePresence>
                 <motion.div
                     key={currentImageIndex}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 1.5 }}
+                    transition={{ duration: 2, ease: 'easeInOut' }}
                     style={{
                         position: 'absolute',
                         top: 0,
