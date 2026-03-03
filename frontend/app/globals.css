@@ -419,6 +419,7 @@ footer a:hover {
 .form-group input[type="number"],
 .form-group input[type="email"],
 .form-group input[type="password"],
+.form-group input[type="tel"],
 .form-group textarea,
 .form-group select {
   width: 100%;
