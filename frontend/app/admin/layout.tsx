@@ -92,26 +92,31 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f5f5', fontFamily: 'var(--font-inter, sans-serif)' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc', fontFamily: 'var(--font-inter, sans-serif)' }}>
       <aside style={{
-        width: '260px',
-        background: '#1a1a1a',
+        width: '280px',
+        background: '#0F172A', // Slate 900
         color: '#fff',
         position: 'fixed',
         top: 0,
         left: 0,
         height: '100vh',
         overflowY: 'auto',
-        boxShadow: '4px 0 10px rgba(0,0,0,0.1)',
+        boxShadow: '4px 0 24px rgba(0,0,0,0.06)',
         zIndex: 20,
         display: 'flex',
         flexDirection: 'column'
       }}>
-        <div style={{ padding: '2rem 1.5rem', borderBottom: '1px solid #333' }}>
-          <h2 style={{ color: '#FF6B35', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>Admin Panel</h2>
-          <p style={{ fontSize: '0.85rem', color: '#888', marginTop: '0.5rem', wordBreak: 'break-all' }}>{user?.email}</p>
+        <div style={{ padding: '2.5rem 2rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          <h2 style={{ color: '#fff', margin: 0, fontSize: '1.4rem', fontWeight: '800', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--brand-gradient, linear-gradient(135deg, #F97316 0%, #E52E71 100%))' }}></span>
+            Удирдлага
+          </h2>
+          <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginTop: '0.8rem', wordBreak: 'break-all', fontWeight: '500' }}>{user?.email}</p>
         </div>
-        <nav style={{ padding: '1.5rem 1rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+
+        <nav style={{ padding: '2rem 1rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', paddingLeft: '1rem' }}>Тэс цэс</div>
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -119,47 +124,77 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 key={item.href}
                 href={item.href}
                 style={{
-                  display: 'block',
-                  padding: '0.8rem 1rem',
-                  borderRadius: '6px',
-                  color: isActive ? '#fff' : '#aaa',
-                  background: isActive ? '#FF6B35' : 'transparent',
-                  fontWeight: isActive ? '600' : '400',
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '0.9rem 1.2rem',
+                  borderRadius: '12px',
+                  color: isActive ? '#fff' : '#94A3B8',
+                  background: isActive ? 'linear-gradient(135deg, #F97316 0%, #FB923C 100%)' : 'transparent',
+                  fontWeight: isActive ? '600' : '500',
                   textDecoration: 'none',
-                  transition: 'background 0.2s',
-                  marginBottom: '0.5rem'
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  marginBottom: '0.3rem',
+                  boxShadow: isActive ? '0 4px 15px rgba(249, 115, 22, 0.3)' : 'none',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                    e.currentTarget.style.color = '#fff';
+                    e.currentTarget.style.transform = 'translateX(4px)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.color = '#94A3B8';
+                    e.currentTarget.style.transform = 'translateX(0)';
+                  }
                 }}
               >
                 {item.name}
               </Link>
             )
           })}
-          <div style={{ marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid #333' }}>
+
+          <div style={{ marginTop: 'auto', paddingTop: '2rem' }}>
             <button
               onClick={handleLogout}
               style={{
                 width: '100%',
-                padding: '0.8rem',
-                background: '#dc3545',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '6px',
+                padding: '0.9rem',
+                background: 'rgba(239, 68, 68, 0.1)',
+                color: '#EF4444',
+                border: '1px solid rgba(239, 68, 68, 0.2)',
+                borderRadius: '12px',
                 cursor: 'pointer',
-                fontWeight: 'bold',
-                transition: 'background 0.2s'
+                fontWeight: '600',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#EF4444';
+                e.currentTarget.style.color = '#fff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                e.currentTarget.style.color = '#EF4444';
               }}
             >
-              Гарах
+              Системээс гарах
             </button>
           </div>
         </nav>
       </aside>
-      <main style={{ flex: 1, marginLeft: '260px', padding: '2.5rem', position: 'relative' }}>
+
+      <main style={{ flex: 1, marginLeft: '280px', padding: '3rem', position: 'relative' }}>
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          style={{ maxWidth: '1200px', margin: '0 auto' }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          style={{ maxWidth: '1400px', margin: '0 auto', background: '#fff', padding: '3rem', borderRadius: '24px', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.05)', minHeight: 'calc(100vh - 6rem)' }}
         >
           {children}
         </motion.div>
