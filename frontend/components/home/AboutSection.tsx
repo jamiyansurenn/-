@@ -22,26 +22,22 @@ export default function AboutSection({ companyInfo }: AboutSectionProps) {
                 </AnimateOnScroll>
                 <div className={styles.aboutSectionWrapper}>
                     <AnimateOnScroll delay={100}>
-                        <p className={styles.aboutText}>
-                            {companyInfo.data.aboutUs || t.home.about.description}
+                        <p className={styles.aboutText} style={{ whiteSpace: 'pre-line' }}>
+                            {t.home.about.aboutUs}
                         </p>
                     </AnimateOnScroll>
-                    {companyInfo.data.vision && (
-                        <AnimateOnScroll delay={200}>
-                            <div className={styles.visionSection}>
-                                <h3>Алсын хараа</h3>
-                                <p>{companyInfo.data.vision}</p>
-                            </div>
-                        </AnimateOnScroll>
-                    )}
-                    {companyInfo.data.mission && (
-                        <AnimateOnScroll delay={300}>
-                            <div>
-                                <h3>Зорилго</h3>
-                                <p>{companyInfo.data.mission}</p>
-                            </div>
-                        </AnimateOnScroll>
-                    )}
+                    <AnimateOnScroll delay={200}>
+                        <div className={styles.visionSection}>
+                            <h3>{t.home.about.visionTitle}</h3>
+                            <p>{t.home.about.vision}</p>
+                        </div>
+                    </AnimateOnScroll>
+                    <AnimateOnScroll delay={300}>
+                        <div>
+                            <h3>{t.home.about.missionTitle}</h3>
+                            <p>{t.home.about.mission}</p>
+                        </div>
+                    </AnimateOnScroll>
                 </div>
             </div>
         </section>
