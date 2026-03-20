@@ -1,33 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Language } from '@/lib/i18n';
 import { motion, AnimatePresence } from 'framer-motion';
-import { createPortal } from 'react-dom';
 
 type Region = 'Asia Pacific' | 'Global / International';
-type LanguageItem = { code: Language; label: string; country: string; region: Region };
+type LanguageItem = { code: Language; label: string; country: string; region: Region; flagCode: string };
 
 const languages: LanguageItem[] = [
-  { code: 'mn', country: 'Монгол Улс', label: 'Монгол', region: 'Asia Pacific' },
-  { code: 'zh', country: '中国大陆', label: '中文', region: 'Asia Pacific' },
-  { code: 'ja', country: '日本', label: '日本語', region: 'Asia Pacific' },
-  { code: 'ko', country: '대한민국', label: '한국어', region: 'Asia Pacific' },
-  { code: 'ru', country: 'Россия', label: 'Русский', region: 'Global / International' },
-  { code: 'en', country: 'United States', label: 'English', region: 'Global / International' },
+  { code: 'mn', country: 'Монгол Улс', label: 'Монгол', region: 'Asia Pacific', flagCode: 'mn' },
+  { code: 'en', country: 'United States', label: 'English', region: 'Global / International', flagCode: 'us' },
+  { code: 'zh', country: '中国大陆', label: '中文', region: 'Asia Pacific', flagCode: 'cn' },
+  { code: 'ja', country: '日本', label: '日本語', region: 'Asia Pacific', flagCode: 'jp' },
+  { code: 'ko', country: '대한민국', label: '한국어', region: 'Asia Pacific', flagCode: 'kr' },
+  { code: 'ru', country: 'Россия', label: 'Русский', region: 'Global / International', flagCode: 'ru' },
 ];
 
 export default function LanguageSwitcher() {
   const router = useRouter();
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  let closeTimeout: NodeJS.Timeout;
 
   const currentLang = languages.find(lang => lang.code === language) || languages[0];
 
@@ -38,182 +34,197 @@ export default function LanguageSwitcher() {
     router.refresh();
   };
 
-  // Prevent scrolling when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
+  const handleMouseEnter = () => {
+    clearTimeout(closeTimeout);
+    setIsOpen(true);
+  };
 
-  // Group languages by region
-  const groupedLanguages = languages.reduce((acc, lang) => {
-    if (!acc[lang.region]) acc[lang.region] = [];
-    acc[lang.region].push(lang);
-    return acc;
-  }, {} as Record<Region, LanguageItem[]>);
+  const handleMouseLeave = () => {
+    // Add a slight delay before closing to prevent accidental closes when moving mouse
+    closeTimeout = setTimeout(() => {
+      setIsOpen(false);
+    }, 150);
+  };
+
+  // Close dropdown when clicking outside (fallback for mobile)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      clearTimeout(closeTimeout);
+    };
+  }, []);
 
   return (
-    <>
+    <div
+      style={{ position: 'relative' }}
+      ref={dropdownRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsOpen(!isOpen)}
         style={{
-          padding: '0.6rem 1.2rem',
-          background: 'transparent',
-          border: '1px solid currentColor',
+          padding: '0.5rem 0.8rem',
+          background: isOpen ? 'rgba(255,255,255,0.08)' : 'transparent',
+          border: '1px solid rgba(255,255,255,0.15)',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           gap: '0.6rem',
-          transition: 'all 0.2s',
-          fontSize: '1.1rem',
-          fontWeight: 500,
+          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          fontSize: '0.95rem',
           borderRadius: '30px',
+          color: 'inherit'
         }}
-        className="language-switcher-btn"
+        className={`language-switcher-btn ${isOpen ? 'active' : ''}`}
         aria-label="Select Language"
+        title={currentLang.country}
       >
-        <svg fill="currentColor" viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path>
+        <div style={{ width: '22px', height: '16px', borderRadius: '3px', overflow: 'hidden', display: 'flex', boxShadow: '0 1px 3px rgba(0,0,0,0.2)' }}>
+          <img
+            src={`https://flagcdn.com/w40/${currentLang.flagCode}.png`}
+            alt={currentLang.country}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
+        <span style={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{currentLang.code}</span>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{
+            transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            opacity: 0.8
+          }}
+        >
+          <path d="m6 9 6 6 6-6" />
         </svg>
-        <span>{currentLang.label}</span>
       </button>
 
-      {mounted && typeof document !== 'undefined'
-        ? createPortal(
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                style={{
-                  position: 'fixed',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  backgroundColor: 'rgba(0,0,0,0.4)',
-                  backdropFilter: 'blur(4px)',
-                  zIndex: 999999,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: '1rem',
-                }}
-                onClick={() => setIsOpen(false)}
-              >
-                <motion.div
-                  onClick={(e) => e.stopPropagation()}
-                  initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                  animate={{ scale: 1, opacity: 1, y: 0 }}
-                  exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
-                  style={{
-                    backgroundColor: '#fff',
-                    borderRadius: '24px',
-                    padding: '2.5rem',
-                    width: '100%',
-                    maxWidth: '800px',
-                    boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
-                    maxHeight: '90vh',
-                    overflowY: 'auto',
-                    boxSizing: 'border-box'
-                  }}
-                >
-                  {/* Header with Close Button */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', width: '100%', boxSizing: 'border-box' }}>
-                    <div style={{ fontWeight: 800, fontSize: '1.6rem', letterSpacing: '1px', textTransform: 'uppercase', color: '#111' }}>
-                      Сонгох хэл / Select Language
-                    </div>
-                    <button
-                      onClick={() => setIsOpen(false)}
-                      style={{
-                        background: '#f1f1f1',
-                        border: 'none',
-                        width: '40px',
-                        height: '40px',
-                        fontSize: '1.5rem',
-                        lineHeight: '1',
-                        cursor: 'pointer',
-                        color: '#333',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'all 0.2s',
-                        borderRadius: '50%',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#e0e0e0';
-                        e.currentTarget.style.transform = 'scale(1.05)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = '#f1f1f1';
-                        e.currentTarget.style.transform = 'scale(1)';
-                      }}
-                      aria-label="Close"
-                    >
-                      &times;
-                    </button>
-                  </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 12, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: 'absolute',
+              top: 'calc(100% + 0.8rem)',
+              right: 0,
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              padding: '0.6rem',
+              minWidth: '220px',
+              boxShadow: '0 20px 40px -15px rgba(0,0,0,0.15), 0 0 20px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(0,0,0,0.05)',
+              zIndex: 9999,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.2rem',
+              // Use pseudo element for tooltip arrow
+            }}
+          >
+            {/* Tooltip triangle */}
+            <div style={{
+              position: 'absolute',
+              top: '-6px',
+              right: '30px',
+              width: '12px',
+              height: '12px',
+              backgroundColor: '#fff',
+              transform: 'rotate(45deg)',
+              boxShadow: '-2px -2px 3px rgba(0,0,0,0.02)',
+              zIndex: -1
+            }} />
 
-                  {/* Regions Grid */}
-                  <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '2.5rem', boxSizing: 'border-box' }}>
-                    {Object.entries(groupedLanguages).map(([region, langs]) => (
-                      <div key={region} style={{ boxSizing: 'border-box' }}>
-                        <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1.2rem', borderBottom: '2px solid #f0f0f0', paddingBottom: '0.8rem', color: '#777', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                          {region}
-                        </h3>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
-                          {langs.map((lang) => (
-                            <div
-                              key={lang.code}
-                              onClick={() => handleLanguageChange(lang.code)}
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                cursor: 'pointer',
-                                padding: '1rem 1.2rem',
-                                borderRadius: '12px',
-                                border: language === lang.code ? '2px solid #F97316' : '2px solid #eaeaea',
-                                backgroundColor: language === lang.code ? '#fffaf5' : '#fff',
-                                boxShadow: language === lang.code ? '0 4px 12px rgba(249,115,22,0.1)' : 'none',
-                                transition: 'all 0.2s',
-                                boxSizing: 'border-box'
-                              }}
-                              onMouseEnter={(e) => {
-                                if (language !== lang.code) {
-                                  e.currentTarget.style.borderColor = '#ccc';
-                                  e.currentTarget.style.backgroundColor = '#f9f9f9';
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                if (language !== lang.code) {
-                                  e.currentTarget.style.borderColor = '#eaeaea';
-                                  e.currentTarget.style.backgroundColor = '#fff';
-                                }
-                              }}
-                            >
-                              <span style={{ fontSize: '1.2rem', fontWeight: 600, color: '#111' }}>{lang.country}</span>
-                              <span style={{ fontSize: '0.95rem', fontWeight: 500, color: '#666', marginTop: '4px' }}>{lang.label}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>,
-          document.body
-        )
-        : null}
-    </>
+            {languages.map((lang) => (
+              <button
+                key={lang.code}
+                onClick={() => handleLanguageChange(lang.code)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.8rem',
+                  width: '100%',
+                  padding: '0.7rem 0.8rem',
+                  border: 'none',
+                  background: language === lang.code ? '#fff4eb' : 'transparent',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  color: language === lang.code ? 'var(--primary-orange)' : '#444',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+                onMouseEnter={(e) => {
+                  if (language !== lang.code) {
+                    e.currentTarget.style.backgroundColor = '#f7f7f7';
+                    e.currentTarget.style.color = '#111';
+                    e.currentTarget.style.transform = 'translateX(4px)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (language !== lang.code) {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = '#444';
+                    e.currentTarget.style.transform = 'translateX(0)';
+                  }
+                }}
+              >
+                <div style={{
+                  width: '26px',
+                  height: '18px',
+                  borderRadius: '3px',
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                  flexShrink: 0
+                }}>
+                  <img
+                    src={`https://flagcdn.com/w40/${lang.flagCode}.png`}
+                    alt={lang.country}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <span style={{ fontSize: '0.95rem', fontWeight: language === lang.code ? 700 : 500, lineHeight: 1.2 }}>
+                    {lang.label}
+                  </span>
+                  <span style={{ fontSize: '0.75rem', color: language === lang.code ? '#fb923c' : '#888', lineHeight: 1 }}>
+                    {lang.country}
+                  </span>
+                </div>
+
+                {language === lang.code && (
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    style={{ marginLeft: 'auto' }}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary-orange)' }}>
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </motion.div>
+                )}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react';
 import { getTeamMembers, deleteTeamMember } from '@/lib/admin-api';
 import Link from 'next/link';
+import styles from '../admin.module.css';
 
 export default function TeamMembersPage() {
   const [members, setMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     loadMembers();
@@ -18,6 +20,7 @@ export default function TeamMembersPage() {
       setMembers(response.data);
     } catch (error) {
       console.error('Failed to load team members:', error);
+      setError('Багийн гишүүдийг уншихад алдаа гарлаа.');
     } finally {
       setLoading(false);
     }
@@ -34,51 +37,54 @@ export default function TeamMembersPage() {
   };
 
   if (loading) {
-    return <div>Уншиж байна...</div>;
+    return <div className={styles.loadingText}>Уншиж байна...</div>;
   }
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1>Багийн гишүүд</h1>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>Багийн гишүүд</h1>
         <Link href="/admin/team-members/new" className="btn">
           Шинэ гишүүн
         </Link>
       </div>
-      <div style={{ background: '#fff', borderRadius: '8px', overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: '#f5f5f5' }}>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Нэр</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Албан тушаал</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Статус</th>
-              <th style={{ padding: '1rem', textAlign: 'right' }}>Үйлдлүүд</th>
+      {error && <div className={styles.errorState}>{error}</div>}
+      <div className={styles.tableCard}>
+        <table className={styles.table}>
+          <thead className={styles.tableHead}>
+            <tr>
+              <th>Нэр</th>
+              <th>Албан тушаал</th>
+              <th>Статус</th>
+              <th style={{ textAlign: 'right' }}>Үйлдлүүд</th>
             </tr>
           </thead>
           <tbody>
             {members.map((member) => (
-              <tr key={member.id} style={{ borderTop: '1px solid #eee' }}>
-                <td style={{ padding: '1rem' }}>{member.name}</td>
-                <td style={{ padding: '1rem' }}>{member.position}</td>
-                <td style={{ padding: '1rem' }}>
-                  <span style={{ padding: '0.25rem 0.75rem', borderRadius: '4px', background: member.status === 'PUBLISHED' ? '#d4edda' : '#fff3cd', color: member.status === 'PUBLISHED' ? '#155724' : '#856404' }}>
+              <tr key={member.id} className={styles.tableRow}>
+                <td>{member.name}</td>
+                <td>{member.position}</td>
+                <td>
+                  <span className={`${styles.statusBadge} ${member.status === 'PUBLISHED' ? styles.statusPublished : styles.statusDraft}`}>
                     {member.status === 'PUBLISHED' ? 'Нийтлэгдсэн' : 'Ноорог'}
                   </span>
                 </td>
-                <td style={{ padding: '1rem', textAlign: 'right' }}>
-                  <Link href={`/admin/team-members/${member.id}`} className="btn" style={{ marginRight: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
-                    Засах
-                  </Link>
-                  <button onClick={() => handleDelete(member.id)} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
-                    Устгах
-                  </button>
+                <td>
+                  <div className={styles.tableActions}>
+                    <Link href={`/admin/team-members/${member.id}`} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                      Засах
+                    </Link>
+                    <button onClick={() => handleDelete(member.id)} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                      Устгах
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {members.length === 0 && (
-          <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>
+        {members.length === 0 && !error && (
+          <div className={styles.emptyState}>
             Гишүүн олдсонгүй
           </div>
         )}

@@ -50,6 +50,16 @@ model CompanyInfo {
   @@map("company_info")
 }
 
+model HeroSettings {
+  id          String   @id @default(uuid())
+  backgrounds String   // JSON string: array of background image URLs (length 2)
+  slides      String   // JSON string: array of hero slides
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("hero_settings")
+}
+
 model Service {
   id              String   @id @default(uuid())
   title           String

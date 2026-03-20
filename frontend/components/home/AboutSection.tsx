@@ -12,8 +12,6 @@ interface AboutSectionProps {
 export default function AboutSection({ companyInfo }: AboutSectionProps) {
     const { t } = useLanguage();
 
-    if (!companyInfo?.data) return null;
-
     return (
         <section>
             <div className="container">
@@ -33,7 +31,7 @@ export default function AboutSection({ companyInfo }: AboutSectionProps) {
                         </div>
                     </AnimateOnScroll>
                     <AnimateOnScroll delay={300}>
-                        <div>
+                        <div className={styles.missionSection}>
                             <h3>{t.home.about.missionTitle}</h3>
                             <p>{t.home.about.mission}</p>
                         </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import styles from '../admin.module.css';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -37,11 +38,12 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#f5f5f5' }}>
-      <div style={{ background: '#fff', padding: '2rem', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', width: '100%', maxWidth: '400px' }}>
-        <h1 style={{ marginBottom: '2rem', textAlign: 'center' }}>Admin Login</h1>
+    <div className={styles.loginWrapper}>
+      <div className={styles.loginCard}>
+        <h1 className={styles.loginTitle}>Админ нэвтрэх</h1>
+        <p className={styles.loginSubtitle}>Сайтын агуулгыг удирдах хэсэг</p>
         {error && (
-          <div style={{ background: '#f8d7da', color: '#721c24', padding: '1rem', borderRadius: '4px', marginBottom: '1rem' }}>
+          <div className={styles.alert}>
             {error}
           </div>
         )}

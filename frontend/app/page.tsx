@@ -6,6 +6,7 @@ import AboutSection from '@/components/home/AboutSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
 import NewsSection from '@/components/home/NewsSection';
+import LocationSection from '@/components/home/LocationSection';
 
 // Force dynamic rendering to prevent build-time static generation errors
 // This ensures pages render at request time, not build time
@@ -30,7 +31,7 @@ export default async function Home() {
       getCompanyInfo().catch(() => ({ data: null })),
       getServices().catch(() => ({ data: [] })),
       getProjects(true).catch(() => ({ data: [] })),
-      getNews(true, 3).catch(() => ({ data: [] })),
+      getNews(true, 9).catch(() => ({ data: [] })),
     ]);
 
     // Safely extract data from each result
@@ -60,6 +61,7 @@ export default async function Home() {
         <ServicesSection services={services.data} />
         <ProjectsSection projects={projects.data} />
         <NewsSection news={news.data} />
+        <LocationSection />
       </main>
       <Footer />
     </>

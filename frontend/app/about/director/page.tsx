@@ -108,7 +108,7 @@ export default async function DirectorPage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: '2rem',
-                    boxShadow: '0 5px 15px rgba(249, 115, 22, 0.4)'
+                    boxShadow: 'var(--glow-orange)'
                   }}>
                     &quot;
                   </div>
@@ -127,18 +127,13 @@ export default async function DirectorPage() {
                     lineHeight: '1.9',
                     color: 'var(--text-medium)'
                   }}>
-                    <p style={{ marginBottom: '1.5rem' }}>
-                      {t.pages.director.paragraph1}
-                    </p>
-                    <p style={{ marginBottom: '1.5rem' }}>
-                      {t.pages.director.paragraph2}
-                    </p>
-                    <p style={{ marginBottom: '1.5rem' }}>
-                      {t.pages.director.paragraph3}
-                    </p>
-                    <p style={{ marginBottom: '1.5rem' }}>
-                      {t.pages.director.paragraph4}
-                    </p>
+                    {[t.pages.director.paragraph1, t.pages.director.paragraph2, t.pages.director.paragraph3, t.pages.director.paragraph4]
+                      .filter((text: string) => text && text.trim() !== '')
+                      .map((text: string, index: number) => (
+                        <p key={index} style={{ marginBottom: '1.5rem' }}>
+                          {text}
+                        </p>
+                      ))}
 
                     <div style={{
                       marginTop: '3rem',

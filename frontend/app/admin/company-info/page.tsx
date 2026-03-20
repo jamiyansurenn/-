@@ -3,11 +3,14 @@
 import { useEffect, useState } from 'react';
 import { getCompanyInfo, updateCompanyInfo, createCompanyInfo } from '@/lib/admin-api';
 import { useRouter } from 'next/navigation';
+import styles from '../admin.module.css';
 
 export default function CompanyInfoPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [formData, setFormData] = useState({
     aboutUs: '',
     vision: '',
@@ -45,6 +48,7 @@ export default function CompanyInfoPage() {
       }
     } catch (error) {
       console.error('Failed to load company info:', error);
+      setError('Компанийн мэдээлэл уншихад алдаа гарлаа.');
     } finally {
       setLoading(false);
     }
@@ -53,29 +57,35 @@ export default function CompanyInfoPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    setError('');
+    setSuccess('');
     try {
       if (companyInfo) {
         await updateCompanyInfo(companyInfo.id, formData);
       } else {
         await createCompanyInfo(formData);
       }
-      alert('Амжилттай хадгаллаа');
+      setSuccess('Амжилттай хадгаллаа.');
       loadData();
     } catch (error: any) {
-      alert(error.response?.data?.message || 'Алдаа гарлаа');
+      setError(error.response?.data?.message || 'Алдаа гарлаа');
     } finally {
       setSaving(false);
     }
   };
 
   if (loading) {
-    return <div>Уншиж байна...</div>;
+    return <div className={styles.loadingText}>Уншиж байна...</div>;
   }
 
   return (
     <div>
-      <h1 style={{ marginBottom: '2rem' }}>Компанийн мэдээлэл</h1>
-      <form onSubmit={handleSubmit} style={{ background: '#fff', padding: '2rem', borderRadius: '8px' }}>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>Компанийн мэдээлэл</h1>
+      </div>
+      {error && <div className={styles.errorState}>{error}</div>}
+      {success && <div className={styles.emptyState}>{success}</div>}
+      <form onSubmit={handleSubmit} className={styles.formCard}>
         <div className="form-group">
           <label>Бидний тухай</label>
           <textarea

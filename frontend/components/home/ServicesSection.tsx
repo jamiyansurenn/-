@@ -26,6 +26,7 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
                     transition={{ duration: 0.6 }}
                 >
                     <h2 className="section-title">{t.home.services.title}</h2>
+                    <p className={styles.sectionLead}>{t.home.services.description}</p>
                 </motion.div>
 
                 <div className="grid">

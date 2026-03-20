@@ -1,118 +1,204 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import styles from '@/app/home.module.css';
-import { getImageUrl } from '@/lib/imagePlaceholder';
-
-const heroImages = [
-    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop', // Modern glass building
-    'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=2000&auto=format&fit=crop', // Apartment building
-    'https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=2070&auto=format&fit=crop', // Interior / Home
-    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2073&auto=format&fit=crop', // Real estate
-];
+import { getHeroSettingsPublic } from '@/lib/admin-api';
+const SLIDE_INTERVAL_MS = 7000;
 
 export default function HeroSection() {
     const { t } = useLanguage();
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+    const [heroSettings, setHeroSettings] = useState<any>(null);
+
+    const slides = useMemo(() => ([
+        {
+            title: 'Buy & Back – Ашигтай, Баталгаатай Хөрөнгө оруулалт',
+            subtitle: 'Buy & Back гэрээт хөтөлбөр эхэллээ',
+            description: '',
+            cta: { label: 'Холбоо барих', href: '/contact' },
+        },
+        {
+            title: 'ТАВ ТУХ ЧАНАР СТАНДАРТЫГ ТАНАЙ ГЭРТ',
+            subtitle: 'БИД ЗАСЛЫН ШИНЭЛЭГ ШИЙДЛИЙГ ТӨСЛҮҮДДЭЭ ШИНГЭЭЖ ОРЧИН ҮЕИЙН ТЕХНОЛОГИЙГ НЭВТРҮҮЛЭЭД БАЙНА',
+            description: '',
+            cta: { label: 'Холбоо барих', href: '/contact' },
+        },
+        {
+            title: 'БҮХ ТӨРЛИЙН ТАВИЛГА УГСРАЛТ',
+            subtitle: 'БИД ТАНЫ ХҮССЭН ӨНГӨ ЗАГВАРЫН ДАГУУ МЭРГЭЖЛИЙН ДИЗАЙНЕРИЙН ГАРГАСАН ЗУРГИЙН ДАГУУ ТАНЫ ГЭР БОЛОН АЖИЛД ОРЧИН ҮЕИЙН ТАВИЛГЫГ САНАЛ БОЛГОНО.',
+            description: '',
+            cta: { label: 'Холбоо барих', href: '/contact' },
+        },
+        {
+            title: 'УТААГҮЙ УЛААНБААТАР ЗОРИЛТОТ ТӨСӨЛ',
+            subtitle: 'даацтай бизнесийг бид танд санал болгоно',
+            description: '',
+            cta: { label: 'Холбоо барих', href: '/contact' },
+        },
+        {
+            title: 'ЦАМХАГТ КРАНЫ НЭГДСЭН ҮЙЛЧИЛГЭЭ',
+            subtitle: 'Бид цамхагт краны салбарт монголдоо тэргүүлэгч хамт олон билээ.',
+            description: '',
+            cta: { label: 'Холбоо барих', href: '/contact' },
+        },
+    ]), [t]);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-        }, 5000); // Change image every 5 seconds
-
-        return () => clearInterval(interval);
+        let alive = true;
+        const load = async () => {
+            try {
+                const res = await getHeroSettingsPublic();
+                if (!alive) return;
+                setHeroSettings(res.data);
+            } catch {
+                // Keep fallback slides/backgrounds if endpoint fails.
+            }
+        };
+        load();
+        return () => {
+            alive = false;
+        };
     }, []);
 
+    const resolvedSlides = (Array.isArray(heroSettings?.slides) && heroSettings.slides.length > 0 ? heroSettings.slides : slides) as any[];
+
+    useEffect(() => {
+        if (isPaused) return;
+        const interval = setInterval(() => {
+            setActiveIndex((prev) => (prev + 1) % resolvedSlides.length);
+        }, SLIDE_INTERVAL_MS);
+        return () => clearInterval(interval);
+    }, [isPaused, resolvedSlides.length]);
+
+    const currentSlide = resolvedSlides[activeIndex % resolvedSlides.length];
+
+    const goToSlide = (index: number) => {
+        setActiveIndex(index);
+    };
+
+    const handlePrev = () => {
+        setActiveIndex((prev) => (prev - 1 + resolvedSlides.length) % resolvedSlides.length);
+    };
+
+    const handleNext = () => {
+        setActiveIndex((prev) => (prev + 1) % resolvedSlides.length);
+    };
+
+    const fallbackPairs = [
+        {
+            local: heroSettings?.backgrounds?.[0] || '/hero/hero-1.jpg',
+            fallback: 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?q=80&w=2070&auto=format&fit=crop',
+        },
+        {
+            local: heroSettings?.backgrounds?.[1] || '/hero/hero-2.jpg',
+            fallback: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop',
+        },
+    ];
+    const activeBackground = fallbackPairs[activeIndex % fallbackPairs.length];
+    const heroFallbackImage = `url('${activeBackground.local}'), url('${activeBackground.fallback}')`;
+    const posterUrl = activeBackground.fallback;
+    const quickStats = [
+        { value: '14+', label: 'Жилийн туршлага' },
+        { value: '50+', label: 'Тогтмол харилцагч' },
+        { value: '100+', label: 'Гүйцэтгэсэн ажил' },
+    ];
+
     return (
-        <section className={`hero ${styles.heroSection}`}>
-            {heroImages.map((img, index) => (
-                <motion.div
-                    key={img}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: currentImageIndex === index ? 1 : 0 }}
-                    transition={{ duration: 2, ease: 'easeInOut' }}
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundImage: `url('${img}')`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        zIndex: -2,
-                    }}
+        <section
+            className={`hero ${styles.heroSection}`}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+        >
+            <div className={styles.heroMedia}>
+                <div
+                    className={styles.heroImageFallback}
+                    style={{ backgroundImage: heroFallbackImage }}
+                    aria-hidden="true"
                 />
-            ))}
-            <div className={styles.heroOverlay}></div>
-            <div className={`container ${styles.heroContent}`}>
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    style={{ maxWidth: '800px', margin: '0 auto' }}
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    poster={posterUrl}
+                    className={styles.heroVideo}
                 >
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.8 }}
-                        style={{
-                            textShadow: '0 4px 12px rgba(0,0,0,0.5)',
-                            color: '#ffffff',
-                            fontWeight: '800',
-                            fontSize: '3.5rem',
-                            marginBottom: '1.5rem',
-                        }}
-                    >
-                        {t.home.hero.title}
-                    </motion.h1>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.8 }}
-                        style={{
-                            textShadow: '0 2px 8px rgba(0,0,0,0.6)',
-                            color: '#f8f9fa',
-                            fontWeight: '500',
-                            fontSize: '1.4rem',
-                            marginBottom: '2rem',
-                        }}
-                    >
-                        {t.home.hero.subtitle}
-                    </motion.p>
-                    <motion.h4
-                        className={styles.heroSubtitle}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.6, duration: 0.8 }}
-                        style={{
-                            textShadow: '0 2px 8px rgba(0,0,0,0.6)',
-                            color: '#e9ecef',
-                            lineHeight: '1.6',
-                            fontWeight: '400',
-                            fontSize: '1.1rem',
-                            marginBottom: '3rem',
-                        }}
-                    >
-                        {t.pages.director.paragraph1}
-                    </motion.h4>
+                    <source src="https://cdn.pixabay.com/video/2021/08/29/86716-595085449_large.mp4" type="video/mp4" />
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-modern-city-skyscrapers-in-the-business-district-1442-large.mp4" type="video/mp4" />
+                </video>
+                <div className={styles.heroOverlay} />
+                <div className={styles.heroAmbient} />
+                <div className={styles.heroNoise} />
+            </div>
+
+            <div className={`container ${styles.heroContent}`}>
+                <AnimatePresence mode="wait">
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.8, duration: 0.5 }}
+                        key={activeIndex}
+                        className={styles.heroSlide}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.6, ease: 'easeOut' }}
                     >
-                        <Link href="/contact" className="btn" style={{
-                            boxShadow: '0 4px 15px rgba(255, 107, 53, 0.4)',
-                            padding: '1rem 2rem',
-                            fontSize: '1.1rem'
-                        }}>
-                            {t.nav.contact}
-                        </Link>
+                        <motion.span
+                            className={styles.heroEyebrow}
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4 }}
+                        >
+                            {currentSlide.subtitle}
+                        </motion.span>
+                        <h1 className={styles.heroTitle}>{currentSlide.title}</h1>
+                        {currentSlide.description && (
+                            <p className={styles.heroDescription}>{currentSlide.description}</p>
+                        )}
+                        <div className={styles.heroCtas}>
+                            <Link
+                                href={currentSlide.cta?.href || currentSlide.ctaHref || '/contact'}
+                                className="btn"
+                            >
+                                {currentSlide.cta?.label || currentSlide.ctaLabel || 'Холбоо барих'}
+                            </Link>
+                            <Link href="/projects" className="btn btn-secondary">
+                                {t.common.viewAll}
+                            </Link>
+                        </div>
+
+                        <div className={styles.heroStats}>
+                            {quickStats.map((stat) => (
+                                <div key={stat.label} className={styles.heroStatCard}>
+                                    <strong>{stat.value}</strong>
+                                    <span>{stat.label}</span>
+                                </div>
+                            ))}
+                        </div>
                     </motion.div>
-                </motion.div>
+                </AnimatePresence>
+
+                <div className={styles.heroControls}>
+                    <button type="button" className={styles.heroNavButton} onClick={handlePrev} aria-label="Өмнөх слайд">
+                        ‹
+                    </button>
+                    <div className={styles.heroDots}>
+                        {resolvedSlides.map((_, index) => (
+                            <button
+                                key={index}
+                                type="button"
+                                className={`${styles.heroDot} ${index === activeIndex ? styles.heroDotActive : ''}`}
+                                onClick={() => goToSlide(index)}
+                                aria-label={`Слайд ${index + 1}`}
+                            />
+                        ))}
+                    </div>
+                    <button type="button" className={styles.heroNavButton} onClick={handleNext} aria-label="Дараагийн слайд">
+                        ›
+                    </button>
+                </div>
             </div>
         </section>
     );

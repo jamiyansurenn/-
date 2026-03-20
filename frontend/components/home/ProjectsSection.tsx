@@ -26,6 +26,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                     transition={{ duration: 0.6 }}
                 >
                     <h2 className="section-title">{t.home.projects.title}</h2>
+                    <p className={styles.sectionLead}>{t.home.projects.description}</p>
                 </motion.div>
 
                 <div className="grid">

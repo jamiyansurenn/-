@@ -1,17 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { usePathname, useRouter, useParams } from 'next/navigation';
 import { getTeamMember, createTeamMember, updateTeamMember, uploadFile } from '@/lib/admin-api';
+import styles from '../../admin.module.css';
 
 export default function TeamMemberEditPage() {
   const router = useRouter();
+  const pathname = usePathname();
   const params = useParams();
-  const id = params.id as string;
-  const isNew = id === 'new';
+  const idParam = params.id as string | undefined;
+  const isNew = idParam === 'new' || pathname.endsWith('/new');
+  const id = isNew ? 'new' : (idParam as string);
 
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     position: '',
@@ -28,7 +32,7 @@ export default function TeamMemberEditPage() {
     if (!isNew) {
       loadMember();
     }
-  }, [id]);
+  }, [isNew, id]);
 
   const loadMember = async () => {
     try {
@@ -47,6 +51,7 @@ export default function TeamMemberEditPage() {
       });
     } catch (error) {
       console.error('Failed to load team member:', error);
+      setError('Багийн гишүүний мэдээлэл уншихад алдаа гарлаа.');
     } finally {
       setLoading(false);
     }
@@ -60,13 +65,14 @@ export default function TeamMemberEditPage() {
       const response = await uploadFile(file);
       setFormData({ ...formData, image: response.data.url });
     } catch (error) {
-      alert('Файл хуулахад алдаа гарлаа');
+      setError('Файл хуулахад алдаа гарлаа.');
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    setError('');
     try {
       if (isNew) {
         await createTeamMember(formData);
@@ -75,20 +81,23 @@ export default function TeamMemberEditPage() {
       }
       router.push('/admin/team-members');
     } catch (error: any) {
-      alert(error.response?.data?.message || 'Алдаа гарлаа');
+      setError(error.response?.data?.message || 'Алдаа гарлаа');
     } finally {
       setSaving(false);
     }
   };
 
   if (loading) {
-    return <div>Уншиж байна...</div>;
+    return <div className={styles.loadingText}>Уншиж байна...</div>;
   }
 
   return (
     <div>
-      <h1 style={{ marginBottom: '2rem' }}>{isNew ? 'Шинэ гишүүн' : 'Гишүүн засах'}</h1>
-      <form onSubmit={handleSubmit} style={{ background: '#fff', padding: '2rem', borderRadius: '8px' }}>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>{isNew ? 'Шинэ гишүүн' : 'Гишүүн засах'}</h1>
+      </div>
+      {error && <div className={styles.errorState}>{error}</div>}
+      <form onSubmit={handleSubmit} className={styles.formCard}>
         <div className="form-group">
           <label>Нэр *</label>
           <input
@@ -119,7 +128,7 @@ export default function TeamMemberEditPage() {
           <label>Зураг</label>
           <input type="file" accept="image/*" onChange={handleFileUpload} />
           {formData.image && (
-            <img src={formData.image} alt="Preview" style={{ maxWidth: '200px', marginTop: '1rem', display: 'block' }} />
+            <img src={formData.image} alt="Preview" className={styles.imagePreview} />
           )}
         </div>
         <div className="form-group">
@@ -164,9 +173,11 @@ export default function TeamMemberEditPage() {
             <option value="PUBLISHED">Нийтлэгдсэн</option>
           </select>
         </div>
-        <button type="submit" className="btn" disabled={saving}>
-          {saving ? 'Хадгалж байна...' : 'Хадгалах'}
-        </button>
+        <div className={styles.formActions}>
+          <button type="submit" className="btn" disabled={saving}>
+            {saving ? 'Хадгалж байна...' : 'Хадгалах'}
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -30,13 +30,23 @@ export default function Header() {
   return (
     <header>
       <div className="container">
-        <nav>
+        <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', height: '90px' }}>
           <Link href="/" className="header-brand">
             <div className="logo-wrapper" style={{ height: '80px', display: 'flex', alignItems: 'center' }}>
               <Logo width={80} height={80} className="logo-image" priority />
             </div>
           </Link>
-          <ul>
+          <ul
+            style={{
+              display: 'flex',
+              listStyle: 'none',
+              gap: '2.5rem',
+              alignItems: 'center',
+              height: '100%',
+              margin: 0,
+              padding: 0,
+            }}
+          >
             <li>
               <DropdownMenu labelKey="about" items={aboutMenuItems} href="/about" />
             </li>

@@ -74,6 +74,91 @@ export default function ApplicationPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
+  const pushIfValue = (lines: string[], label: string, value: any) => {
+    if (value === null || value === undefined) return;
+    const str = String(value).trim();
+    if (!str) return;
+    lines.push(`${label}: ${str}`);
+  };
+
+  const buildApplicationMessage = (data: typeof formData) => {
+    const lines: string[] = [];
+
+    const fullName = [data.surname, data.name].filter(Boolean).join(' ');
+    if (fullName) lines.push(`Нэр: ${fullName}`);
+    pushIfValue(lines, 'Эцэг/эхийн нэр', data.fatherName);
+    pushIfValue(lines, 'Албан тушаал', data.position);
+
+    pushIfValue(lines, 'Регистерийн дугаар', data.regNumber);
+    pushIfValue(lines, 'Нас', data.age);
+    pushIfValue(lines, 'Хүйс', data.gender);
+
+    pushIfValue(lines, 'Төрсөн огноо', data.birthDate);
+    pushIfValue(lines, 'Төрсөн газар', data.birthPlace);
+    pushIfValue(lines, 'Оршин суугаа хаяг', data.address);
+
+    pushIfValue(lines, 'Утас', data.phone);
+    pushIfValue(lines, 'И-мэйл', data.email);
+
+    pushIfValue(lines, 'Ажлын жил', data.workYears);
+
+    // Education
+    const eduLines: string[] = [];
+    pushIfValue(eduLines, 'Сургууль', data.education1?.school);
+    pushIfValue(eduLines, 'Байршил', data.education1?.location);
+    pushIfValue(eduLines, 'Мэргэжил', data.education1?.major);
+    pushIfValue(eduLines, 'Эхлэх огноо', data.education1?.startDate);
+    pushIfValue(eduLines, 'Дуусах огноо', data.education1?.endDate);
+    pushIfValue(eduLines, 'GPA', data.education1?.gpa);
+    pushIfValue(eduLines, 'Диплом', data.education1?.diploma);
+    if (eduLines.length) {
+      lines.push('--- Боловсрол ---');
+      lines.push(...eduLines);
+    }
+
+    // Work experience (current/work1)
+    const workLines: string[] = [];
+    pushIfValue(workLines, 'Одоогийн ажил', data.currentWork);
+    pushIfValue(workLines, 'Компани/байгууллага', data.work1?.company);
+    pushIfValue(workLines, 'Бизнес/салбар', data.work1?.business);
+    pushIfValue(workLines, 'Албан тушаал', data.work1?.position);
+    pushIfValue(workLines, 'Эхлэх огноо', data.work1?.startDate);
+    pushIfValue(workLines, 'Дуусах огноо', data.work1?.endDate);
+    pushIfValue(workLines, 'Цалин', data.work1?.salary);
+    pushIfValue(workLines, 'Менежерийн нэр', data.work1?.managerName);
+    pushIfValue(workLines, 'Менежерийн албан тушаал', data.work1?.managerPosition);
+    pushIfValue(workLines, 'Менежерийн утас', data.work1?.managerPhone);
+    if (workLines.length) {
+      lines.push('--- Ажил туршлага ---');
+      lines.push(...workLines);
+    }
+
+    pushIfValue(lines, 'Ур чадвар', data.skills);
+    pushIfValue(lines, 'Компьютерийн ур чадвар', data.computerSkills);
+    pushIfValue(lines, 'Хэл', data.languages);
+
+    pushIfValue(lines, 'Гэр бүлийн тоо', data.familySize);
+    pushIfValue(lines, 'Гэр бүлийн мэдээлэл', data.familyInfo);
+
+    pushIfValue(lines, 'Нэмэрлэлийн давуу тал', data.strengths);
+    pushIfValue(lines, 'Сул тал', data.weaknesses);
+    pushIfValue(lines, 'Хобби', data.hobbies);
+    pushIfValue(lines, 'Эрүүл мэнд', data.health);
+
+    pushIfValue(lines, 'Лиценз байна', data.hasLicense);
+    pushIfValue(lines, 'Лиценз төрөл', data.licenseType);
+    pushIfValue(lines, 'Машин байна', data.hasCar);
+    pushIfValue(lines, 'Машины төрөл', data.carType);
+
+    pushIfValue(lines, 'Амралт/чөлөө хүсэх боломж', data.canRest);
+    pushIfValue(lines, 'Амрах шалтгаан', data.restReason);
+    pushIfValue(lines, 'Боломжтой огноо', data.availableDate);
+    pushIfValue(lines, 'Ажлын үргэлжлэх хугацаа', data.workDuration);
+    pushIfValue(lines, 'Хүлээлт цалин', data.expectedSalary);
+
+    return lines.join('\n');
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name.includes('.')) {
@@ -121,7 +206,8 @@ export default function ApplicationPage() {
         email: formData.email,
         phone: formData.phone,
         subject: `Ажлын анкет - ${formData.position}`,
-        message: JSON.stringify(formData, null, 2),
+        // Admin дээр JSON бүхлээр нь харагдуулахгүй, зөвхөн хоосон биш талбаруудыг товч гаргана.
+        message: buildApplicationMessage(formData),
       });
 
       setSubmitStatus('success');

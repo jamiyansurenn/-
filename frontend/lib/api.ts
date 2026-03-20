@@ -136,8 +136,8 @@ export const getServiceBySlug = async (slug: string) => {
 
 export const getProjects = async (featured?: boolean) => {
   const fallbackProjects = [
-    { id: 1, slug: 'hos-tsamhag', title: 'Хос Цамхаг төсөл', description: 'Орчин үеийн шийдэл бүхий дээд зэрэглэлийн барилга угсралтын төсөл.', image: '/images/projects/hos_tsamhag.jpeg' },
-    { id: 2, slug: 'b7-apartment', title: 'B7 Апартмент', description: 'Тав тухтай орчинг бүрдүүлсэн, бүрэн цутгамал орон сууц.', image: '/images/projects/b7.png' },
+    { id: 1, slug: 'hos-tsamhag', title: 'Хос Цамхаг төсөл', description: 'Орчин үеийн шийдэл бүхий дээд зэрэглэлийн барилга угсралтын төсөл.', image: '' },
+    { id: 2, slug: 'b7-apartment', title: 'B7 Апартмент', description: 'Тав тухтай орчинг бүрдүүлсэн, бүрэн цутгамал орон сууц.', image: '' },
     { id: 3, slug: 'airport', title: 'Хөшигтийн хөндийн нисэх буудал', description: 'Улсын хэмжээний томоохон байгууламжийн кран угсралтын ажил.', image: '' }
   ];
   try {

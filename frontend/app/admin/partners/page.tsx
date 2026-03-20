@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react';
 import { getPartners, deletePartner } from '@/lib/admin-api';
 import Link from 'next/link';
+import styles from '../admin.module.css';
 
 export default function PartnersPage() {
   const [partners, setPartners] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     loadPartners();
@@ -18,6 +20,7 @@ export default function PartnersPage() {
       setPartners(response.data);
     } catch (error) {
       console.error('Failed to load partners:', error);
+      setError('Хамтрагчдыг уншихад алдаа гарлаа.');
     } finally {
       setLoading(false);
     }
@@ -34,51 +37,54 @@ export default function PartnersPage() {
   };
 
   if (loading) {
-    return <div>Уншиж байна...</div>;
+    return <div className={styles.loadingText}>Уншиж байна...</div>;
   }
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1>Хамтрагчид</h1>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>Хамтрагчид</h1>
         <Link href="/admin/partners/new" className="btn">
           Шинэ хамтрагч
         </Link>
       </div>
-      <div style={{ background: '#fff', borderRadius: '8px', overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: '#f5f5f5' }}>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Нэр</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Вебсайт</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Статус</th>
-              <th style={{ padding: '1rem', textAlign: 'right' }}>Үйлдлүүд</th>
+      {error && <div className={styles.errorState}>{error}</div>}
+      <div className={styles.tableCard}>
+        <table className={styles.table}>
+          <thead className={styles.tableHead}>
+            <tr>
+              <th>Нэр</th>
+              <th>Вебсайт</th>
+              <th>Статус</th>
+              <th style={{ textAlign: 'right' }}>Үйлдлүүд</th>
             </tr>
           </thead>
           <tbody>
             {partners.map((partner) => (
-              <tr key={partner.id} style={{ borderTop: '1px solid #eee' }}>
-                <td style={{ padding: '1rem' }}>{partner.name}</td>
-                <td style={{ padding: '1rem' }}>{partner.website || '-'}</td>
-                <td style={{ padding: '1rem' }}>
-                  <span style={{ padding: '0.25rem 0.75rem', borderRadius: '4px', background: partner.status === 'PUBLISHED' ? '#d4edda' : '#fff3cd', color: partner.status === 'PUBLISHED' ? '#155724' : '#856404' }}>
+              <tr key={partner.id} className={styles.tableRow}>
+                <td>{partner.name}</td>
+                <td>{partner.website || '-'}</td>
+                <td>
+                  <span className={`${styles.statusBadge} ${partner.status === 'PUBLISHED' ? styles.statusPublished : styles.statusDraft}`}>
                     {partner.status === 'PUBLISHED' ? 'Нийтлэгдсэн' : 'Ноорог'}
                   </span>
                 </td>
-                <td style={{ padding: '1rem', textAlign: 'right' }}>
-                  <Link href={`/admin/partners/${partner.id}`} className="btn" style={{ marginRight: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
-                    Засах
-                  </Link>
-                  <button onClick={() => handleDelete(partner.id)} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
-                    Устгах
-                  </button>
+                <td>
+                  <div className={styles.tableActions}>
+                    <Link href={`/admin/partners/${partner.id}`} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                      Засах
+                    </Link>
+                    <button onClick={() => handleDelete(partner.id)} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                      Устгах
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {partners.length === 0 && (
-          <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>
+        {partners.length === 0 && !error && (
+          <div className={styles.emptyState}>
             Хамтрагч олдсонгүй
           </div>
         )}

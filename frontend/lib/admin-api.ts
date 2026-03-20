@@ -54,6 +54,12 @@ export const getContactMessage = (id: string) => api.get(`/contact/${id}`, { hea
 export const markContactAsRead = (id: string) => api.patch(`/contact/${id}/read`, {}, { headers: getAuthHeaders() });
 export const deleteContactMessage = (id: string) => api.delete(`/contact/${id}`, { headers: getAuthHeaders() });
 
+// Hero settings (backgrounds + slides copy)
+export const getHeroSettingsPublic = () => api.get('/hero-settings/public');
+export const getHeroSettingsAdmin = () => api.get('/hero-settings', { headers: getAuthHeaders() });
+export const updateHeroSettingsAdmin = (data: any) =>
+  api.put('/hero-settings', data, { headers: getAuthHeaders() });
+
 // Upload
 export const uploadFile = (file: File) => {
   const formData = new FormData();

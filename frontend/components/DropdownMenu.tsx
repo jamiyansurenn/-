@@ -89,11 +89,11 @@ export default function DropdownMenu({ labelKey, items, href }: DropdownMenuProp
             left: 0,
             background: '#fff',
             minWidth: '220px',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
-            borderRadius: '6px',
+            boxShadow: 'var(--shadow-md)',
+            borderRadius: 'var(--radius-sm)',
             padding: '0.5rem 0',
             zIndex: 1000,
-            border: '1px solid #eee',
+            border: '1px solid var(--border-color)',
           }}
         >
           {items.map((item, index) => {
@@ -109,12 +109,12 @@ export default function DropdownMenu({ labelKey, items, href }: DropdownMenuProp
                   textDecoration: 'none',
                   transition: 'all 0.2s',
                   fontWeight: pathname === item.href ? '600' : '400',
-                  backgroundColor: pathname === item.href ? '#fff5f0' : 'transparent',
+                  backgroundColor: pathname === item.href ? 'var(--orange-light)' : 'transparent',
                 }}
                 onClick={() => setIsOpen(false)}
                 onMouseEnter={(e) => {
                   if (pathname !== item.href) {
-                    e.currentTarget.style.backgroundColor = '#f9f9f9';
+                    e.currentTarget.style.backgroundColor = 'var(--off-white)';
                   }
                 }}
                 onMouseLeave={(e) => {

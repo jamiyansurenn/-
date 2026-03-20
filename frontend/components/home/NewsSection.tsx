@@ -17,7 +17,7 @@ export default function NewsSection({ news }: NewsSectionProps) {
     if (!news || news.length === 0) return null;
 
     return (
-        <section className={styles.servicesSection}>
+        <section className={styles.newsSection}>
             <div className="container">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -28,7 +28,7 @@ export default function NewsSection({ news }: NewsSectionProps) {
                     <h2 className="section-title">{t.pages.construction.latestNews}</h2>
                 </motion.div>
 
-                <div className="grid">
+                <div className={`grid ${styles.newsGrid}`}>
                     {news.map((item: any, index: number) => {
                         const imageUrl = getImageUrl(item.image, 'news', index);
                         return (
