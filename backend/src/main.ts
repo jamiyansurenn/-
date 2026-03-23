@@ -14,9 +14,14 @@ async function bootstrap() {
   });
 
   // Enable CORS
+  // `frontend` дээрх запросууд зөвхөн `Authorization` header-оор JWT явуулдаг тул cookies хэрэггүй.
+  // Origin таарахгүй бол browser "Failed to fetch" / CORS алдаагаар request-ийг тасалдаг.
+  const corsOrigin = process.env.CORS_ORIGIN || process.env.FRONTEND_URL;
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true,
+    // Хэрвээ origin тодорхойлоогүй бол бүх origin-ыг зөвшөөрнө.
+    // Render/Vercel дээр env-г яг тохируулахгүйгээс үүдэлтэй гардаг блоклалтыг арилгана.
+    origin: corsOrigin || true,
+    credentials: false,
   });
 
   // Global validation pipe

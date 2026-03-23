@@ -115,8 +115,10 @@
 
 .main {
   flex: 1;
-  margin-left: 280px;
   padding: 2.5rem;
+  /* Sidebar is `position: fixed`, so avoid `margin-left` overflow.
+     Push content to the right inside the same layout box. */
+  padding-left: calc(2.5rem + 280px);
   position: relative;
 }
 
@@ -442,8 +444,8 @@
   }
 
   .main {
-    margin-left: 240px;
     padding: 2rem;
+    padding-left: calc(2rem + 240px);
   }
 }
 
@@ -459,7 +461,8 @@
   }
 
   .main {
-    margin-left: 0;
+    /* Sidebar no longer fixed above this breakpoint. */
+    padding-left: 2.5rem;
   }
 }
 
