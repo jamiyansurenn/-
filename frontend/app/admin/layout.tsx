@@ -28,22 +28,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       return;
     }
 
-    const timeoutId = setTimeout(() => {
-      console.error('Auth timeout - backend not responding');
-      setLoading(false);
-      localStorage.removeItem('token');
-      router.push('/admin/login');
-    }, 5000);
+    const authWaitMs = (() => {
+      const raw = process.env.NEXT_PUBLIC_API_TIMEOUT_MS;
+      const n = raw ? parseInt(raw, 10) : NaN;
+      return !Number.isNaN(n) && n >= 5000 ? n : 45000;
+    })();
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
+    const controller = new AbortController();
+    const abortTimer = setTimeout(() => controller.abort(), authWaitMs);
 
     fetch(`${apiUrl}/auth/profile`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      signal: controller.signal,
     })
       .then((res) => {
-        clearTimeout(timeoutId);
+        clearTimeout(abortTimer);
         if (!res.ok) {
           throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         }
@@ -54,14 +57,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         setLoading(false);
       })
       .catch((error) => {
-        clearTimeout(timeoutId);
-        console.error('Auth error:', error);
+        clearTimeout(abortTimer);
+        if (error?.name === 'AbortError') {
+          console.error('Auth timeout - backend not responding (cold start can exceed 10s on Render free tier)');
+        } else {
+          console.error('Auth error:', error);
+        }
         localStorage.removeItem('token');
         setLoading(false);
         router.push('/admin/login');
       });
 
-    return () => clearTimeout(timeoutId);
+    return () => {
+      clearTimeout(abortTimer);
+      controller.abort();
+    };
   }, [router, isLoginPage]);
 
   const handleLogout = () => {

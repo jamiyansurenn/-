@@ -7,12 +7,19 @@ const getApiUrl = () => {
   return url.replace(/\/$/, '');
 };
 
+/** Render free tier / cold starts can exceed 10s; override via NEXT_PUBLIC_API_TIMEOUT_MS */
+const getApiTimeoutMs = () => {
+  const raw = process.env.NEXT_PUBLIC_API_TIMEOUT_MS;
+  const n = raw ? parseInt(raw, 10) : NaN;
+  return !Number.isNaN(n) && n >= 5000 ? n : 45000;
+};
+
 const api = axios.create({
   baseURL: getApiUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, // 10 second timeout
+  timeout: getApiTimeoutMs(),
 });
 
 // Log API URL in development (for debugging)
