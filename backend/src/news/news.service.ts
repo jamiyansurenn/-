@@ -14,7 +14,7 @@ export class NewsService {
     });
   }
 
-  findAll(published?: boolean, featured?: boolean, limit?: number) {
+  findAll(published?: boolean, featured?: boolean, limit?: string | number) {
     const where: any = {};
     if (published) {
       where.status = 'PUBLISHED';
@@ -22,12 +22,24 @@ export class NewsService {
     if (featured) {
       where.featured = true;
     }
-    const take = limit ? parseInt(limit.toString()) : undefined;
+    const take = this.parsePositiveIntLimit(limit);
     return this.prisma.news.findMany({
       where,
-      take,
+      ...(take !== undefined ? { take } : {}),
       orderBy: { publishedAt: 'desc' },
     });
+  }
+
+  /** Query params arrive as strings; invalid values must not become NaN for Prisma `take`. */
+  private parsePositiveIntLimit(raw: string | number | undefined): number | undefined {
+    if (raw === undefined || raw === null || raw === '') {
+      return undefined;
+    }
+    const n = typeof raw === 'number' ? raw : parseInt(String(raw).trim(), 10);
+    if (!Number.isFinite(n) || n < 1) {
+      return undefined;
+    }
+    return Math.min(n, 500);
   }
 
   findOne(id: string) {

@@ -12,7 +12,7 @@ export class NewsController {
 
   @Get('public')
   @ApiOperation({ summary: 'Get all published news (public)' })
-  findPublished(@Query('featured') featured?: string, @Query('limit') limit?: number) {
+  findPublished(@Query('featured') featured?: string, @Query('limit') limit?: string) {
     return this.newsService.findAll(true, featured === 'true', limit);
   }
 
