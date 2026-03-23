@@ -14,7 +14,21 @@ interface NewsSectionProps {
 export default function NewsSection({ news }: NewsSectionProps) {
     const { t } = useLanguage();
 
-    if (!news || news.length === 0) return null;
+    if (!news || news.length === 0) {
+        return (
+            <section className={styles.newsSection}>
+                <div className="container">
+                    <h2 className="section-title">{t.pages.construction.latestNews}</h2>
+                    <div className={styles.emptySectionCard}>
+                        <p>{t.pages.construction.noNews}</p>
+                        <Link href="/news" className="btn btn-secondary">
+                            {t.nav.news}
+                        </Link>
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className={styles.newsSection}>
@@ -39,7 +53,7 @@ export default function NewsSection({ news }: NewsSectionProps) {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                                whileHover={{ y: -10 }}
+                                whileHover={{ y: -4 }}
                             >
                                 <div className={styles.cardImageWrapper}>
                                     <Image

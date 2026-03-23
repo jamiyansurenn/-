@@ -14,7 +14,22 @@ interface ProjectsSectionProps {
 export default function ProjectsSection({ projects }: ProjectsSectionProps) {
     const { t } = useLanguage();
 
-    if (!projects || projects.length === 0) return null;
+    if (!projects || projects.length === 0) {
+        return (
+            <section className={styles.servicesSection}>
+                <div className="container">
+                    <h2 className="section-title">{t.home.projects.title}</h2>
+                    <p className={styles.sectionLead}>{t.home.projects.description}</p>
+                    <div className={styles.emptySectionCard}>
+                        <p>{t.pages.projects.noProjects}</p>
+                        <Link href="/contact" className="btn">
+                            {t.nav.contact}
+                        </Link>
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section>
@@ -40,7 +55,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                                whileHover={{ y: -10 }}
+                                whileHover={{ y: -4 }}
                             >
                                 <div className={styles.cardImageWrapper}>
                                     <Image

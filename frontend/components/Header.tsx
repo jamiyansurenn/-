@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import Logo from './Logo';
 import DropdownMenu from './DropdownMenu';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -10,6 +11,27 @@ import { useLanguage } from '@/contexts/LanguageContext';
 export default function Header() {
   const pathname = usePathname();
   const { t } = useLanguage();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const closeMobile = useCallback(() => setMobileOpen(false), []);
+
+  useEffect(() => {
+    closeMobile();
+  }, [pathname, closeMobile]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeMobile();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [mobileOpen, closeMobile]);
 
   const aboutMenuItems = [
     { labelKey: 'aboutIntro', href: '/about' },
@@ -27,26 +49,20 @@ export default function Header() {
     { labelKey: 'hrApplication', href: '/careers/application' },
   ];
 
+  const isActive = (href: string) => pathname === href;
+  const isActivePrefix = (prefix: string) => pathname?.startsWith(prefix) ?? false;
+
   return (
     <header>
-      <div className="container">
-        <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', height: '90px' }}>
-          <Link href="/" className="header-brand">
-            <div className="logo-wrapper" style={{ height: '80px', display: 'flex', alignItems: 'center' }}>
-              <Logo width={80} height={80} className="logo-image" priority />
+      <div className="container header-shell">
+        <nav className="header-nav-row" aria-label="Үндсэн цэс">
+          <Link href="/" className="header-brand" onClick={closeMobile}>
+            <div className="logo-wrapper header-logo-wrap">
+              <Logo width={72} height={72} className="logo-image" priority />
             </div>
           </Link>
-          <ul
-            style={{
-              display: 'flex',
-              listStyle: 'none',
-              gap: '2.5rem',
-              alignItems: 'center',
-              height: '100%',
-              margin: 0,
-              padding: 0,
-            }}
-          >
+
+          <ul className="header-nav-desktop">
             <li>
               <DropdownMenu labelKey="about" items={aboutMenuItems} href="/about" />
             </li>
@@ -54,7 +70,7 @@ export default function Header() {
               <DropdownMenu labelKey="construction" items={constructionMenuItems} href="/projects" />
             </li>
             <li>
-              <Link href="/news" className={pathname?.startsWith('/news') ? 'active' : ''}>
+              <Link href="/news" className={isActivePrefix('/news') ? 'active' : ''}>
                 {t.nav.news}
               </Link>
             </li>
@@ -66,12 +82,105 @@ export default function Header() {
                 {t.nav.contact}
               </Link>
             </li>
-            <li>
+            <li className="header-lang-desktop">
               <LanguageSwitcher />
             </li>
           </ul>
+
+          <button
+            type="button"
+            className="header-menu-toggle"
+            aria-expanded={mobileOpen}
+            aria-controls="header-mobile-panel"
+            aria-label={mobileOpen ? 'Цэс хаах' : 'Цэс нээх'}
+            onClick={() => setMobileOpen((o) => !o)}
+          >
+            {mobileOpen ? (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+            )}
+          </button>
         </nav>
       </div>
+
+      {mobileOpen ? (
+        <>
+          <div className="header-mobile-backdrop" onClick={closeMobile} aria-hidden />
+          <div
+            id="header-mobile-panel"
+            className="header-mobile-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Гар утасны цэс"
+          >
+            <div className="header-mobile-section">
+              <div className="header-mobile-label">{t.nav.about}</div>
+              {aboutMenuItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`header-mobile-link ${isActive(item.href) ? 'header-mobile-link-active' : ''}`}
+                  onClick={closeMobile}
+                >
+                  {(t.nav as any)[item.labelKey] || item.labelKey}
+                </Link>
+              ))}
+            </div>
+            <div className="header-mobile-section">
+              <div className="header-mobile-label">{t.nav.construction}</div>
+              {constructionMenuItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`header-mobile-link ${isActive(item.href) ? 'header-mobile-link-active' : ''}`}
+                  onClick={closeMobile}
+                >
+                  {(t.nav as any)[item.labelKey] || item.labelKey}
+                </Link>
+              ))}
+            </div>
+            <div className="header-mobile-section">
+              <Link
+                href="/news"
+                className={`header-mobile-link header-mobile-link-single ${isActivePrefix('/news') ? 'header-mobile-link-active' : ''}`}
+                onClick={closeMobile}
+              >
+                {t.nav.news}
+              </Link>
+            </div>
+            <div className="header-mobile-section">
+              <div className="header-mobile-label">{t.nav.hr}</div>
+              {hrMenuItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`header-mobile-link ${isActive(item.href) ? 'header-mobile-link-active' : ''}`}
+                  onClick={closeMobile}
+                >
+                  {(t.nav as any)[item.labelKey] || item.labelKey}
+                </Link>
+              ))}
+            </div>
+            <div className="header-mobile-section">
+              <Link
+                href="/contact"
+                className={`header-mobile-link header-mobile-link-single ${pathname === '/contact' ? 'header-mobile-link-active' : ''}`}
+                onClick={closeMobile}
+              >
+                {t.nav.contact}
+              </Link>
+            </div>
+            <div className="header-mobile-lang">
+              <LanguageSwitcher />
+            </div>
+          </div>
+        </>
+      ) : null}
     </header>
   );
 }

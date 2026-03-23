@@ -5,6 +5,9 @@ import { readHeroSettings, writeHeroSettings, HeroSettingsResponse } from './her
 type HeroSlide = {
   title?: string;
   subtitle?: string;
+  description?: string;
+  image?: string;
+  overlayImage?: string;
   ctaLabel?: string;
   ctaHref?: string;
 };

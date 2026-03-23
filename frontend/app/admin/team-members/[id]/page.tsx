@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter, useParams } from 'next/navigation';
 import { getTeamMember, createTeamMember, updateTeamMember, uploadFile } from '@/lib/admin-api';
+import { getImageUrl } from '@/lib/imagePlaceholder';
 import styles from '../../admin.module.css';
 
 export default function TeamMemberEditPage() {
@@ -128,7 +129,7 @@ export default function TeamMemberEditPage() {
           <label>Зураг</label>
           <input type="file" accept="image/*" onChange={handleFileUpload} />
           {formData.image && (
-            <img src={formData.image} alt="Preview" className={styles.imagePreview} />
+            <img src={getImageUrl(formData.image, 'team', 0)} alt="Preview" className={styles.imagePreview} />
           )}
         </div>
         <div className="form-group">

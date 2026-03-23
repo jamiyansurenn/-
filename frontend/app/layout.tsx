@@ -3,9 +3,30 @@ import './globals.css';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
 export const metadata: Metadata = {
-  title: 'ДААЦЫН ЦАМХАГ Групп - Corporate Website',
-  description: 'Даацтай бизнес ба даацтай амьдрал',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'ДААЦЫН ЦАМХАГ Групп',
+    template: '%s | ДААЦЫН ЦАМХАГ Групп',
+  },
+  description: 'Даацтай бизнес ба даацтай амьдрал — Барилга, төсөл, үйлчилгээ',
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+  openGraph: {
+    title: 'ДААЦЫН ЦАМХАГ Групп',
+    description: 'Даацтай бизнес ба даацтай амьдрал',
+    type: 'website',
+    locale: 'mn_MN',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -15,10 +36,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="mn">
-      <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="alternate icon" href="/favicon.ico" />
-      </head>
       <body>
         <LanguageProvider>
           {children}

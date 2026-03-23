@@ -11,6 +11,9 @@ function getStorePath(): string {
 export type HeroSlide = {
   title?: string;
   subtitle?: string;
+  description?: string;
+  image?: string;
+  overlayImage?: string;
   ctaLabel?: string;
   ctaHref?: string;
 };

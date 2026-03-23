@@ -3,14 +3,11 @@ import Footer from '@/components/Footer';
 import AnimateOnScroll from '@/components/AnimateOnScroll';
 import { getTranslations } from '@/lib/getLanguage';
 import Image from 'next/image';
-import { getImageUrl } from '@/lib/imagePlaceholder';
-
 export default async function DirectorPage() {
   const t = await getTranslations();
 
-  // Use a nice office or team image for the director section
-  const directorImage = 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1632&auto=format&fit=crop';
-  const heroImage = 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop';
+  const directorImage = '/images/director-portrait.png';
+  const heroImage = '/images/director-portrait.png';
 
   return (
     <>
@@ -22,7 +19,7 @@ export default async function DirectorPage() {
           overflow: 'hidden',
           backgroundImage: `url(${heroImage})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center top',
           backgroundRepeat: 'no-repeat',
           padding: '12rem 0 8rem 0'
         }}>
@@ -68,9 +65,10 @@ export default async function DirectorPage() {
                 }}>
                   <Image
                     src={directorImage}
-                    alt="Director"
+                    alt={t.pages.director.signature}
                     fill
-                    style={{ objectFit: 'cover' }}
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    priority
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                   <div style={{

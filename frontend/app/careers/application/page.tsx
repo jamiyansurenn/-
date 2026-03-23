@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AnimateOnScroll from '@/components/AnimateOnScroll';
@@ -73,6 +73,14 @@ export default function ApplicationPage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get('position');
+    if (!p) return;
+    setFormData((prev) => ({ ...prev, position: prev.position.trim() ? prev.position : decodeURIComponent(p) }));
+  }, []);
 
   const pushIfValue = (lines: string[], label: string, value: any) => {
     if (value === null || value === undefined) return;

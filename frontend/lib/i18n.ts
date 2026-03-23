@@ -100,6 +100,7 @@ export const translations = {
         title: 'Барилгын салбарын эргэн тойронд',
         subtitle: 'Барилгын салбарын сүүлийн мэдээ, мэдээлэл',
         latestNews: 'Сүүлийн мэдээ',
+        noNews: 'Одоогоор нийтлэгдсэн мэдээ байхгүй байна.',
       },
       careers: {
         title: 'Нээлттэй ажлын байр',
@@ -207,6 +208,7 @@ export const translations = {
         title: 'Construction Industry News',
         subtitle: 'Latest news and information about construction industry',
         latestNews: 'Latest News',
+        noNews: 'No news articles yet.',
       },
       careers: {
         title: 'Job Openings',
@@ -314,6 +316,7 @@ export const translations = {
         title: '建筑行业新闻',
         subtitle: '建筑行业的最新新闻和信息',
         latestNews: '最新新闻',
+        noNews: '暂无新闻。',
       },
       careers: {
         title: '职位空缺',
@@ -421,6 +424,7 @@ export const translations = {
         title: 'Новости строительной отрасли',
         subtitle: 'Последние новости',
         latestNews: 'Последние новости',
+        noNews: 'Новостей пока нет.',
       },
       careers: {
         title: 'Вакансии',
@@ -528,6 +532,7 @@ export const translations = {
         title: '建設業界のニュース',
         subtitle: '最新情報',
         latestNews: '最新ニュース',
+        noNews: 'ニュースはまだありません。',
       },
       careers: {
         title: '求人',
@@ -635,6 +640,7 @@ export const translations = {
         title: '건설 산업 뉴스',
         subtitle: '최신 정보',
         latestNews: '최신 뉴스',
+        noNews: '아직 게시된 뉴스가 없습니다.',
       },
       careers: {
         title: '채용 공고',

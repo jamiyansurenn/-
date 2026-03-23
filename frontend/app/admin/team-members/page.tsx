@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getTeamMembers, deleteTeamMember } from '@/lib/admin-api';
+import { getTeamMembers, deleteTeamMember, updateTeamMember } from '@/lib/admin-api';
 import Link from 'next/link';
 import styles from '../admin.module.css';
 
@@ -33,6 +33,15 @@ export default function TeamMembersPage() {
       loadMembers();
     } catch (error) {
       alert('Алдаа гарлаа');
+    }
+  };
+
+  const handleSetStatus = async (id: string, status: 'PUBLISHED' | 'DRAFT') => {
+    try {
+      await updateTeamMember(id, { status });
+      loadMembers();
+    } catch {
+      alert('Статус солиход алдаа гарлаа');
     }
   };
 
@@ -71,6 +80,25 @@ export default function TeamMembersPage() {
                 </td>
                 <td>
                   <div className={styles.tableActions}>
+                    {member.status === 'DRAFT' ? (
+                      <button
+                        type="button"
+                        onClick={() => handleSetStatus(member.id, 'PUBLISHED')}
+                        className="btn"
+                        style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
+                      >
+                        Сайт дээр гаргах
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => handleSetStatus(member.id, 'DRAFT')}
+                        className="btn btn-secondary"
+                        style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
+                      >
+                        Ноороглох
+                      </button>
+                    )}
                     <Link href={`/admin/team-members/${member.id}`} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
                       Засах
                     </Link>

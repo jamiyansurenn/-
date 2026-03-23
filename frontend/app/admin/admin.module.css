@@ -132,15 +132,33 @@
 
 .loadingScreen {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1.25rem;
   height: 100vh;
   background: #fafafa;
 }
 
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(232, 93, 4, 0.2);
+  border-top-color: var(--primary-orange);
+  border-radius: 50%;
+  animation: adminSpin 0.75s linear infinite;
+}
+
+@keyframes adminSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .loadingText {
-  color: var(--primary-orange);
-  font-weight: 700;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .pageHeader {

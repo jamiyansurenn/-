@@ -6,17 +6,24 @@ export default function NotFound() {
   return (
     <>
       <Header />
-      <main>
-        <section style={{ padding: '4rem 0', textAlign: 'center' }}>
+      <main className="not-found-main">
+        <section className="not-found-section">
           <div className="container">
-            <h1 style={{ fontSize: '4rem', marginBottom: '1rem' }}>404</h1>
-            <h2 style={{ marginBottom: '1rem' }}>Хуудас олдсонгүй</h2>
-            <p style={{ marginBottom: '2rem', color: '#666' }}>
-              Таны хайж буй хуудас олдсонгүй байна.
-            </p>
-            <Link href="/" className="btn">
-              Нүүр хуудас руу буцах
-            </Link>
+            <div className="not-found-card">
+              <p className="not-found-code">404</p>
+              <h1 className="not-found-title">Хуудас олдсонгүй</h1>
+              <p className="not-found-text">
+                Таны хайж буй хуудас устсан эсвэл шилжсэн байж магадгүй. Нүүр хуудас эсвэл холбоо барих хуудас руу шилжинэ үү.
+              </p>
+              <div className="not-found-actions">
+                <Link href="/" className="btn">
+                  Нүүр хуудас
+                </Link>
+                <Link href="/contact" className="btn btn-secondary">
+                  Холбоо барих
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
       </main>

@@ -76,6 +76,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (loading) {
     return (
       <div className={styles.loadingScreen}>
+        <div className={styles.loadingSpinner} aria-hidden />
         <p className={styles.loadingText}>Уншиж байна...</p>
       </div>
     );

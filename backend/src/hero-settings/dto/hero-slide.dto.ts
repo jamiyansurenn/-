@@ -12,6 +12,21 @@ export class HeroSlideDto {
   @IsString()
   subtitle?: string;
 
+  @ApiProperty({ required: false, description: 'Optional paragraph under the title' })
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @ApiProperty({ required: false, description: 'Background image URL for this slide (upload path or absolute URL)' })
+  @IsOptional()
+  @IsString()
+  image?: string;
+
+  @ApiProperty({ required: false, description: 'Optional transparent/decorative overlay image (PNG) on top of the hero' })
+  @IsOptional()
+  @IsString()
+  overlayImage?: string;
+
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()

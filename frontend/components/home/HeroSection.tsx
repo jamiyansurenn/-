@@ -2,14 +2,25 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import styles from '@/app/home.module.css';
 import { getHeroSettingsPublic } from '@/lib/admin-api';
+
 const SLIDE_INTERVAL_MS = 7000;
+const apiBase = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').replace(/\/$/, '');
+
+function resolveHeroMediaUrl(url: string | undefined | null): string {
+    if (!url) return '';
+    const u = String(url).trim();
+    if (!u) return '';
+    if (u.startsWith('/uploads/')) return `${apiBase}${u}`;
+    return u;
+}
 
 export default function HeroSection() {
     const { t } = useLanguage();
+    const reduceMotion = useReducedMotion();
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const [heroSettings, setHeroSettings] = useState<any>(null);
@@ -90,17 +101,23 @@ export default function HeroSection() {
 
     const fallbackPairs = [
         {
-            local: heroSettings?.backgrounds?.[0] || '/hero/hero-1.jpg',
+            local: resolveHeroMediaUrl(heroSettings?.backgrounds?.[0]) || '/hero/hero-1.jpg',
             fallback: 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?q=80&w=2070&auto=format&fit=crop',
         },
         {
-            local: heroSettings?.backgrounds?.[1] || '/hero/hero-2.jpg',
+            local: resolveHeroMediaUrl(heroSettings?.backgrounds?.[1]) || '/hero/hero-2.jpg',
             fallback: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop',
         },
     ];
-    const activeBackground = fallbackPairs[activeIndex % fallbackPairs.length];
+    const pooledBackground = fallbackPairs[activeIndex % fallbackPairs.length];
+    const slideCustomBg = resolveHeroMediaUrl(currentSlide?.image);
+    const activeBackground = slideCustomBg
+        ? { local: slideCustomBg, fallback: pooledBackground.fallback }
+        : pooledBackground;
     const heroFallbackImage = `url('${activeBackground.local}'), url('${activeBackground.fallback}')`;
     const posterUrl = activeBackground.fallback;
+    const showHeroVideo = !slideCustomBg;
+    const overlayUrl = resolveHeroMediaUrl(currentSlide?.overlayImage);
     const quickStats = [
         { value: '14+', label: 'Жилийн туршлага' },
         { value: '50+', label: 'Тогтмол харилцагч' },
@@ -108,11 +125,7 @@ export default function HeroSection() {
     ];
 
     return (
-        <section
-            className={`hero ${styles.heroSection}`}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-        >
+        <section className={`hero ${styles.heroSection} ${reduceMotion ? styles.heroReducedMotion : ''}`}>
             <div className={styles.heroMedia}>
                 <div
                     className={styles.heroImageFallback}
@@ -126,6 +139,7 @@ export default function HeroSection() {
                     playsInline
                     poster={posterUrl}
                     className={styles.heroVideo}
+                    style={showHeroVideo ? undefined : { opacity: 0, pointerEvents: 'none' }}
                 >
                     <source src="https://cdn.pixabay.com/video/2021/08/29/86716-595085449_large.mp4" type="video/mp4" />
                     <source src="https://assets.mixkit.co/videos/preview/mixkit-modern-city-skyscrapers-in-the-business-district-1442-large.mp4" type="video/mp4" />
@@ -133,6 +147,9 @@ export default function HeroSection() {
                 <div className={styles.heroOverlay} />
                 <div className={styles.heroAmbient} />
                 <div className={styles.heroNoise} />
+                {overlayUrl ? (
+                    <img src={overlayUrl} alt="" className={styles.heroSlideOverlay} aria-hidden />
+                ) : null}
             </div>
 
             <div className={`container ${styles.heroContent}`}>
@@ -140,23 +157,23 @@ export default function HeroSection() {
                     <motion.div
                         key={activeIndex}
                         className={styles.heroSlide}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.6, ease: 'easeOut' }}
+                        initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                        animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+                        exit={reduceMotion ? undefined : { opacity: 0, y: -12 }}
+                        transition={{ duration: reduceMotion ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
                     >
                         <motion.span
                             className={styles.heroEyebrow}
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4 }}
+                            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                            animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+                            transition={{ duration: reduceMotion ? 0 : 0.3 }}
                         >
                             {currentSlide.subtitle}
                         </motion.span>
                         <h1 className={styles.heroTitle}>{currentSlide.title}</h1>
-                        {currentSlide.description && (
+                        {(currentSlide.description || '').trim() ? (
                             <p className={styles.heroDescription}>{currentSlide.description}</p>
-                        )}
+                        ) : null}
                         <div className={styles.heroCtas}>
                             <Link
                                 href={currentSlide.cta?.href || currentSlide.ctaHref || '/contact'}
@@ -180,7 +197,11 @@ export default function HeroSection() {
                     </motion.div>
                 </AnimatePresence>
 
-                <div className={styles.heroControls}>
+                <div
+                    className={styles.heroControls}
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                >
                     <button type="button" className={styles.heroNavButton} onClick={handlePrev} aria-label="Өмнөх слайд">
                         ‹
                     </button>

@@ -9,6 +9,11 @@ import styles from '../admin.module.css';
 type HeroSlide = {
   title?: string;
   subtitle?: string;
+  description?: string;
+  /** Слайдын өөрийн арын зураг */
+  image?: string;
+  /** Ил тод / чимэглэлийн overlay зураг (PNG гэх мэт) */
+  overlayImage?: string;
   ctaLabel?: string;
   ctaHref?: string;
 };
@@ -26,7 +31,18 @@ function normalizeSettings(input: any): HeroSettingsForm {
   const slides = Array.isArray(input?.slides) ? input.slides : [];
 
   const normalizedBackgrounds = Array.from({ length: DEFAULT_BACKGROUND_COUNT }, (_, i) => backgrounds[i] || '');
-  const normalizedSlides = Array.from({ length: DEFAULT_SLIDE_COUNT }, (_, i) => slides[i] || {});
+  const normalizedSlides = Array.from({ length: DEFAULT_SLIDE_COUNT }, (_, i) => {
+    const s = slides[i] || {};
+    return {
+      title: s.title,
+      subtitle: s.subtitle,
+      description: s.description,
+      image: s.image,
+      overlayImage: s.overlayImage,
+      ctaLabel: s.ctaLabel,
+      ctaHref: s.ctaHref,
+    };
+  });
 
   return { backgrounds: normalizedBackgrounds, slides: normalizedSlides };
 }
@@ -55,6 +71,11 @@ export default function HeroSettingsPage() {
         const res = await getHeroSettingsAdmin();
         const normalized = normalizeSettings(res.data);
         normalized.backgrounds = normalized.backgrounds.map((u) => (u && u.startsWith('/uploads/') ? `${apiBase}${u}` : u));
+        normalized.slides = normalized.slides.map((s) => ({
+          ...s,
+          image: s.image?.startsWith('/uploads/') ? `${apiBase}${s.image}` : s.image,
+          overlayImage: s.overlayImage?.startsWith('/uploads/') ? `${apiBase}${s.overlayImage}` : s.overlayImage,
+        }));
         setForm(normalized);
       } catch (e: any) {
         setError(e?.message || 'Hero тохиргоо уншихад алдаа гарлаа');
@@ -91,6 +112,30 @@ export default function HeroSettingsPage() {
     });
   };
 
+  const toStoredUrl = (url: string) => {
+    if (!url) return '';
+    if (url.startsWith(`${apiBase}`)) return url.slice(apiBase.length) || url;
+    return url;
+  };
+
+  const handleSlideAssetUpload = async (index: number, key: 'image' | 'overlayImage', file: File | null) => {
+    if (!file) return;
+    setError('');
+    setSuccess('');
+    try {
+      const res = await uploadFile(file);
+      const rawUrl = res.data?.url || '';
+      const url = rawUrl.startsWith('/uploads/') ? `${apiBase}${rawUrl}` : rawUrl;
+      setForm((prev) => {
+        const nextSlides = [...prev.slides];
+        nextSlides[index] = { ...nextSlides[index], [key]: url };
+        return { ...prev, slides: nextSlides };
+      });
+    } catch (e: any) {
+      setError(e?.message || 'Зураг хуулахад алдаа гарлаа');
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -98,10 +143,13 @@ export default function HeroSettingsPage() {
     setSuccess('');
     try {
       await updateHeroSettingsAdmin({
-        backgrounds: form.backgrounds.filter(Boolean),
+        backgrounds: form.backgrounds.filter(Boolean).map(toStoredUrl),
         slides: form.slides.map((s) => ({
           title: s.title || '',
           subtitle: s.subtitle || '',
+          description: s.description || '',
+          image: toStoredUrl(s.image || ''),
+          overlayImage: toStoredUrl(s.overlayImage || ''),
           ctaLabel: s.ctaLabel || 'Холбоо барих',
           ctaHref: s.ctaHref || '/contact',
         })),
@@ -124,7 +172,7 @@ export default function HeroSettingsPage() {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Hero тохиргоо</h1>
-          <p className={styles.pageSubtitle}>Background зураг + Slider мессежүүд</p>
+          <p className={styles.pageSubtitle}>Нийтлэг 2 арын зураг эсвэл слайд бүрт өөрийн зураг, текст, ил тод overlay</p>
         </div>
       </div>
 
@@ -180,8 +228,41 @@ export default function HeroSettingsPage() {
             </div>
 
             <div className="form-group">
-              <label>Subtitle</label>
-              <textarea value={form.slides[i]?.subtitle || ''} onChange={(e) => handleSlideChange(i, 'subtitle', e.target.value)} rows={4} />
+              <label>Subtitle (дээд мөр — жижиг текст)</label>
+              <textarea value={form.slides[i]?.subtitle || ''} onChange={(e) => handleSlideChange(i, 'subtitle', e.target.value)} rows={3} />
+            </div>
+
+            <div className="form-group">
+              <label>Нэмэлт текст (гарчигийн доор — заавал биш)</label>
+              <textarea value={form.slides[i]?.description || ''} onChange={(e) => handleSlideChange(i, 'description', e.target.value)} rows={3} />
+            </div>
+
+            <div className="form-group">
+              <label>Слайдын арын зураг (сонголттой — оруулбал энэ слайд зөвхөн энэ зургийг ашиглана)</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleSlideAssetUpload(i, 'image', e.target.files?.[0] || null)}
+              />
+              {form.slides[i]?.image ? (
+                <div style={{ marginTop: '1rem' }}>
+                  <Image src={form.slides[i].image!} alt={`Slide ${i + 1} bg`} width={480} height={200} style={{ borderRadius: 12, objectFit: 'cover' }} />
+                </div>
+              ) : null}
+            </div>
+
+            <div className="form-group">
+              <label>Ил тод overlay зураг (PNG — лого, чимэглэл; заавал биш)</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleSlideAssetUpload(i, 'overlayImage', e.target.files?.[0] || null)}
+              />
+              {form.slides[i]?.overlayImage ? (
+                <div style={{ marginTop: '1rem', background: 'repeating-conic-gradient(#ccc 0% 25%, #eee 0% 50%) 50% / 20px 20px', padding: 8, borderRadius: 12 }}>
+                  <Image src={form.slides[i].overlayImage!} alt={`Slide ${i + 1} overlay`} width={200} height={120} style={{ objectFit: 'contain' }} />
+                </div>
+              ) : null}
             </div>
 
             <div className="form-group">

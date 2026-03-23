@@ -128,7 +128,10 @@ export default async function CareersPage() {
                         </p>
                       </div>
                     )}
-                    <Link href="/contact" className="btn">
+                    <Link
+                      href={`/careers/application?position=${encodeURIComponent(job.title)}`}
+                      className="btn"
+                    >
                       Анкет илгээх
                     </Link>
                   </div>
