@@ -55,7 +55,7 @@ export default function Header() {
   return (
     <header>
       <div className="container header-shell">
-        <nav className="header-nav-row" aria-label="Үндсэн цэс">
+        <nav className="header-nav-row" aria-label={t.common.a11y.mainNav}>
           <Link href="/" className="header-brand" onClick={closeMobile}>
             <div className="logo-wrapper header-logo-wrap">
               <Logo width={72} height={72} className="logo-image" priority />
@@ -92,7 +92,7 @@ export default function Header() {
             className="header-menu-toggle"
             aria-expanded={mobileOpen}
             aria-controls="header-mobile-panel"
-            aria-label={mobileOpen ? 'Цэс хаах' : 'Цэс нээх'}
+            aria-label={mobileOpen ? t.common.a11y.closeMenu : t.common.a11y.openMenu}
             onClick={() => setMobileOpen((o) => !o)}
           >
             {mobileOpen ? (
@@ -116,7 +116,7 @@ export default function Header() {
             className="header-mobile-panel"
             role="dialog"
             aria-modal="true"
-            aria-label="Гар утасны цэс"
+            aria-label={t.common.a11y.mobileMenu}
           >
             <div className="header-mobile-section">
               <div className="header-mobile-label">{t.nav.about}</div>

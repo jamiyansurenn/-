@@ -8,7 +8,10 @@ export class UploadService {
   private uploadPath: string;
 
   constructor(private configService: ConfigService) {
-    this.uploadPath = this.configService.get<string>('UPLOAD_DEST') || './uploads';
+    this.uploadPath =
+      this.configService.get<string>('UPLOAD_DEST') ||
+      // Keep uploads under backend root regardless of current working directory.
+      path.resolve(__dirname, '..', '..', '..', 'uploads');
     this.ensureUploadDirectoryExists();
   }
 

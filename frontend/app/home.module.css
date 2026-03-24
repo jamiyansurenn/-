@@ -401,6 +401,9 @@
 
 .cardContent {
     padding: 2rem 2rem 2.2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .cardTitle {
@@ -419,9 +422,28 @@
     color: var(--text-medium);
     line-height: 1.7;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.newsCard {
+    height: 100%;
+}
+
+.cardFooter {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+}
+
+.cardDate {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
 .viewAllContainer {

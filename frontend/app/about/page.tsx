@@ -11,8 +11,19 @@ export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
   const t = await getTranslations();
+  const tx = t as any;
   let companyInfo: { data: any } = { data: null };
   let teamMembers: { data: any } = { data: [] };
+  const serviceHighlights: string[] = tx.pages?.about?.serviceHighlights || [
+    'Барилга угсралт',
+    'Газо хөнгөн блок',
+    'Тавилгын үйлдвэр',
+    'Цамхагт краны нэгдсэн эксперт үйлчилгээ',
+    'Авто болон суурин помпын үйлчилгээ',
+    'Цахилгаан шат, урсдаг шат нийлүүлэлт',
+    'ЭБА төв',
+    'Амралтын газар',
+  ];
 
   try {
     const results = await Promise.allSettled([
@@ -76,7 +87,7 @@ export default async function AboutPage() {
                 {companyInfo.data.vision && (
                   <AnimateOnScroll delay={200}>
                     <div style={{ marginBottom: '3rem' }}>
-                      <h2 style={{ marginBottom: '1.5rem' }}>Алсын хараа</h2>
+                      <h2 style={{ marginBottom: '1.5rem' }}>{t.home.about.visionTitle}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
                         {companyInfo.data.vision}
                       </p>
@@ -87,7 +98,7 @@ export default async function AboutPage() {
                 {companyInfo.data.mission && (
                   <AnimateOnScroll delay={300}>
                     <div style={{ marginBottom: '3rem' }}>
-                      <h2 style={{ marginBottom: '1.5rem' }}>Зорилго</h2>
+                      <h2 style={{ marginBottom: '1.5rem' }}>{t.home.about.missionTitle}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
                         {companyInfo.data.mission}
                       </p>
@@ -98,7 +109,7 @@ export default async function AboutPage() {
                 {companyInfo.data.values && (
                   <AnimateOnScroll delay={400}>
                     <div style={{ marginBottom: '3rem' }}>
-                      <h2 style={{ marginBottom: '1.5rem' }}>Үнэт зүйлс</h2>
+                      <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.valuesTitle || 'Үнэт зүйлс'}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
                         {companyInfo.data.values}
                       </p>
@@ -106,10 +117,74 @@ export default async function AboutPage() {
                   </AnimateOnScroll>
                 )}
 
+                <AnimateOnScroll delay={450}>
+                  <div style={{ marginBottom: '3rem' }}>
+                    <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.serviceHighlightsTitle || 'Үндсэн чиглэлүүд'}</h2>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                        gap: '0.9rem',
+                      }}
+                    >
+                      {serviceHighlights.map((item: string, index: number) => (
+                        <div
+                          key={item}
+                          style={{
+                            border: '1px solid rgba(13, 27, 42, 0.08)',
+                            borderRadius: '10px',
+                            padding: '0.9rem 1rem',
+                            background: index % 2 === 0 ? '#fff' : '#fafafa',
+                            fontWeight: 600,
+                            color: 'var(--text-dark)',
+                          }}
+                        >
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </AnimateOnScroll>
+
+                <AnimateOnScroll delay={500}>
+                  <div style={{ marginBottom: '3rem' }}>
+                    <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.galleryTitle || 'Бүтээн байгуулалтын зураг'}</h2>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                        gap: '1rem',
+                      }}
+                    >
+                      {[0, 1, 2, 3, 4, 5].map((i) => (
+                        <div
+                          key={i}
+                          style={{
+                            position: 'relative',
+                            width: '100%',
+                            height: '170px',
+                            borderRadius: '12px',
+                            overflow: 'hidden',
+                            boxShadow: '0 6px 18px rgba(0,0,0,0.08)',
+                          }}
+                        >
+                          <Image
+                            src={getImageUrl(undefined, i % 2 === 0 ? 'construction' : 'building', i)}
+                            alt={`${tx.pages?.about?.galleryImageAlt || 'Бүтээн байгуулалтын зураг'} ${i + 1}`}
+                            fill
+                            style={{ objectFit: 'cover' }}
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </AnimateOnScroll>
+
                 {companyInfo.data.history && (
-                  <AnimateOnScroll delay={500}>
+                  <AnimateOnScroll delay={550}>
                     <div>
-                      <h2 style={{ marginBottom: '1.5rem' }}>Түүх</h2>
+                      <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.historyTitle || 'Түүх'}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
                         {companyInfo.data.history}
                       </p>
@@ -125,7 +200,7 @@ export default async function AboutPage() {
           <section style={{ background: '#fafafa' }}>
             <div className="container">
               <AnimateOnScroll>
-                <h2 className="section-title">Манай баг</h2>
+                <h2 className="section-title">{tx.pages?.about?.teamTitle || 'Манай баг'}</h2>
               </AnimateOnScroll>
               <div className="grid">
                 {teamMembers.data.map((member: any, index: number) => {

@@ -55,7 +55,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.25rem;
 }
 
 .navLabel {
@@ -71,6 +71,9 @@
 .navItem {
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 44px;
   padding: 0.85rem 1.2rem;
   border-radius: 12px;
   color: #94a3b8;

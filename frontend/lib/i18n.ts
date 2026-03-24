@@ -29,12 +29,60 @@ export const translations = {
       loading: 'Уншиж байна...',
       error: 'Алдаа гарлаа',
       success: 'Амжилттай',
+      a11y: {
+        mainNav: 'Үндсэн цэс',
+        mobileMenu: 'Гар утасны цэс',
+        openMenu: 'Цэс нээх',
+        closeMenu: 'Цэс хаах',
+        prevSlide: 'Өмнөх слайд',
+        nextSlide: 'Дараагийн слайд',
+        slideDot: 'Слайд {n}',
+      },
+      heroStats: {
+        years: 'Жилийн туршлага',
+        partners: 'Тогтмол харилцагч',
+        projects: 'Гүйцэтгэсэн ажил',
+      },
+    },
+    footer: {
+      aboutInfo: 'Бидний тухай мэдээлэл',
+      tagline: 'Даацтай бизнес ба даацтай амьдрал',
+      linksTitle: 'Холбоосууд',
+      contactTitle: 'Холбоо барих',
+      copyright: '© {{year}} ДААЦЫН ЦАМХАГ Групп. Бүх эрх хуулиар хамгаалагдсан.',
     },
     home: {
       hero: {
         title: 'ДААЦЫН ЦАМХАГ Групп',
         subtitle: 'Даацтай бизнес ба даацтай амьдрал',
       },
+      heroSlides: [
+        {
+          title: 'Buy & Back – Ашигтай, Баталгаатай Хөрөнгө оруулалт',
+          subtitle: 'Buy & Back гэрээт хөтөлбөр эхэллээ',
+          ctaLabel: 'Холбоо барих',
+        },
+        {
+          title: 'ТАВ ТУХ ЧАНАР СТАНДАРТЫГ ТАНАЙ ГЭРТ',
+          subtitle: 'БИД ЗАСЛЫН ШИНЭЛЭГ ШИЙДЛИЙГ ТӨСЛҮҮДДЭЭ ШИНГЭЭЖ ОРЧИН ҮЕИЙН ТЕХНОЛОГИЙГ НЭВТРҮҮЛЭЭД БАЙНА',
+          ctaLabel: 'Холбоо барих',
+        },
+        {
+          title: 'БҮХ ТӨРЛИЙН ТАВИЛГА УГСРАЛТ',
+          subtitle: 'БИД ТАНЫ ХҮССЭН ӨНГӨ ЗАГВАРЫН ДАГУУ МЭРГЭЖЛИЙН ДИЗАЙНЕРИЙН ГАРГАСАН ЗУРГИЙН ДАГУУ ТАНЫ ГЭР БОЛОН АЖИЛД ОРЧИН ҮЕИЙН ТАВИЛГЫГ САНАЛ БОЛГОНО.',
+          ctaLabel: 'Холбоо барих',
+        },
+        {
+          title: 'УТААГҮЙ УЛААНБААТАР ЗОРИЛТОТ ТӨСӨЛ',
+          subtitle: 'даацтай бизнесийг бид танд санал болгоно',
+          ctaLabel: 'Холбоо барих',
+        },
+        {
+          title: 'ЦАМХАГТ КРАНЫ НЭГДСЭН ҮЙЛЧИЛГЭЭ',
+          subtitle: 'Бид цамхагт краны салбарт монголдоо тэргүүлэгч хамт олон билээ.',
+          ctaLabel: 'Холбоо барих',
+        },
+      ],
       about: {
         title: 'Бидний тухай',
         description: 'Манай компанийн танилцуулга',
@@ -47,19 +95,46 @@ export const translations = {
       services: {
         title: 'Үйлчилгээ',
         description: 'Бидний санал болгож буй үйлчилгээнүүд',
+        noServices: 'Үйлчилгээ олдсонгүй',
       },
       projects: {
         title: 'Төслүүд',
         description: 'Манай хэрэгжүүлсэн төслүүд',
       },
+      featuredPages: {
+        title: 'Онцлох хуудсууд',
+        aboutTitle: 'Танилцуулга',
+        aboutDesc: 'Компанийн зорилго, чиглэл, үнэт зүйлс',
+        historyTitle: 'Түүхэн замнал',
+        historyDesc: '2009 оноос хойшх бүтээн байгуулалтын замнал',
+        constructionTitle: 'Хэрэгжүүлсэн төслүүд',
+        constructionDesc: 'Үйлчилгээ, нийлүүлэлт, мэргэжлийн баг',
+      },
     },
     pages: {
       about: {
         title: 'Бидний тухай',
+        valuesTitle: 'Үнэт зүйлс',
+        serviceHighlightsTitle: 'Үндсэн чиглэлүүд',
+        serviceHighlights: [
+          'Барилга угсралт',
+          'Газо хөнгөн блок',
+          'Тавилгын үйлдвэр',
+          'Цамхагт краны нэгдсэн эксперт үйлчилгээ',
+          'Авто болон суурин помпын үйлчилгээ',
+          'Цахилгаан шат, урсдаг шат нийлүүлэлт',
+          'ЭБА төв',
+          'Амралтын газар',
+        ],
+        galleryTitle: 'Бүтээн байгуулалтын зураг',
+        galleryImageAlt: 'Бүтээн байгуулалтын зураг',
+        historyTitle: 'Түүх',
+        teamTitle: 'Манай баг',
       },
       history: {
         title: 'Түүхэн замнал',
         subtitle: 'Манай компанийн хөгжлийн замнал',
+        companyHistoryTitle: 'Бидний түүх',
         timeline: [
           { year: '2009', title: 'Үйл ажиллагаа эхлэв', description: 'Манай байгууллага нь 2009 онд үүсгэн байгуулагдсан бөгөөд, барилга дэд бүтцийн салбарын хөгжлийн гол хэрэглэгдэхүүн болох өргөн тээвэрлэх машин механизм цамхагт кран, гүүрэн кран ачаа болон хүн зөөврийн /подъём/, /люлька/-ийн угсралт буулгалт, засвар үйлчилгээ, нийлүүлэлт, түрээсийн үйлчилгээ болон барилга угсралтын ажлыг мэргэжлийн өндөр түвшинд чадварлаг баг хамт олон бүрдүүлэн үйл ажиллагаагаа тогтвортой явуулж байна.' },
           { year: '2015', title: 'БАГАНАТ ӨРГӨӨ, Sky town2', description: 'Улаанбаатар хот, Баянзүрх дүүрэг, 38-р хороонд байрлах "Баганат Өргөө" хотхоны 407,408 байрны барилга угсралт, цамхагт краны нэгдсэн үйлчилгээ, дотор засалын хамт хийж гүйцэтгэв.' },
@@ -95,6 +170,10 @@ export const translations = {
         title: 'Хийсэн ажилууд',
         subtitle: 'Манай компанийн хэрэгжүүлсэн төслүүд',
         noProjects: 'Төсөл олдсонгүй',
+        galleryTitle: 'Зурагнууд',
+      },
+      services: {
+        noServices: 'Үйлчилгээ олдсонгүй',
       },
       construction: {
         title: 'Барилгын салбарын эргэн тойронд',
@@ -116,6 +195,27 @@ export const translations = {
         submitting: 'Илгээж байна...',
         submitSuccess: 'Анкет амжилттай илгээгдлээ!',
         submitError: 'Алдаа гарлаа. Дахин оролдоно уу.',
+      },
+      contact: {
+        name: 'Нэр',
+        email: 'Имэйл',
+        phone: 'Утас',
+        subject: 'Гарчиг',
+        message: 'Мессеж',
+        submitSuccess: 'Амжилттай илгээгдлээ. Бид удахгүй танд хариу өгөх болно.',
+        submitError: 'Алдаа гарлаа. Дахин оролдоно уу.',
+      },
+      error: {
+        title: 'Уучлаарай, алдаа гарлаа',
+        description: 'Хуудас ачаалахад алдаа гарлаа. Дахин оролдоно уу.',
+        retry: 'Дахин оролдох',
+      },
+      notFound: {
+        title: 'Хуудас олдсонгүй',
+        description:
+          'Таны хайж буй хуудас устсан эсвэл шилжсэн байж магадгүй. Нүүр хуудас эсвэл холбоо барих хуудас руу шилжинэ үү.',
+        home: 'Нүүр хуудас',
+        contact: 'Холбоо барих',
       },
     },
   },
@@ -147,12 +247,60 @@ export const translations = {
       loading: 'Loading...',
       error: 'Error occurred',
       success: 'Success',
+      a11y: {
+        mainNav: 'Main navigation',
+        mobileMenu: 'Mobile menu',
+        openMenu: 'Open menu',
+        closeMenu: 'Close menu',
+        prevSlide: 'Previous slide',
+        nextSlide: 'Next slide',
+        slideDot: 'Slide {n}',
+      },
+      heroStats: {
+        years: 'Years of experience',
+        partners: 'Regular partners',
+        projects: 'Completed works',
+      },
+    },
+    footer: {
+      aboutInfo: 'About us',
+      tagline: 'Strong business and strong life',
+      linksTitle: 'Links',
+      contactTitle: 'Contact',
+      copyright: '© {{year}} DAATSIINTSAMKHAG Group. All rights reserved.',
     },
     home: {
       hero: {
         title: 'DAATSIINTSAMKHAG Group',
         subtitle: 'Strong business and strong life',
       },
+      heroSlides: [
+        {
+          title: 'Buy & Back – Profitable, Reliable Investment',
+          subtitle: 'The Buy & Back contract program has launched',
+          ctaLabel: 'Contact',
+        },
+        {
+          title: 'COMFORT, QUALITY AND STANDARDS FOR YOUR HOME',
+          subtitle: 'We bring innovative solutions to our projects and adopt modern technologies',
+          ctaLabel: 'Contact',
+        },
+        {
+          title: 'FULL-SERVICE FURNITURE INSTALLATION',
+          subtitle: 'We offer modern furniture for your home and workplace, tailored to your colors and designs by professional designers.',
+          ctaLabel: 'Contact',
+        },
+        {
+          title: 'SMOKE-FREE ULAANBAATAR TARGET PROJECT',
+          subtitle: 'We offer you a strong, reliable business',
+          ctaLabel: 'Contact',
+        },
+        {
+          title: 'INTEGRATED TOWER CRANE SERVICES',
+          subtitle: 'We are a leading team in the tower crane sector in Mongolia.',
+          ctaLabel: 'Contact',
+        },
+      ],
       about: {
         title: 'About Us',
         description: 'Our company introduction',
@@ -165,19 +313,46 @@ export const translations = {
       services: {
         title: 'Services',
         description: 'Services we offer',
+        noServices: 'No services found',
       },
       projects: {
         title: 'Projects',
         description: 'Our completed projects',
       },
+      featuredPages: {
+        title: 'Featured Pages',
+        aboutTitle: 'Introduction',
+        aboutDesc: 'Company goals, direction, and core values',
+        historyTitle: 'History Journey',
+        historyDesc: 'Development journey since 2009',
+        constructionTitle: 'Completed Projects',
+        constructionDesc: 'Services, supply, and professional team',
+      },
     },
     pages: {
       about: {
         title: 'About Us',
+        valuesTitle: 'Values',
+        serviceHighlightsTitle: 'Core Service Areas',
+        serviceHighlights: [
+          'Construction and Installation',
+          'Lightweight Gas Block',
+          'Furniture Manufacturing',
+          'Integrated Tower Crane Expert Service',
+          'Truck and Stationary Pump Services',
+          'Elevator and Escalator Supply',
+          'EBA Center',
+          'Resort / Recreation Area',
+        ],
+        galleryTitle: 'Construction Gallery',
+        galleryImageAlt: 'Construction image',
+        historyTitle: 'History',
+        teamTitle: 'Our Team',
       },
       history: {
         title: 'History',
         subtitle: 'Our company development journey',
+        companyHistoryTitle: 'Our history',
         timeline: [
           { year: '2009', title: 'Operations Began', description: 'Our organization was founded in 2009, and as a key component of construction infrastructure development, we have been stably operating a professional team providing high-level services in wide-transport machinery, tower crane, bridge crane, passenger and freight hoist installation, maintenance, supply, rental services, and construction works.' },
           { year: '2015', title: 'BAGANAT ORGOO, Sky Town 2', description: 'Completed construction, integrated tower crane services, and interior finishing for buildings 407 and 408 of the "Baganat Orgoo" town located in the 38th khoroo, Bayanzurkh district, Ulaanbaatar city.' },
@@ -203,6 +378,10 @@ export const translations = {
         title: 'Completed Projects',
         subtitle: 'Projects we have completed',
         noProjects: 'No projects found',
+        galleryTitle: 'Gallery',
+      },
+      services: {
+        noServices: 'No services found',
       },
       construction: {
         title: 'Construction Industry News',
@@ -224,6 +403,27 @@ export const translations = {
         submitting: 'Submitting...',
         submitSuccess: 'Application submitted successfully!',
         submitError: 'An error occurred. Please try again.',
+      },
+      contact: {
+        name: 'Name',
+        email: 'Email',
+        phone: 'Phone',
+        subject: 'Subject',
+        message: 'Message',
+        submitSuccess: 'Message sent successfully. We will get back to you soon.',
+        submitError: 'An error occurred. Please try again.',
+      },
+      error: {
+        title: 'Sorry, something went wrong',
+        description: 'There was a problem loading the page. Please try again.',
+        retry: 'Try again',
+      },
+      notFound: {
+        title: 'Page not found',
+        description:
+          'The page you are looking for may have been removed or moved. Go to the home page or contact page.',
+        home: 'Home',
+        contact: 'Contact',
       },
     },
   },
@@ -255,12 +455,60 @@ export const translations = {
       loading: '加载中...',
       error: '发生错误',
       success: '成功',
+      a11y: {
+        mainNav: '主导航',
+        mobileMenu: '移动菜单',
+        openMenu: '打开菜单',
+        closeMenu: '关闭菜单',
+        prevSlide: '上一张幻灯片',
+        nextSlide: '下一张幻灯片',
+        slideDot: '幻灯片 {n}',
+      },
+      heroStats: {
+        years: '年经验',
+        partners: '稳定客户',
+        projects: '完成项目',
+      },
+    },
+    footer: {
+      aboutInfo: '关于我们的信息',
+      tagline: '强大的业务和强大的生活',
+      linksTitle: '链接',
+      contactTitle: '联系我们',
+      copyright: '© {{year}} 达茨因察姆哈格集团。保留所有权利。',
     },
     home: {
       hero: {
         title: '达茨因察姆哈格集团',
         subtitle: '强大的业务和强大的生活',
       },
+      heroSlides: [
+        {
+          title: 'Buy & Back – 有利可图、可靠的投资',
+          subtitle: 'Buy & Back 合约计划已启动',
+          ctaLabel: '联系我们',
+        },
+        {
+          title: '将舒适、品质与标准带入您的家',
+          subtitle: '我们在项目中融入创新解决方案，并采用现代技术',
+          ctaLabel: '联系我们',
+        },
+        {
+          title: '各类家具安装',
+          subtitle: '根据您选择的颜色与款式，由专业设计师出图，为您的家与工作场所提供现代家具。',
+          ctaLabel: '联系我们',
+        },
+        {
+          title: '无烟乌兰巴托目标项目',
+          subtitle: '我们向您提供稳健可靠的业务',
+          ctaLabel: '联系我们',
+        },
+        {
+          title: '塔式起重机综合服务',
+          subtitle: '我们在蒙古塔吊领域拥有领先的团队。',
+          ctaLabel: '联系我们',
+        },
+      ],
       about: {
         title: '关于我们',
         description: '我们公司介绍',
@@ -286,6 +534,7 @@ export const translations = {
       history: {
         title: '历史',
         subtitle: '我们公司的发展历程',
+        companyHistoryTitle: '我们的历史',
         timeline: [
           { year: '2009', title: '开始运营', description: '我们的组织成立于2009年，作为建筑基础设施发展的关键组成部分，我们拥有一支专业的团队，在宽体运输机械、塔式起重机、桥式起重机、客货提升机的安装、维护、供应、租赁服务及建筑工程等领域提供高水平的稳定服务。' },
           { year: '2015', title: 'BAGANAT ORGOO, Sky Town 2', description: '完成了位于乌兰巴托市巴彦祖尔赫区第38号小区"Baganat Orgoo"小区407和408号楼的建设、综合塔机服务及室内装饰。' },
@@ -333,6 +582,12 @@ export const translations = {
         submitSuccess: '申请提交成功！',
         submitError: '发生错误。请重试。',
       },
+      notFound: {
+        title: '页面未找到',
+        description: '您访问的页面可能已被删除或移动。请返回首页或联系页面。',
+        home: '首页',
+        contact: '联系我们',
+      },
     },
   },
   ru: {
@@ -363,12 +618,60 @@ export const translations = {
       loading: 'Загрузка...',
       error: 'Произошла ошибка',
       success: 'Успешно',
+      a11y: {
+        mainNav: 'Основная навигация',
+        mobileMenu: 'Мобильное меню',
+        openMenu: 'Открыть меню',
+        closeMenu: 'Закрыть меню',
+        prevSlide: 'Предыдущий слайд',
+        nextSlide: 'Следующий слайд',
+        slideDot: 'Слайд {n}',
+      },
+      heroStats: {
+        years: 'Лет опыта',
+        partners: 'Постоянные партнёры',
+        projects: 'Выполненных работ',
+      },
+    },
+    footer: {
+      aboutInfo: 'Информация о нас',
+      tagline: 'Надежный бизнес и надежная жизнь',
+      linksTitle: 'Ссылки',
+      contactTitle: 'Контакты',
+      copyright: '© {{year}} Группа ДААЦЫН ЦАМХАГ. Все права защищены.',
     },
     home: {
       hero: {
         title: 'Группа ДААЦЫН ЦАМХАГ',
         subtitle: 'Надежный бизнес и надежная жизнь',
       },
+      heroSlides: [
+        {
+          title: 'Buy & Back – выгодные и надёжные инвестиции',
+          subtitle: 'Запущена программа по договору Buy & Back',
+          ctaLabel: 'Связаться',
+        },
+        {
+          title: 'КОМФОРТ, КАЧЕСТВО И СТАНДАРТЫ В ВАШЕМ ДОМЕ',
+          subtitle: 'Мы внедряем инновационные решения в проекты и современные технологии',
+          ctaLabel: 'Связаться',
+        },
+        {
+          title: 'МОНТАЖ МЕБЕЛИ ЛЮБЫХ ВИДОВ',
+          subtitle: 'Современная мебель для дома и работы по вашим цветам и эскизам профессиональных дизайнеров.',
+          ctaLabel: 'Связаться',
+        },
+        {
+          title: 'ЦЕЛЕВОЙ ПРОЕКТ «БЕЗДЫМНЫЙ УЛАН-БАТОР»',
+          subtitle: 'Мы предлагаем вам сильный и надёжный бизнес',
+          ctaLabel: 'Связаться',
+        },
+        {
+          title: 'КОМПЛЕКСНЫЕ УСЛУГИ БАШЕННЫХ КРАНОВ',
+          subtitle: 'Мы — ведущая команда в секторе башенных кранов в Монголии.',
+          ctaLabel: 'Связаться',
+        },
+      ],
       about: {
         title: 'О нас',
         description: 'О нашей компании',
@@ -394,6 +697,7 @@ export const translations = {
       history: {
         title: 'История',
         subtitle: 'Путь развития нашей компании',
+        companyHistoryTitle: 'Наша история',
         timeline: [
           { year: '2009', title: 'Начало деятельности', description: 'Наша организация была основана в 2009 году...' },
           { year: '2015', title: 'BAGANAT ORGOO, Sky Town 2', description: 'Завершено строительство...' },
@@ -441,6 +745,13 @@ export const translations = {
         submitSuccess: 'Успешно отправлено!',
         submitError: 'Произошла ошибка.',
       },
+      notFound: {
+        title: 'Страница не найдена',
+        description:
+          'Такой страницы нет или она была перенесена. Перейдите на главную или страницу контактов.',
+        home: 'Главная',
+        contact: 'Контакты',
+      },
     },
   },
   ja: {
@@ -471,12 +782,60 @@ export const translations = {
       loading: '読み込み中...',
       error: 'エラーが発生しました',
       success: '成功',
+      a11y: {
+        mainNav: 'メインナビゲーション',
+        mobileMenu: 'モバイルメニュー',
+        openMenu: 'メニューを開く',
+        closeMenu: 'メニューを閉じる',
+        prevSlide: '前のスライド',
+        nextSlide: '次のスライド',
+        slideDot: 'スライド {n}',
+      },
+      heroStats: {
+        years: '年の実績',
+        partners: '安定取引先',
+        projects: '完了工事',
+      },
+    },
+    footer: {
+      aboutInfo: '私たちについて',
+      tagline: '強いビジネス、強い生活',
+      linksTitle: 'リンク',
+      contactTitle: 'お問い合わせ',
+      copyright: '© {{year}} DAATSIINTSAMKHAGグループ',
     },
     home: {
       hero: {
         title: 'DAATSIINTSAMKHAGグループ',
         subtitle: '強いビジネス、強い生活',
       },
+      heroSlides: [
+        {
+          title: 'Buy & Back – 有利で信頼できる投資',
+          subtitle: 'Buy & Back 契約プログラムが始まりました',
+          ctaLabel: 'お問い合わせ',
+        },
+        {
+          title: '快適さ・品質・基準をあなたの家に',
+          subtitle: 'プロジェクトに革新的なソリューションと最新技術を取り入れています',
+          ctaLabel: 'お問い合わせ',
+        },
+        {
+          title: 'あらゆる家具の取り付け',
+          subtitle: 'ご希望の色・デザインに、プロのデザイナーの図面に沿った現代の家具をご提案します。',
+          ctaLabel: 'お問い合わせ',
+        },
+        {
+          title: '無煙ウランバートル目標プロジェクト',
+          subtitle: '力強いビジネスをご提案します',
+          ctaLabel: 'お問い合わせ',
+        },
+        {
+          title: 'タワークレーン総合サービス',
+          subtitle: 'モンゴルのタワークレーン分野で最先端のチームです。',
+          ctaLabel: 'お問い合わせ',
+        },
+      ],
       about: {
         title: '私たちについて',
         description: '会社概要',
@@ -502,6 +861,7 @@ export const translations = {
       history: {
         title: '歴史',
         subtitle: '私たちの会社の発展の道のり',
+        companyHistoryTitle: '私たちの歴史',
         timeline: [
           { year: '2009', title: '事業開始', description: '私たちの組織は2009年に設立されました...' },
           { year: '2015', title: 'BAGANAT ORGOO, Sky Town 2', description: '建設完了...' },
@@ -549,6 +909,12 @@ export const translations = {
         submitSuccess: '送信に成功しました！',
         submitError: 'エラーが発生しました。',
       },
+      notFound: {
+        title: 'ページが見つかりません',
+        description: 'お探しのページは削除されたか、移動した可能性があります。トップまたはお問い合わせへどうぞ。',
+        home: 'トップ',
+        contact: 'お問い合わせ',
+      },
     },
   },
   ko: {
@@ -579,12 +945,60 @@ export const translations = {
       loading: '로딩 중...',
       error: '오류가 발생했습니다',
       success: '성공',
+      a11y: {
+        mainNav: '주 메뉴',
+        mobileMenu: '모바일 메뉴',
+        openMenu: '메뉴 열기',
+        closeMenu: '메뉴 닫기',
+        prevSlide: '이전 슬라이드',
+        nextSlide: '다음 슬라이드',
+        slideDot: '슬라이드 {n}',
+      },
+      heroStats: {
+        years: '년 경험',
+        partners: '거래 파트너',
+        projects: '완료 공사',
+      },
+    },
+    footer: {
+      aboutInfo: '회사 정보',
+      tagline: '강력한 비즈니스, 강력한 삶',
+      linksTitle: '링크',
+      contactTitle: '연락처',
+      copyright: '© {{year}} DAATSIINTSAMKHAG 그룹. 무단 복제 금지.',
     },
     home: {
       hero: {
         title: 'DAATSIINTSAMKHAG 그룹',
         subtitle: '강력한 비즈니스, 강력한 삶',
       },
+      heroSlides: [
+        {
+          title: 'Buy & Back – 수익성 있고 신뢰할 수 있는 투자',
+          subtitle: 'Buy & Back 계약 프로그램이 시작되었습니다',
+          ctaLabel: '연락처',
+        },
+        {
+          title: '집에 편안함·품질·기준을',
+          subtitle: '프로젝트에 혁신적 솔루션과 최신 기술을 도입합니다',
+          ctaLabel: '연락처',
+        },
+        {
+          title: '모든 종류의 가구 설치',
+          subtitle: '원하시는 색상·스타일에 맞춰 전문 디자이너 도면으로 현대 가구를 제안합니다.',
+          ctaLabel: '연락처',
+        },
+        {
+          title: '무연 울란바토르 목표 사업',
+          subtitle: '든든한 비즈니스를 제안합니다',
+          ctaLabel: '연락처',
+        },
+        {
+          title: '타워 크레인 통합 서비스',
+          subtitle: '몽골 타워 크레인 분야에서 선도하는 팀입니다.',
+          ctaLabel: '연락처',
+        },
+      ],
       about: {
         title: '회사 소개',
         description: '회사 소개',
@@ -610,6 +1024,7 @@ export const translations = {
       history: {
         title: '연혁',
         subtitle: '회사 발전 과정',
+        companyHistoryTitle: '우리의 역사',
         timeline: [
           { year: '2009', title: '운영 시작', description: '우리 조직은 2009년에 설립되었습니다...' },
           { year: '2015', title: 'BAGANAT ORGOO, Sky Town 2', description: '건설 완료...' },
@@ -656,6 +1071,12 @@ export const translations = {
         submitting: '제출 중...',
         submitSuccess: '성공적으로 제출되었습니다!',
         submitError: '오류가 발생했습니다.',
+      },
+      notFound: {
+        title: '페이지를 찾을 수 없습니다',
+        description: '찾으시는 페이지가 삭제되었거나 이동했을 수 있습니다. 홈 또는 연락처로 이동하세요.',
+        home: '홈',
+        contact: '연락처',
       },
     },
   },

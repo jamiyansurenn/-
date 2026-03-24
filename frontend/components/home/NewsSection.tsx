@@ -11,6 +11,16 @@ interface NewsSectionProps {
     news: any[];
 }
 
+function formatPublishedDate(value: string | null | undefined) {
+    if (!value) return '';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return '';
+    const yyyy = d.getUTCFullYear();
+    const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const dd = String(d.getUTCDate()).padStart(2, '0');
+    return `${yyyy}.${mm}.${dd}`;
+}
+
 export default function NewsSection({ news }: NewsSectionProps) {
     const { t } = useLanguage();
 
@@ -48,7 +58,7 @@ export default function NewsSection({ news }: NewsSectionProps) {
                         return (
                             <motion.div
                                 key={item.id}
-                                className="card"
+                                className={`card ${styles.newsCard}`}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
@@ -69,9 +79,14 @@ export default function NewsSection({ news }: NewsSectionProps) {
                                     {item.excerpt && (
                                         <p className={styles.cardDescription}>{item.excerpt}</p>
                                     )}
-                                    <Link href={`/news/${item.slug}`} className="btn">
-                                        {t.common.readMore}
-                                    </Link>
+                                    <div className={styles.cardFooter}>
+                                        <span className={styles.cardDate}>
+                                            {formatPublishedDate(item.publishedAt)}
+                                        </span>
+                                        <Link href={`/news/${item.slug}`} className="btn">
+                                            {t.common.readMore}
+                                        </Link>
+                                    </div>
                                 </div>
                             </motion.div>
                         );

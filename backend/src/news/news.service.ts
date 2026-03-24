@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
@@ -8,10 +8,29 @@ import { UpdateNewsDto } from './dto/update-news.dto';
 export class NewsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createNewsDto: CreateNewsDto) {
-    return this.prisma.news.create({
-      data: createNewsDto,
-    });
+  async create(createNewsDto: CreateNewsDto) {
+    try {
+      const cleanData: any = {};
+      Object.keys(createNewsDto).forEach((key) => {
+        const value = (createNewsDto as any)[key];
+        if (value !== undefined && value !== null && value !== '') {
+          if (key === 'publishedAt' && typeof value === 'string') {
+            cleanData[key] = new Date(value);
+          } else {
+            cleanData[key] = value;
+          }
+        }
+      });
+
+      return await this.prisma.news.create({
+        data: cleanData,
+      });
+    } catch (error: any) {
+      if (error?.code === 'P2002') {
+        throw new BadRequestException('Ийм slug-тэй мэдээ аль хэдийн байна.');
+      }
+      throw error;
+    }
   }
 
   findAll(published?: boolean, featured?: boolean, limit?: string | number) {

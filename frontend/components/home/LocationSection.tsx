@@ -6,8 +6,26 @@ import AnimateOnScroll from '../AnimateOnScroll';
 import styles from '@/app/home.module.css';
 
 export default function LocationSection() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const address = t?.contact?.address || '';
+  const labels =
+    language === 'en'
+      ? {
+          title: 'Location',
+          company: 'Daatsiin Tsamkhag Group',
+          addressNotFound: 'Address information not found.',
+          openInMap: 'Open in Google Maps',
+          mapTitle: 'Google Maps Location',
+          mapFallback: 'Address information is not available.',
+        }
+      : {
+          title: 'Байршил',
+          company: 'Даацын Цамхаг Групп',
+          addressNotFound: 'Хаяг мэдээлэл олдсонгүй.',
+          openInMap: 'Газрын зураг дээр нээх',
+          mapTitle: 'Google Maps Байршил',
+          mapFallback: 'Хаяг мэдээлэл байхгүй байна.',
+        };
 
   const mapEmbedSrc = address
     ? `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`
@@ -21,7 +39,7 @@ export default function LocationSection() {
     <section className={styles.locationSection}>
       <div className="container">
         <AnimateOnScroll>
-          <h2 className="section-title">Байршил</h2>
+          <h2 className="section-title">{labels.title}</h2>
         </AnimateOnScroll>
 
         <div className={styles.locationGrid}>
@@ -39,15 +57,15 @@ export default function LocationSection() {
               </div>
 
               <div className={styles.locationCardBody}>
-                <h3 className={styles.locationCardTitle}>Даацын Цамхаг Групп</h3>
+                <h3 className={styles.locationCardTitle}>{labels.company}</h3>
                 {address ? (
                   <p className={styles.locationAddress}>{address}</p>
                 ) : (
-                  <p className={styles.locationAddress}>Хаяг мэдээлэл олдсонгүй.</p>
+                  <p className={styles.locationAddress}>{labels.addressNotFound}</p>
                 )}
 
                 <a className="btn btn-secondary" href={mapSearchHref} target="_blank" rel="noreferrer">
-                  Газрын зураг дээр нээх
+                  {labels.openInMap}
                 </a>
               </div>
             </div>
@@ -57,14 +75,14 @@ export default function LocationSection() {
             <div className={styles.mapFrameWrap}>
               {mapEmbedSrc ? (
                 <iframe
-                  title="Google Maps Байршил"
+                  title={labels.mapTitle}
                   src={mapEmbedSrc}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   className={styles.mapFrame}
                 />
               ) : (
-                <div className={styles.mapFallback}>Хаяг мэдээлэл байхгүй байна.</div>
+                <div className={styles.mapFallback}>{labels.mapFallback}</div>
               )}
             </div>
           </AnimateOnScroll>

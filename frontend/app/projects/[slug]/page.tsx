@@ -4,11 +4,13 @@ import { getProjectBySlug } from '@/lib/api';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
+import { getTranslations } from '@/lib/getLanguage';
 
 // Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const t = await getTranslations();
   let project: { data: any; error?: string; status?: number } = { data: null };
   
   try {
@@ -63,7 +65,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               )}
               {project.data.images && (
                 <div style={{ marginTop: '2rem' }}>
-                  <h3 style={{ marginBottom: '1rem' }}>Зурагнууд</h3>
+                  <h3 style={{ marginBottom: '1rem' }}>{(t.pages as any)?.projects?.galleryTitle || 'Зурагнууд'}</h3>
                   <div className="grid">
                     {(typeof project.data.images === 'string' 
                       ? JSON.parse(project.data.images || '[]') 

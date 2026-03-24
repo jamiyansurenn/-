@@ -25,38 +25,15 @@ export default function HeroSection() {
     const [isPaused, setIsPaused] = useState(false);
     const [heroSettings, setHeroSettings] = useState<any>(null);
 
-    const slides = useMemo(() => ([
-        {
-            title: 'Buy & Back – Ашигтай, Баталгаатай Хөрөнгө оруулалт',
-            subtitle: 'Buy & Back гэрээт хөтөлбөр эхэллээ',
+    const slides = useMemo(() => {
+        const list = t.home.heroSlides ?? [];
+        return list.map((s) => ({
+            title: s.title,
+            subtitle: s.subtitle,
             description: '',
-            cta: { label: 'Холбоо барих', href: '/contact' },
-        },
-        {
-            title: 'ТАВ ТУХ ЧАНАР СТАНДАРТЫГ ТАНАЙ ГЭРТ',
-            subtitle: 'БИД ЗАСЛЫН ШИНЭЛЭГ ШИЙДЛИЙГ ТӨСЛҮҮДДЭЭ ШИНГЭЭЖ ОРЧИН ҮЕИЙН ТЕХНОЛОГИЙГ НЭВТРҮҮЛЭЭД БАЙНА',
-            description: '',
-            cta: { label: 'Холбоо барих', href: '/contact' },
-        },
-        {
-            title: 'БҮХ ТӨРЛИЙН ТАВИЛГА УГСРАЛТ',
-            subtitle: 'БИД ТАНЫ ХҮССЭН ӨНГӨ ЗАГВАРЫН ДАГУУ МЭРГЭЖЛИЙН ДИЗАЙНЕРИЙН ГАРГАСАН ЗУРГИЙН ДАГУУ ТАНЫ ГЭР БОЛОН АЖИЛД ОРЧИН ҮЕИЙН ТАВИЛГЫГ САНАЛ БОЛГОНО.',
-            description: '',
-            cta: { label: 'Холбоо барих', href: '/contact' },
-        },
-        {
-            title: 'УТААГҮЙ УЛААНБААТАР ЗОРИЛТОТ ТӨСӨЛ',
-            subtitle: 'даацтай бизнесийг бид танд санал болгоно',
-            description: '',
-            cta: { label: 'Холбоо барих', href: '/contact' },
-        },
-        {
-            title: 'ЦАМХАГТ КРАНЫ НЭГДСЭН ҮЙЛЧИЛГЭЭ',
-            subtitle: 'Бид цамхагт краны салбарт монголдоо тэргүүлэгч хамт олон билээ.',
-            description: '',
-            cta: { label: 'Холбоо барих', href: '/contact' },
-        },
-    ]), [t]);
+            cta: { label: s.ctaLabel, href: '/contact' },
+        }));
+    }, [t]);
 
     useEffect(() => {
         let alive = true;
@@ -119,9 +96,9 @@ export default function HeroSection() {
     const showHeroVideo = !slideCustomBg;
     const overlayUrl = resolveHeroMediaUrl(currentSlide?.overlayImage);
     const quickStats = [
-        { value: '14+', label: 'Жилийн туршлага' },
-        { value: '50+', label: 'Тогтмол харилцагч' },
-        { value: '100+', label: 'Гүйцэтгэсэн ажил' },
+        { value: '14+', label: t.common.heroStats.years },
+        { value: '50+', label: t.common.heroStats.partners },
+        { value: '100+', label: t.common.heroStats.projects },
     ];
 
     return (
@@ -179,7 +156,7 @@ export default function HeroSection() {
                                 href={currentSlide.cta?.href || currentSlide.ctaHref || '/contact'}
                                 className="btn"
                             >
-                                {currentSlide.cta?.label || currentSlide.ctaLabel || 'Холбоо барих'}
+                                {currentSlide.cta?.label || currentSlide.ctaLabel || t.nav.contact}
                             </Link>
                             <Link href="/projects" className="btn btn-secondary">
                                 {t.common.viewAll}
@@ -202,7 +179,7 @@ export default function HeroSection() {
                     onMouseEnter={() => setIsPaused(true)}
                     onMouseLeave={() => setIsPaused(false)}
                 >
-                    <button type="button" className={styles.heroNavButton} onClick={handlePrev} aria-label="Өмнөх слайд">
+                    <button type="button" className={styles.heroNavButton} onClick={handlePrev} aria-label={t.common.a11y.prevSlide}>
                         ‹
                     </button>
                     <div className={styles.heroDots}>
@@ -212,11 +189,11 @@ export default function HeroSection() {
                                 type="button"
                                 className={`${styles.heroDot} ${index === activeIndex ? styles.heroDotActive : ''}`}
                                 onClick={() => goToSlide(index)}
-                                aria-label={`Слайд ${index + 1}`}
+                                aria-label={t.common.a11y.slideDot.replace('{n}', String(index + 1))}
                             />
                         ))}
                     </div>
-                    <button type="button" className={styles.heroNavButton} onClick={handleNext} aria-label="Дараагийн слайд">
+                    <button type="button" className={styles.heroNavButton} onClick={handleNext} aria-label={t.common.a11y.nextSlide}>
                         ›
                     </button>
                 </div>

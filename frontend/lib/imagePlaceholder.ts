@@ -83,7 +83,19 @@ export function getImageUrl(
     if (normalized.startsWith('/uploads/')) {
       return `${apiBase}${normalized}`;
     }
-    return normalized;
+    if (normalized.startsWith('/')) {
+      return normalized;
+    }
+    if (
+      normalized.startsWith('http://') ||
+      normalized.startsWith('https://') ||
+      normalized.startsWith('data:') ||
+      normalized.startsWith('blob:')
+    ) {
+      return normalized;
+    }
+    // Invalid/non-web path (e.g. C:\fakepath\...), use safe placeholder.
+    return getPlaceholderImage(category, index);
   }
 
   return getPlaceholderImage(category, index);

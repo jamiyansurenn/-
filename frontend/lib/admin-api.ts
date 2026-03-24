@@ -34,6 +34,13 @@ export const createNews = (data: any) => api.post('/news', data, { headers: getA
 export const updateNews = (id: string, data: any) => api.patch(`/news/${id}`, data, { headers: getAuthHeaders() });
 export const deleteNews = (id: string) => api.delete(`/news/${id}`, { headers: getAuthHeaders() });
 
+// Careers
+export const getCareersAdmin = () => api.get('/careers', { headers: getAuthHeaders() });
+export const getCareerAdmin = (id: string) => api.get(`/careers/${id}`, { headers: getAuthHeaders() });
+export const createCareerAdmin = (data: any) => api.post('/careers', data, { headers: getAuthHeaders() });
+export const updateCareerAdmin = (id: string, data: any) => api.patch(`/careers/${id}`, data, { headers: getAuthHeaders() });
+export const deleteCareerAdmin = (id: string) => api.delete(`/careers/${id}`, { headers: getAuthHeaders() });
+
 // Team Members
 export const getTeamMembers = () => api.get('/team-members', { headers: getAuthHeaders() });
 export const getTeamMember = (id: string) => api.get(`/team-members/${id}`, { headers: getAuthHeaders() });
@@ -68,7 +75,6 @@ export const uploadFile = (file: File) => {
   return api.post('/upload', formData, {
     headers: {
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data',
     },
   });
 };

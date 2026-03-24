@@ -5,11 +5,13 @@ import { getProjects } from '@/lib/api';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
+import { getTranslations } from '@/lib/getLanguage';
 
 // Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
 
 export default async function ProjectsPage() {
+  const t = await getTranslations();
   let projects = { data: [] };
 
   try {
@@ -42,8 +44,8 @@ export default async function ProjectsPage() {
           }}></div>
           <div className="container" style={{ position: 'relative', zIndex: 1 }}>
             <AnimateOnScroll>
-              <h1>Хийсэн ажилууд</h1>
-              <p>Манай компанийн хэрэгжүүлсэн төслүүд</p>
+              <h1>{t.pages.projects.title}</h1>
+              <p>{t.pages.projects.subtitle}</p>
             </AnimateOnScroll>
           </div>
         </section>
@@ -71,7 +73,7 @@ export default async function ProjectsPage() {
                           <h3 style={{ marginBottom: '1rem' }}>{project.title}</h3>
                           <p style={{ marginBottom: '1rem', color: '#666' }}>{project.description}</p>
                           <Link href={`/projects/${project.slug}`} className="btn">
-                            Дэлгэрэнгүй
+                            {t.common.readMore}
                           </Link>
                         </div>
                       </div>
@@ -82,7 +84,7 @@ export default async function ProjectsPage() {
             ) : (
               <div style={{ textAlign: 'center', padding: '4rem 0' }}>
                 <AnimateOnScroll>
-                  <p style={{ fontSize: '1.2rem', color: '#666' }}>Төсөл олдсонгүй</p>
+                  <p style={{ fontSize: '1.2rem', color: '#666' }}>{t.pages.projects.noProjects}</p>
                 </AnimateOnScroll>
               </div>
             )}

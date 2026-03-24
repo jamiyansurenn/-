@@ -1,7 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 import Logo from './Logo';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Footer() {
+  const { t } = useLanguage();
+  const year = new Date().getFullYear();
+  const copyright = t.footer.copyright.replace(/\{\{year\}\}/g, String(year));
+
   return (
     <footer>
       <div className="container">
@@ -11,51 +18,51 @@ export default function Footer() {
               <Logo width={120} height={120} />
             </div>
           </div>
-          <p style={{ color: '#94A3B8', lineHeight: '1.8', fontSize: '1.05rem' }}>Бидний тухай мэдээлэл</p>
+          <p style={{ color: '#94A3B8', lineHeight: '1.8', fontSize: '1.05rem' }}>{t.footer.aboutInfo}</p>
           <p style={{ color: '#64748B', marginTop: '1.5rem', fontSize: '0.95rem', fontStyle: 'italic' }}>
-            Даацтай бизнес ба даацтай амьдрал
+            {t.footer.tagline}
           </p>
         </div>
         <div>
-          <h3>Холбоосууд</h3>
+          <h3>{t.footer.linksTitle}</h3>
           <ul style={{ listStyle: 'none' }}>
             <li>
-              <Link href="/about">Бидний тухай</Link>
+              <Link href="/about">{t.nav.about}</Link>
             </li>
             <li>
-              <Link href="/history">Түүхэн замнал</Link>
+              <Link href="/history">{t.nav.aboutHistory}</Link>
             </li>
             <li>
-              <Link href="/services">Үйлчилгээ</Link>
+              <Link href="/services">{t.home.services.title}</Link>
             </li>
             <li>
-              <Link href="/projects">Төслүүд</Link>
+              <Link href="/projects">{t.home.projects.title}</Link>
             </li>
             <li>
-              <Link href="/news">Мэдээ</Link>
+              <Link href="/news">{t.nav.news}</Link>
             </li>
             <li>
-              <Link href="/careers">Ажлын байр</Link>
+              <Link href="/careers">{t.nav.hrJobs}</Link>
             </li>
             <li>
-              <Link href="/contact">Холбоо барих</Link>
+              <Link href="/contact">{t.nav.contact}</Link>
             </li>
           </ul>
         </div>
         <div>
-          <h3>Холбоо барих</h3>
+          <h3>{t.footer.contactTitle}</h3>
           <div className="footer-contact">
-            <p><span>📧</span> info@daatsiintsamkhag.mn</p>
-            <p><span>📞</span> +976 7766-0933</p>
+            <p><span>📧</span> {t.contact.email}</p>
+            <p><span>📞</span> {t.contact.phone}</p>
             <p style={{ alignItems: 'flex-start' }}>
               <span style={{ marginTop: '4px' }}>📍</span>
-              <span style={{ lineHeight: '1.6' }}>Улаанбаатар хот, Баянзүрх дүүрэг, 38-р хороо, Шинэ Амгалан Б2, 307-р байр, 16 давхар 1601 тоот</span>
+              <span style={{ lineHeight: '1.6' }}>{t.contact.address}</span>
             </p>
           </div>
         </div>
       </div>
       <div style={{ textAlign: 'center', marginTop: '4rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <p style={{ color: '#64748B', fontSize: '0.9rem' }}>&copy; {new Date().getFullYear()} ДААЦЫН ЦАМХАГ Групп. Бүх эрх хуулиар хамгаалагдсан.</p>
+        <p style={{ color: '#64748B', fontSize: '0.9rem' }}>{copyright}</p>
       </div>
     </footer>
   );

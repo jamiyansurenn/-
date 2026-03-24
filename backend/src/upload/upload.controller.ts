@@ -1,4 +1,14 @@
-import { Controller, Post, UseGuards, UseInterceptors, UploadedFile, Delete, Body } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  InternalServerErrorException,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { UploadService } from './upload.service';
@@ -37,7 +47,7 @@ export class UploadController {
   @ApiOperation({ summary: 'Upload file' })
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
-      throw new Error('No file uploaded');
+      throw new BadRequestException('No file uploaded');
     }
     try {
       const filepath = await this.uploadService.saveFile(file);
@@ -46,8 +56,8 @@ export class UploadController {
         filename: file.originalname,
         size: file.size,
       };
-    } catch (error) {
-      throw new Error(`Failed to upload file: ${error.message}`);
+    } catch (error: any) {
+      throw new InternalServerErrorException(`Failed to upload file: ${error?.message || 'Unknown error'}`);
     }
   }
 
@@ -55,13 +65,13 @@ export class UploadController {
   @ApiOperation({ summary: 'Delete file' })
   async deleteFile(@Body('filename') filename: string) {
     if (!filename) {
-      throw new Error('Filename is required');
+      throw new BadRequestException('Filename is required');
     }
     try {
       await this.uploadService.deleteFile(filename);
       return { message: 'File deleted successfully' };
-    } catch (error) {
-      throw new Error(`Failed to delete file: ${error.message}`);
+    } catch (error: any) {
+      throw new InternalServerErrorException(`Failed to delete file: ${error?.message || 'Unknown error'}`);
     }
   }
 }

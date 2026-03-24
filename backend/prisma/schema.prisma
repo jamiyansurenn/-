@@ -147,6 +147,19 @@ model Partner {
   @@map("partners")
 }
 
+model Career {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  details     String?
+  order       Int      @default(0)
+  status      String   @default("DRAFT") // DRAFT or PUBLISHED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("careers")
+}
+
 model ContactMessage {
   id          String   @id @default(uuid())
   name        String

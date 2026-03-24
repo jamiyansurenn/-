@@ -11,14 +11,29 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const ALLOWED: Language[] = ['mn', 'en', 'zh', 'ru', 'ja', 'ko'];
+
+function readLanguageFromBrowser(): Language | null {
+  if (typeof window === 'undefined') return null;
+  const cookieMatch = document.cookie.match(/(?:^|;\s*)language=([^;]+)/);
+  const fromCookie = cookieMatch?.[1]?.trim();
+  if (fromCookie && ALLOWED.includes(fromCookie as Language)) {
+    return fromCookie as Language;
+  }
+  const saved = localStorage.getItem('language') as Language | null;
+  if (saved && ALLOWED.includes(saved as Language)) {
+    return saved;
+  }
+  return null;
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('mn');
 
   useEffect(() => {
-    // Load language from localStorage
-    const savedLang = localStorage.getItem('language') as Language | null;
-    if (savedLang && (['mn', 'en', 'zh', 'ru', 'ja', 'ko'].includes(savedLang))) {
-      setLanguageState(savedLang);
+    const next = readLanguageFromBrowser();
+    if (next) {
+      setLanguageState(next);
     }
   }, []);
 

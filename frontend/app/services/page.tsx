@@ -5,11 +5,13 @@ import { getServices } from '@/lib/api';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
+import { getTranslations } from '@/lib/getLanguage';
 
 // Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
 
 export default async function ServicesPage() {
+  const t = await getTranslations();
   let services = { data: [] };
 
   try {
@@ -41,7 +43,7 @@ export default async function ServicesPage() {
             backgroundColor: 'rgba(0, 0, 0, 0.4)'
           }}></div>
           <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-            <h1>Үйлчилгээнүүд</h1>
+            <h1>{t.home.services.title}</h1>
           </div>
         </section>
 
@@ -67,7 +69,7 @@ export default async function ServicesPage() {
                       <h3 style={{ marginBottom: '1rem' }}>{service.title}</h3>
                       <p style={{ marginBottom: '1rem', color: '#666' }}>{service.description}</p>
                       <Link href={`/services/${service.slug}`} className="btn">
-                        Дэлгэрэнгүй
+                        {t.common.readMore}
                       </Link>
                     </div>
                   </div>
@@ -77,7 +79,7 @@ export default async function ServicesPage() {
               </div>
             ) : (
               <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-                <p style={{ fontSize: '1.2rem', color: '#666' }}>Үйлчилгээ олдсонгүй</p>
+                <p style={{ fontSize: '1.2rem', color: '#666' }}>{(t.pages as any)?.services?.noServices || 'Үйлчилгээ олдсонгүй'}</p>
               </div>
             )}
           </div>

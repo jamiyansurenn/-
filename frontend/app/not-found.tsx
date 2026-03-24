@@ -1,8 +1,12 @@
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { getTranslations } from '@/lib/getLanguage';
 
-export default function NotFound() {
+export default async function NotFound() {
+  const t = await getTranslations();
+  const nf = t.pages.notFound;
+
   return (
     <>
       <Header />
@@ -11,16 +15,14 @@ export default function NotFound() {
           <div className="container">
             <div className="not-found-card">
               <p className="not-found-code">404</p>
-              <h1 className="not-found-title">Хуудас олдсонгүй</h1>
-              <p className="not-found-text">
-                Таны хайж буй хуудас устсан эсвэл шилжсэн байж магадгүй. Нүүр хуудас эсвэл холбоо барих хуудас руу шилжинэ үү.
-              </p>
+              <h1 className="not-found-title">{nf.title}</h1>
+              <p className="not-found-text">{nf.description}</p>
               <div className="not-found-actions">
                 <Link href="/" className="btn">
-                  Нүүр хуудас
+                  {nf.home}
                 </Link>
                 <Link href="/contact" className="btn btn-secondary">
-                  Холбоо барих
+                  {nf.contact}
                 </Link>
               </div>
             </div>

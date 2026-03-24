@@ -28,6 +28,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   if (!news.data) {
     notFound();
   }
+  const newsImage = getImageUrl(news.data.image, 'news');
 
   return (
     <>
@@ -52,15 +53,13 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
           <div className="container">
             <div style={{ maxWidth: '900px', margin: '0 auto' }}>
               <div style={{ position: 'relative', width: '100%', height: '400px', borderRadius: '8px', marginBottom: '2rem', overflow: 'hidden' }}>
-                {news.data?.image && news.data?.title && (
-                  <Image
-                    src={getImageUrl(news.data.image, 'news')}
-                    alt={news.data.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    sizes="(max-width: 768px) 100vw, 900px"
-                  />
-                )}
+                <Image
+                  src={newsImage}
+                  alt={news.data.title}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  sizes="(max-width: 768px) 100vw, 900px"
+                />
               </div>
               {news.data.excerpt && (
                 <p style={{ fontSize: '1.2rem', lineHeight: '1.8', color: '#666', marginBottom: '2rem', fontStyle: 'italic' }}>

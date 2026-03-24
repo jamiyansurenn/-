@@ -99,6 +99,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Үйлчилгээнүүд', href: '/admin/services' },
     { name: 'Төслүүд', href: '/admin/projects' },
     { name: 'Мэдээ', href: '/admin/news' },
+    { name: 'Ажлын зар', href: '/admin/careers' },
     { name: 'Багийн гишүүд', href: '/admin/team-members' },
     { name: 'Хамтрагчид', href: '/admin/partners' },
     { name: 'Холбоо барих', href: '/admin/contact' },
@@ -116,7 +117,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <nav className={styles.nav}>
-          <div className={styles.navLabel}>Тэс цэс</div>
+          <div className={styles.navLabel}>Цэс</div>
           {navItems.map((item) => {
             const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
             return (

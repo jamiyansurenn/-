@@ -5,8 +5,10 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { createContactMessage } from '@/lib/api';
 import { getImageUrl } from '@/lib/imagePlaceholder';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function ContactPage() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,7 +31,7 @@ export default function ContactPage() {
       setSuccess(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Алдаа гарлаа. Дахин оролдоно уу.');
+      setError(err.response?.data?.message || (t.pages as any)?.contact?.submitError || 'Алдаа гарлаа. Дахин оролдоно уу.');
     } finally {
       setLoading(false);
     }
@@ -57,7 +59,7 @@ export default function ContactPage() {
             backgroundColor: 'rgba(0, 0, 0, 0.4)'
           }}></div>
           <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-            <h1>Холбоо барих</h1>
+            <h1>{t.nav.contact}</h1>
           </div>
         </section>
 
@@ -66,7 +68,7 @@ export default function ContactPage() {
             <div style={{ maxWidth: '600px', margin: '0 auto' }}>
               {success && (
                 <div style={{ background: '#d4edda', color: '#155724', padding: '1rem', borderRadius: '4px', marginBottom: '2rem' }}>
-                  Амжилттай илгээгдлээ. Бид удахгүй танд хариу өгөх болно.
+                  {(t.pages as any)?.contact?.submitSuccess || 'Амжилттай илгээгдлээ. Бид удахгүй танд хариу өгөх болно.'}
                 </div>
               )}
               {error && (
@@ -76,7 +78,7 @@ export default function ContactPage() {
               )}
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="name">Нэр *</label>
+                  <label htmlFor="name">{(t.pages as any)?.contact?.name || 'Нэр'} *</label>
                   <input
                     type="text"
                     id="name"
@@ -86,7 +88,7 @@ export default function ContactPage() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="email">Имэйл *</label>
+                  <label htmlFor="email">{(t.pages as any)?.contact?.email || 'Имэйл'} *</label>
                   <input
                     type="email"
                     id="email"
@@ -96,7 +98,7 @@ export default function ContactPage() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="phone">Утас</label>
+                  <label htmlFor="phone">{(t.pages as any)?.contact?.phone || 'Утас'}</label>
                   <input
                     type="tel"
                     id="phone"
@@ -105,7 +107,7 @@ export default function ContactPage() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="subject">Гарчиг</label>
+                  <label htmlFor="subject">{(t.pages as any)?.contact?.subject || 'Гарчиг'}</label>
                   <input
                     type="text"
                     id="subject"
@@ -114,7 +116,7 @@ export default function ContactPage() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="message">Мессеж *</label>
+                  <label htmlFor="message">{(t.pages as any)?.contact?.message || 'Мессеж'} *</label>
                   <textarea
                     id="message"
                     required
@@ -123,7 +125,7 @@ export default function ContactPage() {
                   />
                 </div>
                 <button type="submit" className="btn" disabled={loading}>
-                  {loading ? 'Илгээж байна...' : 'Илгээх'}
+                  {loading ? t.pages.application.submitting : t.common.submit}
                 </button>
               </form>
             </div>

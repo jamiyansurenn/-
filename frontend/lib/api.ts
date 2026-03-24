@@ -252,6 +252,31 @@ export const getPartners = async () => {
   }
 };
 
+export const getCareers = async () => {
+  const fallbackCareers = [
+    {
+      id: 'fallback-1',
+      title: 'Борлуулалтын менежер',
+      description: 'Борлуулалтын менежер ажилд авна.',
+      details: 'Борлуулалтын менежер ажилд авна. Дэлгэрэнгүй мэдээлэл авахыг хүсвэл холбоо барих.',
+    },
+    {
+      id: 'fallback-2',
+      title: 'ХАНГАМЖ МЕНЕЖЕР',
+      description:
+        'Хангамж, түгээлтийн албаны адилтгах бусад менежер нь бараа таваарын хангамж, тээвэрлэлт, хадгалалт болон түгээлттэй холбоотой ажлыг төлөвлөх, удирдах, зохицуулах асуудлыг эрхэлнэ.',
+      details: '',
+    },
+  ];
+  try {
+    const response = await api.get('/careers/public');
+    const data = safeGetData(response);
+    return { data: data && data.length > 0 ? data : fallbackCareers };
+  } catch {
+    return { data: fallbackCareers };
+  }
+};
+
 export const createContactMessage = async (data: any) => {
   try {
     const response = await api.post('/contact', data);
