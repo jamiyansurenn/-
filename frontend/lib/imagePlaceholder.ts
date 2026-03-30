@@ -1,40 +1,36 @@
-// Random placeholder images for different categories
+import { picsum } from './picsum';
+
+/** Local assets when you add files under public/ */
+const local = {
+  hos: '/images/projects/hos_tsamhag.jpeg',
+  b7: '/images/projects/b7.png',
+};
+
+/* Picsum seeds = stable URLs; append local paths as fallbacks for custom art. */
 const placeholderImages = {
   building: [
-    '/images/projects/hos_tsamhag.jpeg',
-    '/images/projects/b7.png',
-    '/images/projects/hos_tsamhag.jpeg',
-    '/images/projects/b7.png',
+    picsum('dtg-bld-0', 1200, 760),
+    picsum('dtg-bld-1', 1200, 760),
+    picsum('dtg-bld-2', 1200, 760),
+    local.hos,
   ],
   construction: [
-    '/images/projects/b7.png',
-    '/images/projects/hos_tsamhag.jpeg',
-    '/images/projects/b7.png',
-    '/images/projects/hos_tsamhag.jpeg',
+    picsum('dtg-con-0', 1200, 760),
+    picsum('dtg-con-1', 1200, 760),
+    picsum('dtg-con-2', 1200, 760),
+    local.b7,
   ],
-  team: [
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
-  ],
-  service: [
-    '/images/projects/b7.png',
-    '/images/projects/hos_tsamhag.jpeg',
-    '/images/projects/b7.png',
-  ],
-  news: [
-    '/images/projects/hos_tsamhag.jpeg',
-    '/images/projects/b7.png',
-    '/images/projects/hos_tsamhag.jpeg',
-  ],
-  default: [
-    '/images/projects/b7.png',
-    '/images/projects/hos_tsamhag.jpeg',
-    '/images/projects/b7.png',
-    '/images/projects/hos_tsamhag.jpeg',
-  ],
+  team: [picsum('dtg-team-0', 640, 640), picsum('dtg-team-1', 640, 640), picsum('dtg-team-2', 640, 640), picsum('dtg-team-3', 640, 640)],
+  service: [picsum('dtg-svc-0', 1000, 650), picsum('dtg-svc-1', 1000, 650), picsum('dtg-svc-2', 1000, 650), picsum('dtg-svc-3', 1000, 650)],
+  news: [picsum('dtg-news-0', 900, 560), picsum('dtg-news-1', 900, 560), picsum('dtg-news-2', 900, 560), picsum('dtg-news-3', 900, 560)],
+  default: [picsum('dtg-def-0', 1000, 650), picsum('dtg-def-1', 1000, 650), picsum('dtg-def-2', 1000, 650), picsum('dtg-def-3', 1000, 650)],
 };
+
+/**
+ * Home about collage: two equal thumbnails.
+ * Picsum seeds avoid broken Unsplash loads in some networks; images are stable per seed.
+ */
+export const homeAboutCollageImages: readonly [string, string] = [picsum('dtg-about-a', 640, 640), picsum('dtg-about-b', 640, 640)];
 
 export type ImageCategory = 'building' | 'construction' | 'team' | 'service' | 'news' | 'default';
 

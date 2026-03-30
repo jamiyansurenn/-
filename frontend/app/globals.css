@@ -447,6 +447,7 @@ section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 3rem;
+  align-items: stretch;
 }
 
 /* Timeline */
@@ -980,5 +981,25 @@ footer a:hover {
 @media (max-width: 390px) {
   section {
     padding: 3.5rem 0;
+  }
+}
+
+/* AnimateOnScroll: stable initial paint, then reveal (avoids blank regions) */
+.fade-in-on-scroll {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.fade-in-on-scroll.visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

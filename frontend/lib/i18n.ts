@@ -91,6 +91,9 @@ export const translations = {
         vision: 'Бид Монгол улсынхаа бүтээн байгуулалтад үнэтэй хувь нэмэр оруулагч, салбартаа манлайлагч, хэрэглэгчдийн итгэлт түнш байхыг зорино.',
         missionTitle: 'Зорилго',
         mission: 'Аюулгүй ажиллагааг эрхэмлэн, чанарыг тэргүүнд тавьж, орчин үеийн дэвшилтэт технологийн дагуу найдвартай үйлчилгээг харилцагчдадаа хүргэнэ.',
+        introEyebrow: 'Товч танилцуулга',
+        brandLine: 'ДААЦЫН ЦАМХАГ ГРУПП',
+        experienceBadge: '14+ ЖИЛИЙН ТУРШЛАГА',
       },
       services: {
         title: 'Үйлчилгээ',
@@ -108,7 +111,40 @@ export const translations = {
         historyTitle: 'Түүхэн замнал',
         historyDesc: '2009 оноос хойшх бүтээн байгуулалтын замнал',
         constructionTitle: 'Хэрэгжүүлсэн төслүүд',
-        constructionDesc: 'Үйлчилгээ, нийлүүлэлт, мэргэжлийн баг',
+        constructionDesc: 'Төсөл, кран, барилгын цогц үйлчилгээ',
+        careersTitle: 'Хүний нөөц',
+        careersDesc: 'Нээлттэй ажлын байр — мэргэжилтэн хамт олноороо өсөцгөөе',
+      },
+      pillars: {
+        title: 'Үндсэн зарчмууд',
+        subtitle: 'Бидний ажиллах ухагдахуун, чиглэл',
+        items: [
+          {
+            title: 'Хүн',
+            description: 'Ажилтнууд, харилцагчдын эрх ашиг, аюулгүй байдал.',
+            imageSeed: 'dtg-pillar-human',
+          },
+          {
+            title: 'Ёс зүй',
+            description: 'Шударга, ил тод, хүлээсэн үүргээ биелүүлэх.',
+            imageSeed: 'dtg-pillar-ethics',
+          },
+          {
+            title: 'Чанар, стандарт',
+            description: 'OHSAS болон салбарын стандартыг баримтална.',
+            imageSeed: 'dtg-pillar-quality',
+          },
+          {
+            title: 'Тогтвортой хөгжил',
+            description: 'Урт хугацааны үр өгөөжтэй бүтээн байгуулалт.',
+            imageSeed: 'dtg-pillar-sustain',
+          },
+        ],
+      },
+      partnersStrip: {
+        title: 'Харилцагч байгууллага',
+        subtitle: 'Бидний тогтмол хамтран ажиллагч, итгэлт түншүүд',
+        empty: 'Тун удахгүй энд харилцагчдын лого харагдана.',
       },
     },
     pages: {
@@ -309,6 +345,9 @@ export const translations = {
         vision: 'We aim to be a valuable contributor to the development of Mongolia, a leader in our industry, and a trusted partner for our customers.',
         missionTitle: 'Mission',
         mission: 'Prioritizing safety and quality, we deliver reliable services to our customers using modern advanced technology.',
+        introEyebrow: 'Introduction',
+        brandLine: 'DAATSIINTSAMKHAG GROUP',
+        experienceBadge: '14+ YEARS OF EXPERIENCE',
       },
       services: {
         title: 'Services',
@@ -326,7 +365,40 @@ export const translations = {
         historyTitle: 'History Journey',
         historyDesc: 'Development journey since 2009',
         constructionTitle: 'Completed Projects',
-        constructionDesc: 'Services, supply, and professional team',
+        constructionDesc: 'Projects, cranes, and integrated construction services',
+        careersTitle: 'Human Resources',
+        careersDesc: 'Open positions — grow with our professional team',
+      },
+      pillars: {
+        title: 'Our pillars',
+        subtitle: 'How we work, every day',
+        items: [
+          {
+            title: 'People',
+            description: 'Safety and respect for employees and customers.',
+            imageSeed: 'dtg-pillar-human',
+          },
+          {
+            title: 'Integrity',
+            description: 'Fair, transparent, accountable delivery.',
+            imageSeed: 'dtg-pillar-ethics',
+          },
+          {
+            title: 'Quality & standards',
+            description: 'OHSAS-oriented, industry-grade execution.',
+            imageSeed: 'dtg-pillar-quality',
+          },
+          {
+            title: 'Sustainable growth',
+            description: 'Long-term impact for communities and partners.',
+            imageSeed: 'dtg-pillar-sustain',
+          },
+        ],
+      },
+      partnersStrip: {
+        title: 'Partners',
+        subtitle: 'Companies we work with and trust',
+        empty: 'Partner logos will appear here soon.',
       },
     },
     pages: {
@@ -517,6 +589,9 @@ export const translations = {
         vision: '我们的目标是成为蒙古国发展的宝贵贡献者，行业的领导者，以及客户值得信赖的合作伙伴。',
         missionTitle: '使命',
         mission: '我们将安全和质量放在首位，利用现代先进技术为客户提供可靠的服务。',
+        introEyebrow: '公司简介',
+        brandLine: '达茨因察姆哈格集团',
+        experienceBadge: '逾14年行业经验',
       },
       services: {
         title: '服务',
@@ -525,6 +600,32 @@ export const translations = {
       projects: {
         title: '项目',
         description: '我们完成的项目',
+      },
+      featuredPages: {
+        title: '重点页面',
+        aboutTitle: '介绍',
+        aboutDesc: '公司目标、方向与价值观',
+        historyTitle: '发展历程',
+        historyDesc: '自2009年以来的建设之路',
+        constructionTitle: '已建成项目',
+        constructionDesc: '项目、起重机与综合施工服务',
+        careersTitle: '人力资源',
+        careersDesc: '在招职位——与专业团队共同成长',
+      },
+      pillars: {
+        title: '核心原则',
+        subtitle: '我们的工作方式',
+        items: [
+          { title: '人', description: '重视员工与客户的安全与尊严。', imageSeed: 'dtg-pillar-human' },
+          { title: '道德', description: '公平、透明、守约。', imageSeed: 'dtg-pillar-ethics' },
+          { title: '质量与标准', description: '遵循OHSAS及行业标准。', imageSeed: 'dtg-pillar-quality' },
+          { title: '可持续发展', description: '追求长期价值。', imageSeed: 'dtg-pillar-sustain' },
+        ],
+      },
+      partnersStrip: {
+        title: '合作机构',
+        subtitle: '长期合作伙伴',
+        empty: '合作方标识即将展示于此。',
       },
     },
     pages: {
@@ -680,6 +781,9 @@ export const translations = {
         vision: 'Мы стремимся быть ценным участником развития Монголии, лидером в нашей отрасли и надежным партнером для наших клиентов.',
         missionTitle: 'Миссия',
         mission: 'Ставя на первое место безопасность и качество, мы предоставляем надежные услуги нашим клиентам, используя современные передовые технологии.',
+        introEyebrow: 'Краткое описание',
+        brandLine: 'ГРУППА ДААЦЫН ЦАМХАГ',
+        experienceBadge: 'БОЛЕЕ 14 ЛЕТ ОПЫТА',
       },
       services: {
         title: 'Услуги',
@@ -688,6 +792,32 @@ export const translations = {
       projects: {
         title: 'Проекты',
         description: 'Наши завершенные проекты',
+      },
+      featuredPages: {
+        title: 'Разделы сайта',
+        aboutTitle: 'О компании',
+        aboutDesc: 'Цели, направление и ценности',
+        historyTitle: 'История',
+        historyDesc: 'Путь развития с 2009 года',
+        constructionTitle: 'Реализованные проекты',
+        constructionDesc: 'Проекты, краны и комплексные услуги',
+        careersTitle: 'Кадры',
+        careersDesc: 'Открытые вакансии — развивайтесь с нами',
+      },
+      pillars: {
+        title: 'Принципы',
+        subtitle: 'Как мы работаем',
+        items: [
+          { title: 'Люди', description: 'Безопасность и уважение к сотрудникам и клиентам.', imageSeed: 'dtg-pillar-human' },
+          { title: 'Этика', description: 'Честность, прозрачность, ответственность.', imageSeed: 'dtg-pillar-ethics' },
+          { title: 'Качество', description: 'Стандарты OHSAS и отрасли.', imageSeed: 'dtg-pillar-quality' },
+          { title: 'Устойчивость', description: 'Долгосрочный эффект для партнёров.', imageSeed: 'dtg-pillar-sustain' },
+        ],
+      },
+      partnersStrip: {
+        title: 'Партнёры',
+        subtitle: 'Надёжные компании-партнёры',
+        empty: 'Логотипы партнёров скоро появятся здесь.',
       },
     },
     pages: {
@@ -844,6 +974,9 @@ export const translations = {
         vision: '私たちは、モンゴルの発展に貢献し、業界のリーダーであり、お客様の信頼できるパートナーになることを目指しています。',
         missionTitle: 'ミッション',
         mission: '安全と品質を優先し、現代の最先端技術を使用して、お客様に信頼できるサービスを提供します。',
+        introEyebrow: '会社概要',
+        brandLine: 'DAATSIINTSAMKHAG グループ',
+        experienceBadge: '14年以上の実績',
       },
       services: {
         title: 'サービス',
@@ -852,6 +985,32 @@ export const translations = {
       projects: {
         title: 'プロジェクト',
         description: '完了したプロジェクト',
+      },
+      featuredPages: {
+        title: '主なページ',
+        aboutTitle: '会社概要',
+        aboutDesc: '目的、方向性、価値観',
+        historyTitle: '沿革',
+        historyDesc: '2009年以降の歩み',
+        constructionTitle: '完了プロジェクト',
+        constructionDesc: 'プロジェクト・クレーン・総合サービス',
+        careersTitle: '採用',
+        careersDesc: '募集職種 — プロと共に成長',
+      },
+      pillars: {
+        title: '基本原則',
+        subtitle: '私たちの姿勢',
+        items: [
+          { title: '人', description: '従業員とお客様の安全と尊厳。', imageSeed: 'dtg-pillar-human' },
+          { title: '倫理', description: '公正・透明・約束の履行。', imageSeed: 'dtg-pillar-ethics' },
+          { title: '品質・基準', description: 'OHSASと業界基準。', imageSeed: 'dtg-pillar-quality' },
+          { title: '持続可能性', description: '長期的な価値。', imageSeed: 'dtg-pillar-sustain' },
+        ],
+      },
+      partnersStrip: {
+        title: 'パートナー企業',
+        subtitle: '信頼する協力会社',
+        empty: 'ロゴは順次掲載します。',
       },
     },
     pages: {
@@ -1007,6 +1166,9 @@ export const translations = {
         vision: '우리는 몽골 발전에 가치 있는 기여자, 업계의 리더, 그리고 고객의 신뢰할 수 있는 파트너가 되는 것을 목표로 합니다.',
         missionTitle: '미션',
         mission: '안전과 품질을 최우선으로 하여, 현대의 첨단 기술을 바탕으로 고객에게 신뢰할 수 있는 서비스를 제공합니다.',
+        introEyebrow: '회사 소개',
+        brandLine: 'DAATSIINTSAMKHAG 그룹',
+        experienceBadge: '14년 이상의 경험',
       },
       services: {
         title: '서비스',
@@ -1015,6 +1177,32 @@ export const translations = {
       projects: {
         title: '프로젝트',
         description: '완료된 프로젝트',
+      },
+      featuredPages: {
+        title: '주요 페이지',
+        aboutTitle: '회사 소개',
+        aboutDesc: '목표·방향·가치',
+        historyTitle: '연혁',
+        historyDesc: '2009년 이후의 여정',
+        constructionTitle: '완료 프로젝트',
+        constructionDesc: '프로젝트·크레인·통합 서비스',
+        careersTitle: '인재 채용',
+        careersDesc: '채용 공고 — 전문가와 함께 성장',
+      },
+      pillars: {
+        title: '핵심 원칙',
+        subtitle: '일하는 방식',
+        items: [
+          { title: '사람', description: '직원과 고객의 안전과 존중.', imageSeed: 'dtg-pillar-human' },
+          { title: '윤리', description: '공정·투명·약속 이행.', imageSeed: 'dtg-pillar-ethics' },
+          { title: '품질·표준', description: 'OHSAS 및 업계 표준.', imageSeed: 'dtg-pillar-quality' },
+          { title: '지속가능성', description: '장기적 가치.', imageSeed: 'dtg-pillar-sustain' },
+        ],
+      },
+      partnersStrip: {
+        title: '협력 기업',
+        subtitle: '신뢰하는 파트너',
+        empty: '로고가 곧 표시됩니다.',
       },
     },
     pages: {

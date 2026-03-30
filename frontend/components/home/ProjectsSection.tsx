@@ -69,7 +69,10 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                                 <div className={styles.cardContent}>
                                     <h3 className={styles.cardTitle}>{project.title}</h3>
                                     <p className={styles.cardDescription}>{project.description}</p>
-                                    <Link href={`/projects/${project.slug}`} className="btn">
+                                    <Link
+                                        href={`/projects/${project.slug}`}
+                                        className={`btn ${styles.homeProjectCardCta}`}
+                                    >
                                         {t.common.readMore}
                                     </Link>
                                 </div>

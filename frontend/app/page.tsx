@@ -1,16 +1,18 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { getCompanyInfo, getServices, getProjects, getNews } from '@/lib/api';
+import { getCompanyInfo, getProjects, getNews, getPartners } from '@/lib/api';
 import HeroSection from '@/components/home/HeroSection';
 import AboutSection from '@/components/home/AboutSection';
-import ServicesSection from '@/components/home/ServicesSection';
+import ValuesPillarsSection from '@/components/home/ValuesPillarsSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
+import PartnersStripSection from '@/components/home/PartnersStripSection';
 import NewsSection from '@/components/home/NewsSection';
 import LocationSection from '@/components/home/LocationSection';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
+import styles from '@/app/home.module.css';
 
 // Force dynamic rendering to prevent build-time static generation errors
 // This ensures pages render at request time, not build time
@@ -21,17 +23,17 @@ export default async function Home() {
   const tx = t as any;
   // Initialize with safe defaults - page will always render
   let companyInfo: { data: any } = { data: null };
-  let services: { data: any[] } = { data: [] };
   let projects: { data: any[] } = { data: [] };
   let news: { data: any[] } = { data: [] };
+  let partners: { data: any[] } = { data: [] };
 
   try {
     // Use Promise.allSettled to ensure all promises complete
     const results = await Promise.allSettled([
       getCompanyInfo().catch(() => ({ data: null })),
-      getServices().catch(() => ({ data: [] })),
       getProjects(true).catch(() => ({ data: [] })),
       getNews(true, 9).catch(() => ({ data: [] })),
+      getPartners().catch(() => ({ data: [] })),
     ]);
 
     // Safely extract data from each result
@@ -39,13 +41,13 @@ export default async function Home() {
       companyInfo = results[0].value || { data: null };
     }
     if (results[1].status === 'fulfilled') {
-      services = results[1].value || { data: [] };
+      projects = results[1].value || { data: [] };
     }
     if (results[2].status === 'fulfilled') {
-      projects = results[2].value || { data: [] };
+      news = results[2].value || { data: [] };
     }
     if (results[3].status === 'fulfilled') {
-      news = results[3].value || { data: [] };
+      partners = results[3].value || { data: [] };
     }
   } catch (error) {
     // Final safety net - page will render with empty data
@@ -58,13 +60,14 @@ export default async function Home() {
       <main>
         <HeroSection />
         <AboutSection companyInfo={companyInfo} />
-        <ServicesSection services={services.data} />
+        <ValuesPillarsSection />
         <ProjectsSection projects={projects.data} />
+        <PartnersStripSection partners={partners.data} />
         <NewsSection news={news.data} />
-        <section style={{ padding: '3rem 0', background: '#fafafa' }}>
+        <section className={styles.homeFeaturedSection}>
           <div className="container">
             <h2 className="section-title">{tx.home?.featuredPages?.title || 'Онцлох хуудсууд'}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+            <div className={styles.homeFeaturedGrid}>
               {[
                 {
                   title: tx.home?.featuredPages?.aboutTitle || 'Танилцуулга',
@@ -81,24 +84,32 @@ export default async function Home() {
                 {
                   title: tx.home?.featuredPages?.constructionTitle || 'Хэрэгжүүлсэн төслүүд',
                   href: '/construction',
-                  desc: tx.home?.featuredPages?.constructionDesc || 'Үйлчилгээ, нийлүүлэлт, мэргэжлийн баг',
-                  cat: 'construction' as const,
+                  desc: tx.home?.featuredPages?.constructionDesc || 'Төсөл, кран, барилгын цогц үйлчилгээ',
+                  cat: 'service' as const,
+                },
+                {
+                  title: tx.home?.featuredPages?.careersTitle || 'Хүний нөөц',
+                  href: '/careers',
+                  desc: tx.home?.featuredPages?.careersDesc || 'Нээлттэй ажлын байр',
+                  cat: 'team' as const,
                 },
               ].map((item, index) => (
                 <div key={item.href} className="card">
-                  <div style={{ position: 'relative', width: '100%', height: '180px' }}>
+                  <div className={styles.homeFeaturedCardImage}>
                     <Image
                       src={getImageUrl(undefined, item.cat, index)}
                       alt={item.title}
                       fill
                       style={{ objectFit: 'cover' }}
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 768px) 100vw, 25vw"
                     />
                   </div>
-                  <div style={{ padding: '1.2rem' }}>
-                    <h3 style={{ marginBottom: '0.6rem' }}>{item.title}</h3>
-                    <p style={{ marginBottom: '1rem', color: '#64748b' }}>{item.desc}</p>
-                    <Link href={item.href} className="btn">{t.common.learnMore}</Link>
+                  <div className={styles.homeFeaturedCardBody}>
+                    <h3>{item.title}</h3>
+                    <p>{item.desc}</p>
+                    <Link href={item.href} className="btn">
+                      {t.common.learnMore}
+                    </Link>
                   </div>
                 </div>
               ))}
