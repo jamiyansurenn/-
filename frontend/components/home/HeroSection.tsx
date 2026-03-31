@@ -6,9 +6,11 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import styles from '@/app/home.module.css';
 import { getHeroSettingsPublic } from '@/lib/admin-api';
+import { STOCK_HERO_BACKGROUNDS } from '@/lib/stockConstructionImages';
+import { getApiBaseUrl } from '@/lib/apiBase';
 
 const SLIDE_INTERVAL_MS = 7000;
-const apiBase = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').replace(/\/$/, '');
+const apiBase = getApiBaseUrl();
 
 function resolveHeroMediaUrl(url: string | undefined | null): string {
     if (!url) return '';
@@ -76,21 +78,17 @@ export default function HeroSection() {
         setActiveIndex((prev) => (prev + 1) % resolvedSlides.length);
     };
 
-    const fallbackPairs = [
-        {
-            local: resolveHeroMediaUrl(heroSettings?.backgrounds?.[0]) || '/hero/hero-1.jpg',
-            fallback: 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?q=80&w=2070&auto=format&fit=crop',
-        },
-        {
-            local: resolveHeroMediaUrl(heroSettings?.backgrounds?.[1]) || '/hero/hero-2.jpg',
-            fallback: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop',
-        },
-    ];
-    const pooledBackground = fallbackPairs[activeIndex % fallbackPairs.length];
+    const slideIdx = activeIndex % Math.max(resolvedSlides.length, 1);
+    const stockPrimary = STOCK_HERO_BACKGROUNDS[slideIdx % STOCK_HERO_BACKGROUNDS.length];
+    const stockSecondary = STOCK_HERO_BACKGROUNDS[(slideIdx + 1) % STOCK_HERO_BACKGROUNDS.length];
+    const adminBg = resolveHeroMediaUrl(heroSettings?.backgrounds?.[slideIdx]);
     const slideCustomBg = resolveHeroMediaUrl(currentSlide?.image);
     const activeBackground = slideCustomBg
-        ? { local: slideCustomBg, fallback: pooledBackground.fallback }
-        : pooledBackground;
+        ? { local: slideCustomBg, fallback: stockPrimary }
+        : {
+              local: adminBg || stockPrimary,
+              fallback: stockSecondary,
+          };
     const heroFallbackImage = `url('${activeBackground.local}'), url('${activeBackground.fallback}')`;
     const posterUrl = activeBackground.fallback;
     const showHeroVideo = !slideCustomBg;

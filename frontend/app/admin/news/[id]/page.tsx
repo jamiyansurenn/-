@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter, useParams } from 'next/navigation';
 import { getNewsItem, createNews, updateNews, uploadFile } from '@/lib/admin-api';
 import styles from '../../admin.module.css';
+import { getApiBaseUrl } from '@/lib/apiBase';
 
 const toSlug = (value: string) =>
   value
@@ -28,7 +29,7 @@ const resolvePreviewUrl = (value: string) => {
   const v = value.trim();
   if (!v) return '';
   if (v.startsWith('/uploads/')) {
-    const apiBase = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').replace(/\/$/, '');
+    const apiBase = getApiBaseUrl();
     return `${apiBase}${v}`;
   }
   return v;

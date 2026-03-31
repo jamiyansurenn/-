@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import styles from './admin.module.css';
+import { getApiBaseUrl } from '@/lib/apiBase';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       return !Number.isNaN(n) && n >= 5000 ? n : 45000;
     })();
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const apiUrl = getApiBaseUrl();
 
     const controller = new AbortController();
     const abortTimer = setTimeout(() => controller.abort(), authWaitMs);

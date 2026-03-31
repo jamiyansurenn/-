@@ -1,10 +1,34 @@
 'use client';
 
+import { useCallback, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Link from 'next/link';
 import AnimateOnScroll from '../AnimateOnScroll';
-import { homeAboutCollageImages } from '@/lib/imagePlaceholder';
+import { ABOUT_COLLAGE_IMAGE_CHAINS } from '@/lib/imagePlaceholder';
 import styles from '@/app/home.module.css';
+
+function AboutCollageSlot({ slot }: { slot: 0 | 1 }) {
+  const chain = ABOUT_COLLAGE_IMAGE_CHAINS[slot];
+  const len = chain.length;
+  const [idx, setIdx] = useState(0);
+  const src = chain[Math.min(idx, len - 1)];
+
+  const onError = useCallback(() => {
+    setIdx((i) => (i + 1 < len ? i + 1 : i));
+  }, [len]);
+
+  return (
+    <img
+      src={src}
+      alt=""
+      className={styles.homeAboutImg}
+      loading={slot === 0 ? 'eager' : 'lazy'}
+      decoding="async"
+      referrerPolicy="no-referrer"
+      onError={onError}
+    />
+  );
+}
 
 interface AboutSectionProps {
   companyInfo: any;
@@ -62,33 +86,19 @@ export default function AboutSection({ companyInfo: _companyInfo }: AboutSection
       <div className="container">
         <div className={styles.homeAboutGrid}>
           <AnimateOnScroll className={styles.homeAboutVisualWrap}>
-            <div className={styles.homeAboutVisual}>
-              <div className={styles.homeAboutCollage}>
-                <div className={styles.homeAboutCell}>
-                  <img
-                    src={homeAboutCollageImages[0]}
-                    alt=""
-                    className={styles.homeAboutImg}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-                <div className={styles.homeAboutCell}>
-                  <img
-                    src={homeAboutCollageImages[1]}
-                    alt=""
-                    className={styles.homeAboutImg}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
+            <div className={styles.homeAboutCollage}>
+              <div className={styles.homeAboutCell}>
+                <AboutCollageSlot slot={0} />
               </div>
-              {badge ? (
-                <div className={styles.homeAboutBadgeBar} aria-hidden>
-                  {badge}
-                </div>
-              ) : null}
+              <div className={styles.homeAboutCell}>
+                <AboutCollageSlot slot={1} />
+              </div>
             </div>
+            {badge ? (
+              <div className={styles.homeAboutBadgeBar} aria-hidden>
+                {badge}
+              </div>
+            ) : null}
           </AnimateOnScroll>
 
           <AnimateOnScroll delay={80} className={styles.homeAboutContentWrap}>

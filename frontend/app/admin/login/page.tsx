@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../admin.module.css';
+import { getApiBaseUrl } from '@/lib/apiBase';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/auth/login`, {
+      const response = await fetch(`${getApiBaseUrl()}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

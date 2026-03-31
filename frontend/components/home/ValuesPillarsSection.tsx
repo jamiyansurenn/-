@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
-import { picsum } from '@/lib/picsum';
+import { STOCK_PILLAR_IMAGES } from '@/lib/stockConstructionImages';
 import styles from '@/app/home.module.css';
 
 export default function ValuesPillarsSection() {
@@ -35,7 +35,7 @@ export default function ValuesPillarsSection() {
             >
               <div className={styles.homePillarImageWrap}>
                 <img
-                  src={picsum(item.imageSeed || `dtg-pillar-${index}`, 720, 480)}
+                  src={STOCK_PILLAR_IMAGES[index % STOCK_PILLAR_IMAGES.length]}
                   alt=""
                   loading="lazy"
                   decoding="async"

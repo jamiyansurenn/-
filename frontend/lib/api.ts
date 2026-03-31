@@ -1,11 +1,5 @@
 import axios from 'axios';
-
-// Get API URL with fallback
-const getApiUrl = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  // Remove trailing slash if present
-  return url.replace(/\/$/, '');
-};
+import { getApiBaseUrl } from './apiBase';
 
 /** Render free tier / cold starts can exceed 10s; override via NEXT_PUBLIC_API_TIMEOUT_MS */
 const getApiTimeoutMs = () => {
@@ -15,7 +9,7 @@ const getApiTimeoutMs = () => {
 };
 
 const api = axios.create({
-  baseURL: getApiUrl(),
+  baseURL: getApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
@@ -24,7 +18,7 @@ const api = axios.create({
 
 // Log API URL in development (for debugging)
 if (typeof window === 'undefined' && process.env.NODE_ENV !== 'production') {
-  console.log('API Base URL:', getApiUrl());
+  console.log('API Base URL:', getApiBaseUrl());
 }
 
 // Add response interceptor to handle errors gracefully

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { uploadFile, getHeroSettingsAdmin, updateHeroSettingsAdmin } from '@/lib/admin-api';
 import { useRouter } from 'next/navigation';
 import styles from '../admin.module.css';
+import { getApiBaseUrl } from '@/lib/apiBase';
 
 type HeroSlide = {
   title?: string;
@@ -49,7 +50,7 @@ function normalizeSettings(input: any): HeroSettingsForm {
 
 export default function HeroSettingsPage() {
   const router = useRouter();
-  const apiBase = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').replace(/\/$/, '');
+  const apiBase = getApiBaseUrl();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');

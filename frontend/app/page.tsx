@@ -12,6 +12,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
+import { shuffleArray } from '@/lib/shuffleArray';
 import styles from '@/app/home.module.css';
 
 // Force dynamic rendering to prevent build-time static generation errors
@@ -54,6 +55,8 @@ export default async function Home() {
     // This should never happen due to Promise.allSettled, but just in case
   }
 
+  const partnersShuffled = shuffleArray(partners.data ?? []);
+
   return (
     <>
       <Header />
@@ -62,7 +65,7 @@ export default async function Home() {
         <AboutSection companyInfo={companyInfo} />
         <ValuesPillarsSection />
         <ProjectsSection projects={projects.data} />
-        <PartnersStripSection partners={partners.data} />
+        <PartnersStripSection partners={partnersShuffled} />
         <NewsSection news={news.data} />
         <section className={styles.homeFeaturedSection}>
           <div className="container">
