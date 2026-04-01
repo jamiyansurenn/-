@@ -67,6 +67,8 @@ SMTP_FROM=
 - Email: `admin@moncon.mn`
 - Password: `admin123`
 
+Deploy бүр `prisma/seed` ажиллахад эдгээр хэрэглэгчид нууц үг дахин тохируулагдана (DB-д буруу hash үлдсэн үед нэвтрэхийг засна). Өөрийн үг хадгалах бол Render/серв дээр `SEED_RESET_DEFAULT_PASSWORDS=false` тохируулна.
+
 ## API Endpoints
 
 - Swagger UI: `http://localhost:3001/api`

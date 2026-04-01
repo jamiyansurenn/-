@@ -3,13 +3,25 @@ import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+/** Deploy бүрт default admin/editor нууц үгийг мэдүүлсэн hash руу тааруулна (DB-д буруу үг үлдсэн 401-ийг засна). Production дээр өөрийн үг хадгалах бол Render дээр false болгоно. */
+const resetDefaultUserPasswords = process.env.SEED_RESET_DEFAULT_PASSWORDS !== 'false';
+
 async function main() {
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 10);
 
   const admin = await prisma.user.upsert({
     where: { email: 'admin@moncon.mn' },
-    update: {},
+    update: resetDefaultUserPasswords
+      ? {
+          password: hashedPassword,
+          name: 'Admin User',
+          role: 'ADMIN',
+        }
+      : {
+          name: 'Admin User',
+          role: 'ADMIN',
+        },
     create: {
       email: 'admin@moncon.mn',
       password: hashedPassword,
@@ -22,7 +34,16 @@ async function main() {
   const editorPassword = await bcrypt.hash('editor123', 10);
   const editor = await prisma.user.upsert({
     where: { email: 'editor@moncon.mn' },
-    update: {},
+    update: resetDefaultUserPasswords
+      ? {
+          password: editorPassword,
+          name: 'Editor User',
+          role: 'EDITOR',
+        }
+      : {
+          name: 'Editor User',
+          role: 'EDITOR',
+        },
     create: {
       email: 'editor@moncon.mn',
       password: editorPassword,
