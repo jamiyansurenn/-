@@ -172,7 +172,7 @@ export const translations = {
         historyTitle: 'Түүх',
         teamTitle: 'Удирдлагын баг',
         teamLead:
-          'Гүйцэтгэл, стратеги болон зах зээлийн чиглэлийг нэгтгэсэн манай удирдлагын баг тантай урт хугацааны итгэлцлийг бий болгоно.',
+          'Гүйцэтгэл, стратегийн уялдааг хангасан удирдлагын бүтэц — ил тод, хариуцлагатай түншлэлийг бүрдүүлнэ.',
       },
       history: {
         title: 'Түүхэн замнал',
@@ -435,7 +435,7 @@ export const translations = {
         historyTitle: 'History',
         teamTitle: 'Leadership',
         teamLead:
-          'Our leadership brings together operations, strategy, and market vision — built for long-term trust.',
+          'Leadership aligned with delivery and strategy — transparent partnerships you can rely on.',
       },
       history: {
         title: 'History',

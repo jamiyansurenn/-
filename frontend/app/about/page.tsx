@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
 import leadershipStyles from '@/app/about/aboutLeadership.module.css';
+import contentStyles from '@/app/about/aboutContent.module.css';
 
 // Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
@@ -80,130 +81,148 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        <section>
-            <div className="container">
-              <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-                {aboutBlocks.aboutUs && (
-                  <AnimateOnScroll delay={100}>
-                    <div style={{ marginBottom: '3rem' }}>
-                      <h2 style={{ marginBottom: '1.5rem' }}>{t.pages.about.title}</h2>
-                      <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {aboutBlocks.aboutUs}
-                      </p>
-                    </div>
-                  </AnimateOnScroll>
-                )}
+        <section className={contentStyles.section}>
+          <div className="container">
+            {aboutBlocks.aboutUs && (
+              <AnimateOnScroll delay={80}>
+                <div className={contentStyles.introBlock}>
+                  {ha.introEyebrow ? (
+                    <p className={contentStyles.introEyebrow}>{ha.introEyebrow}</p>
+                  ) : null}
+                  {ha.brandLine ? <p className={contentStyles.introBrand}>{ha.brandLine}</p> : null}
+                  <h2 className={contentStyles.introTitle}>{t.pages.about.title}</h2>
+                  <p className={contentStyles.introBody}>{aboutBlocks.aboutUs}</p>
+                </div>
+              </AnimateOnScroll>
+            )}
 
-                {aboutBlocks.vision && (
-                  <AnimateOnScroll delay={200}>
-                    <div style={{ marginBottom: '3rem' }}>
-                      <h2 style={{ marginBottom: '1.5rem' }}>{t.home.about.visionTitle}</h2>
-                      <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {aboutBlocks.vision}
-                      </p>
-                    </div>
-                  </AnimateOnScroll>
-                )}
-
-                {aboutBlocks.mission && (
-                  <AnimateOnScroll delay={300}>
-                    <div style={{ marginBottom: '3rem' }}>
-                      <h2 style={{ marginBottom: '1.5rem' }}>{t.home.about.missionTitle}</h2>
-                      <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {aboutBlocks.mission}
-                      </p>
-                    </div>
-                  </AnimateOnScroll>
-                )}
-
-                {aboutBlocks.values && (
-                  <AnimateOnScroll delay={400}>
-                    <div style={{ marginBottom: '3rem' }}>
-                      <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.valuesTitle || 'Үнэт зүйлс'}</h2>
-                      <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {aboutBlocks.values}
-                      </p>
-                    </div>
-                  </AnimateOnScroll>
-                )}
-
-                <AnimateOnScroll delay={450}>
-                  <div style={{ marginBottom: '3rem' }}>
-                    <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.serviceHighlightsTitle || 'Үндсэн чиглэлүүд'}</h2>
-                    <div
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                        gap: '0.9rem',
-                      }}
-                    >
-                      {serviceHighlights.map((item: string, index: number) => (
-                        <div
-                          key={item}
-                          style={{
-                            border: '1px solid rgba(13, 27, 42, 0.08)',
-                            borderRadius: '10px',
-                            padding: '0.9rem 1rem',
-                            background: index % 2 === 0 ? '#fff' : '#fafafa',
-                            fontWeight: 600,
-                            color: 'var(--text-dark)',
-                          }}
-                        >
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </AnimateOnScroll>
-
-                <AnimateOnScroll delay={500}>
-                  <div style={{ marginBottom: '3rem' }}>
-                    <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.galleryTitle || 'Бүтээн байгуулалтын зураг'}</h2>
-                    <div
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                        gap: '1rem',
-                      }}
-                    >
-                      {[0, 1, 2, 3, 4, 5].map((i) => (
-                        <div
-                          key={i}
-                          style={{
-                            position: 'relative',
-                            width: '100%',
-                            height: '170px',
-                            borderRadius: '12px',
-                            overflow: 'hidden',
-                            boxShadow: '0 6px 18px rgba(0,0,0,0.08)',
-                          }}
-                        >
-                          <Image
-                            src={getImageUrl(undefined, i % 2 === 0 ? 'construction' : 'building', i)}
-                            alt={`${tx.pages?.about?.galleryImageAlt || 'Бүтээн байгуулалтын зураг'} ${i + 1}`}
-                            fill
-                            style={{ objectFit: 'cover' }}
-                            sizes="(max-width: 768px) 100vw, 33vw"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </AnimateOnScroll>
-
-                {aboutBlocks.history && (
-                  <AnimateOnScroll delay={550}>
-                    <div>
-                      <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.historyTitle || 'Түүх'}</h2>
-                      <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {aboutBlocks.history}
-                      </p>
-                    </div>
-                  </AnimateOnScroll>
-                )}
+            {(aboutBlocks.vision || aboutBlocks.mission || aboutBlocks.values) && (
+              <div className={`${contentStyles.subSectionsWrap} ${contentStyles.pillarSection}`}>
+                <div className={contentStyles.pillarGrid}>
+                  {aboutBlocks.vision && (
+                    <AnimateOnScroll delay={120}>
+                      <article className={contentStyles.pillarCard}>
+                        <h3 className={contentStyles.pillarTitle}>{t.home.about.visionTitle}</h3>
+                        <p className={contentStyles.pillarBody}>{aboutBlocks.vision}</p>
+                      </article>
+                    </AnimateOnScroll>
+                  )}
+                  {aboutBlocks.mission && (
+                    <AnimateOnScroll delay={180}>
+                      <article className={contentStyles.pillarCard}>
+                        <h3 className={contentStyles.pillarTitle}>{t.home.about.missionTitle}</h3>
+                        <p className={contentStyles.pillarBody}>{aboutBlocks.mission}</p>
+                      </article>
+                    </AnimateOnScroll>
+                  )}
+                  {aboutBlocks.values && (
+                    <AnimateOnScroll delay={240}>
+                      <article className={contentStyles.pillarCard}>
+                        <h3 className={contentStyles.pillarTitle}>
+                          {tx.pages?.about?.valuesTitle || 'Үнэт зүйлс'}
+                        </h3>
+                        <p className={contentStyles.pillarBody}>{aboutBlocks.values}</p>
+                      </article>
+                    </AnimateOnScroll>
+                  )}
+                </div>
               </div>
+            )}
+
+            <div className={contentStyles.subSectionsWrap}>
+              <AnimateOnScroll delay={300}>
+                <div style={{ marginBottom: '3rem' }}>
+                  <h2
+                    style={{
+                      marginBottom: '1.5rem',
+                      fontSize: 'clamp(1.35rem, 2.5vw, 1.65rem)',
+                      fontWeight: 800,
+                      color: 'var(--text-dark, #0d1b2a)',
+                    }}
+                  >
+                    {tx.pages?.about?.serviceHighlightsTitle || 'Үндсэн чиглэлүүд'}
+                  </h2>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                      gap: '0.9rem',
+                    }}
+                  >
+                    {serviceHighlights.map((item: string, index: number) => (
+                      <div
+                        key={item}
+                        style={{
+                          border: '1px solid rgba(13, 27, 42, 0.08)',
+                          borderRadius: '10px',
+                          padding: '0.9rem 1rem',
+                          background: index % 2 === 0 ? '#fff' : '#fafafa',
+                          fontWeight: 600,
+                          color: 'var(--text-dark)',
+                        }}
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </AnimateOnScroll>
+
+              <AnimateOnScroll delay={360}>
+                <div style={{ marginBottom: aboutBlocks.history ? '3rem' : '2rem' }}>
+                  <h2
+                    style={{
+                      marginBottom: '1.5rem',
+                      fontSize: 'clamp(1.35rem, 2.5vw, 1.65rem)',
+                      fontWeight: 800,
+                      color: 'var(--text-dark, #0d1b2a)',
+                    }}
+                  >
+                    {tx.pages?.about?.galleryTitle || 'Бүтээн байгуулалтын зураг'}
+                  </h2>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                      gap: '1rem',
+                    }}
+                  >
+                    {[0, 1, 2, 3, 4, 5].map((i) => (
+                      <div
+                        key={i}
+                        style={{
+                          position: 'relative',
+                          width: '100%',
+                          height: '170px',
+                          borderRadius: '12px',
+                          overflow: 'hidden',
+                          boxShadow: '0 6px 18px rgba(0,0,0,0.08)',
+                        }}
+                      >
+                        <Image
+                          src={getImageUrl(undefined, i % 2 === 0 ? 'construction' : 'building', i)}
+                          alt={`${tx.pages?.about?.galleryImageAlt || 'Бүтээн байгуулалтын зураг'} ${i + 1}`}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </AnimateOnScroll>
             </div>
-          </section>
+
+            {aboutBlocks.history && (
+              <AnimateOnScroll delay={420}>
+                <div className={contentStyles.introBlock} style={{ marginBottom: 0 }}>
+                  <h2 className={contentStyles.introTitle}>{tx.pages?.about?.historyTitle || 'Түүх'}</h2>
+                  <p className={contentStyles.introBody}>{aboutBlocks.history}</p>
+                </div>
+              </AnimateOnScroll>
+            )}
+          </div>
+        </section>
 
         {teamMembers.data && teamMembers.data.length > 0 && (
           <section className={leadershipStyles.leadershipSection}>
