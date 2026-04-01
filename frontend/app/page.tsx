@@ -1,18 +1,16 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { getCompanyInfo, getProjects, getNews, getPartners } from '@/lib/api';
+import { getCompanyInfo, getProjects, getNews } from '@/lib/api';
 import HeroSection from '@/components/home/HeroSection';
 import AboutSection from '@/components/home/AboutSection';
 import ValuesPillarsSection from '@/components/home/ValuesPillarsSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
-import PartnersStripSection from '@/components/home/PartnersStripSection';
 import NewsSection from '@/components/home/NewsSection';
 import LocationSection from '@/components/home/LocationSection';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
-import { shuffleArray } from '@/lib/shuffleArray';
 import styles from '@/app/home.module.css';
 
 // Force dynamic rendering to prevent build-time static generation errors
@@ -26,7 +24,6 @@ export default async function Home() {
   let companyInfo: { data: any } = { data: null };
   let projects: { data: any[] } = { data: [] };
   let news: { data: any[] } = { data: [] };
-  let partners: { data: any[] } = { data: [] };
 
   try {
     // Use Promise.allSettled to ensure all promises complete
@@ -34,7 +31,6 @@ export default async function Home() {
       getCompanyInfo().catch(() => ({ data: null })),
       getProjects(true).catch(() => ({ data: [] })),
       getNews(true, 9).catch(() => ({ data: [] })),
-      getPartners().catch(() => ({ data: [] })),
     ]);
 
     // Safely extract data from each result
@@ -47,15 +43,10 @@ export default async function Home() {
     if (results[2].status === 'fulfilled') {
       news = results[2].value || { data: [] };
     }
-    if (results[3].status === 'fulfilled') {
-      partners = results[3].value || { data: [] };
-    }
   } catch (error) {
     // Final safety net - page will render with empty data
     // This should never happen due to Promise.allSettled, but just in case
   }
-
-  const partnersShuffled = shuffleArray(partners.data ?? []);
 
   return (
     <>
@@ -65,7 +56,6 @@ export default async function Home() {
         <AboutSection companyInfo={companyInfo} />
         <ValuesPillarsSection />
         <ProjectsSection projects={projects.data} />
-        <PartnersStripSection partners={partnersShuffled} />
         <NewsSection news={news.data} />
         <section className={styles.homeFeaturedSection}>
           <div className="container">
