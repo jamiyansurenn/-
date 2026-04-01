@@ -1,0 +1,175 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(320px, 52vh, 520px);
+  padding: clamp(5rem, 12vw, 10rem) 0 clamp(3.5rem, 8vw, 5rem);
+  background-size: cover;
+  background-position: center 22%;
+  background-repeat: no-repeat;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    115deg,
+    rgba(13, 27, 42, 0.82) 0%,
+    rgba(13, 27, 42, 0.45) 45%,
+    rgba(224, 142, 109, 0.12) 100%
+  );
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  max-width: 40rem;
+}
+
+.heroEyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 0.65rem;
+}
+
+.heroTitle {
+  font-size: clamp(1.85rem, 4.2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #fff;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.heroSubtitle {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.55;
+  color: rgba(248, 250, 252, 0.92);
+  margin: 0;
+  font-weight: 500;
+}
+
+.contentSection {
+  padding: clamp(3.5rem, 8vw, 5.5rem) 0;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: start;
+}
+
+.photoCard {
+  position: relative;
+  border-radius: var(--radius-lg, 16px);
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  max-height: 640px;
+  box-shadow:
+    0 4px 6px -1px rgba(13, 27, 42, 0.07),
+    0 20px 40px -12px rgba(13, 27, 42, 0.18);
+  border: 1px solid rgba(13, 27, 42, 0.06);
+}
+
+.photoCaption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 1.5rem 1.35rem 1.25rem;
+  background: linear-gradient(to top, rgba(13, 27, 42, 0.88), transparent);
+}
+
+.photoName {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem;
+  letter-spacing: 0.01em;
+}
+
+.photoRole {
+  color: rgba(252, 211, 195, 0.95);
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.messageCard {
+  background: #fff;
+  padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: var(--radius-lg, 16px);
+  border: 1px solid rgba(13, 27, 42, 0.06);
+  box-shadow: 0 12px 40px -16px rgba(13, 27, 42, 0.12);
+  position: relative;
+}
+
+.quoteAccent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  border-radius: 4px 0 0 4px;
+  background: linear-gradient(180deg, var(--primary-orange, #e08e6d), rgba(224, 142, 109, 0.35));
+}
+
+.greeting {
+  margin: 0 0 1.5rem;
+  padding-left: 0.85rem;
+  font-size: clamp(1.35rem, 2.8vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-dark, #0d1b2a);
+  letter-spacing: -0.02em;
+}
+
+.body {
+  padding-left: 0.85rem;
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: var(--text-medium, #475569);
+}
+
+.body p {
+  margin: 0 0 1.15rem;
+}
+
+.body p:last-of-type {
+  margin-bottom: 0;
+}
+
+.signoff {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  padding-left: 0.85rem;
+}
+
+.signoffClosing {
+  font-weight: 600;
+  color: var(--text-light, #64748b);
+  font-size: 0.92rem;
+  margin: 0 0 0.35rem;
+}
+
+.signoffName {
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--text-dark, #0d1b2a);
+  margin: 0 0 0.15rem;
+  letter-spacing: 0.02em;
+}
+
+.signoffRole {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--primary-orange, #e08e6d);
+  margin: 0;
+}

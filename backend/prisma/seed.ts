@@ -129,6 +129,51 @@ async function main() {
     });
   }
 
+  const leadershipTeam = [
+    {
+      id: '11111111-1111-4111-8111-111111110001',
+      name: 'Б. Бат-Эрдэнэ',
+      position: 'Ерөнхий захирал',
+      bio: 'Төслийн гүйцэтгэл, аюулгүй байдал, чанарын стандартыг талбай дээр бодитой хэрэгжүүлэхэд манлайлдаг.',
+      image: '/images/team/ceo-construction.png',
+      order: 1,
+      status: 'PUBLISHED' as const,
+    },
+    {
+      id: '11111111-1111-4111-8111-111111110002',
+      name: 'О. Номин-Эрдэнэ',
+      position: 'Маркетингийн захирал',
+      bio: 'Брэнд, харилцагчийн туршлагыг сайжруулах стратеги болон олон сувагт харилцааг хариуцдаг.',
+      image: '/images/team/marketing-director.png',
+      order: 2,
+      status: 'PUBLISHED' as const,
+    },
+    {
+      id: '11111111-1111-4111-8111-111111110003',
+      name: 'Г. Энхбаатар',
+      position: 'Захирал',
+      bio: 'Компанийн урт хугацааны чиг хандлага, үнэт зүйлийг тодорхойлж, түншлэлээ бэхжүүлнэ.',
+      image: '/images/team/director.png',
+      order: 3,
+      status: 'PUBLISHED' as const,
+    },
+  ];
+
+  for (const m of leadershipTeam) {
+    await prisma.teamMember.upsert({
+      where: { id: m.id },
+      update: {
+        name: m.name,
+        position: m.position,
+        bio: m.bio,
+        image: m.image,
+        order: m.order,
+        status: m.status,
+      },
+      create: m,
+    });
+  }
+
   // Create sample news
   const newsItems = [
     {

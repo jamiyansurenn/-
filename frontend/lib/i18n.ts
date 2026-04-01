@@ -165,7 +165,9 @@ export const translations = {
         galleryTitle: 'Бүтээн байгуулалтын зураг',
         galleryImageAlt: 'Бүтээн байгуулалтын зураг',
         historyTitle: 'Түүх',
-        teamTitle: 'Манай баг',
+        teamTitle: 'Удирдлагын баг',
+        teamLead:
+          'Гүйцэтгэл, стратеги болон зах зээлийн чиглэлийг нэгтгэсэн манай удирдлагын баг тантай урт хугацааны итгэлцлийг бий болгоно.',
       },
       history: {
         title: 'Түүхэн замнал',
@@ -193,14 +195,19 @@ export const translations = {
       },
       director: {
         title: 'Захирлын мэндчилгээ',
-        subtitle: 'Ерөнхий захирал',
-        greeting: 'Эрхэм хүндэт бизнесийн түнш харилцагч та бүхнийхээ амар амгаланг эрэн мэндчилье.',
-        paragraph1: 'Бид хэрэглэгч, захиалагчдын эрэлт хэрэгцээнд тулгуурлан өнгө үзэмж, чанар технологийн шаардлагад бүрэн нийцсэн дээд зэргийн тав тух сайтай барилгын иж бүрэн ажлыг гүйцэтгэхийг зорьж ажилладаг.',
-        paragraph2: 'Орчин үеийн дэвшилтэт технологи дээр суурилсан өндөр чанартай барилгын материалыг барилгадаа ашиглах нь барилгын насыг уртасгаж цаг хугацааг та бидэнд өгдөг давуу талтай байдагт үргэлж санал нийлдэг.',
-        paragraph3: 'БИД ХАМТДАА ХӨГЖЬЕ, ХАМТДАА БҮТЭЭЕ',
+        subtitle: '«Даацын цамхаг» группийн үнэт зүйл, ирээдүйн чиглэл',
+        heroEyebrow: 'Захирлын мэндчилгээ',
+        greeting: 'Эрхэм харилцагч, түнш нараа энэ өдрийн мэндийг хүргэе.',
+        paragraph1:
+          'Манай компани орон сууц, инженерийн дэд бүтцийг чанар, аюулгүй байдал, хугацаанд нийцүүлэн бүтээхэд гол анхаарлаа хандуулдаг. Таны итгэл найдвар бол бидний хөгжлийн утга учир бөгөөд бүтээж буй бүх төсөлдээ мэргэжлийн ёс зүйг чанд баримтална.',
+        paragraph2:
+          'Бид дэвшилтэт технологи, орчин үеийн барилгын материалыг үйл ажиллагаандаа нэвтрүүлж, урт настай, энергийн хэмнэлттэй орон зайг бий болгоход ажиллаж байна. Хамтран ажиллах явцад нээлттэй харилцаа, тодорхой гэрээний зарчмыг эрхэмлэнэ.',
+        paragraph3:
+          '«Хамтдаа хөгжье, хамтдаа бүтээгээрэй» — энэ уриа дор таны төслийн амжилт бидний хамтын амжилт юм.',
         paragraph4: '',
-        closing: 'Ерөнхий захирал',
-        signature: 'Г.ЭНХБААТАР',
+        closing: 'Хүндэтгэсөн,',
+        signature: 'Г. Энхбаатар',
+        roleLine: 'Захирал',
       },
       projects: {
         title: 'Хийсэн ажилууд',
@@ -419,7 +426,9 @@ export const translations = {
         galleryTitle: 'Construction Gallery',
         galleryImageAlt: 'Construction image',
         historyTitle: 'History',
-        teamTitle: 'Our Team',
+        teamTitle: 'Leadership',
+        teamLead:
+          'Our leadership brings together operations, strategy, and market vision — built for long-term trust.',
       },
       history: {
         title: 'History',
@@ -436,15 +445,20 @@ export const translations = {
         ]
       },
       director: {
-        title: "Director's Message",
-        subtitle: "Our company director's greeting",
-        greeting: 'Dear customers and partners, we address you with this greeting',
-        paragraph1: 'Our "DAATSIN TSAMKHAG Group" LLC has been continuously operating in the construction and installation sector since 2009, contributing to the development of our country.',
-        paragraph2: 'We focus on providing reliable and high-quality services to all our customers using modern technology, a professional team, and quality materials.',
-        paragraph3: 'In addition to construction and installation work, our company also provides installation, maintenance, and rental services for equipment such as tower cranes and bridge cranes.',
-        paragraph4: 'We are ready to work with you and grow together. Please share any suggestions or questions with us.',
-        closing: 'We wish you success!',
-        signature: 'Director of DAATSIN TSAMKHAG Group LLC',
+        title: "Director's message",
+        subtitle: 'Our values and direction at DAATSIN TSAMKHAG Group',
+        heroEyebrow: "Director's message",
+        greeting: 'Dear partners and clients, warm greetings to you.',
+        paragraph1:
+          'We focus on residential and engineering projects delivered with quality, safety, and schedule discipline. Your trust is the foundation of our work, and we uphold professional ethics on every project we build.',
+        paragraph2:
+          'We adopt modern methods and materials to create durable, more efficient spaces. In every partnership we value transparency, clear agreements, and steady communication.',
+        paragraph3:
+          'Under the spirit of “grow together, build together,” we are committed to supporting your project from start to finish.',
+        paragraph4: '',
+        closing: 'With respect,',
+        signature: 'G. Enkhbat',
+        roleLine: 'Director',
       },
       projects: {
         title: 'Completed Projects',
@@ -654,8 +668,10 @@ export const translations = {
         paragraph2: '我们专注于使用现代技术、专业团队和优质材料，为所有客户提供可靠、高质量的服务。',
         paragraph3: '除了建筑安装工作外，我们公司还提供塔式起重机、桥式起重机等设备的安装、维护和租赁服务。',
         paragraph4: '我们准备与您合作，共同成长。请与我们分享任何建议或问题。',
-        closing: '我们祝您成功！',
-        signature: '达茨因察姆哈格集团有限公司董事',
+        closing: '此致，敬礼',
+        signature: 'G. 恩赫巴特',
+        heroEyebrow: '董事致辞',
+        roleLine: '董事',
       },
       projects: {
         title: '已完成项目',
@@ -846,8 +862,10 @@ export const translations = {
         paragraph2: 'Мы специализируемся на...',
         paragraph3: 'Кроме строительства мы...',
         paragraph4: 'Мы готовы работать с вами...',
-        closing: 'Желаем успехов!',
-        signature: 'Директор Группы',
+        closing: 'С уважением,',
+        signature: 'Г. Энхбат',
+        heroEyebrow: 'Послание директора',
+        roleLine: 'Директор',
       },
       projects: {
         title: 'Завершенные проекты',
@@ -1039,8 +1057,10 @@ export const translations = {
         paragraph2: '最新の技術と専門チームで...',
         paragraph3: '建設だけでなく、クレーンの...',
         paragraph4: '皆様からのご提案をお待ちしています...',
-        closing: '皆様の成功をお祈り申し上げます！',
-        signature: '取締役',
+        closing: '敬具',
+        signature: 'G. エンフバト',
+        heroEyebrow: '取締役からのメッセージ',
+        roleLine: '取締役',
       },
       projects: {
         title: '完了したプロジェクト',
@@ -1231,8 +1251,10 @@ export const translations = {
         paragraph2: '최신 기술과 전문 팀...',
         paragraph3: '건설뿐만 아니라 크레인 등의...',
         paragraph4: '의견이나 질문을 공유해 주세요...',
-        closing: '성공을 기원합니다!',
-        signature: '대표 책임자',
+        closing: '감사합니다.',
+        signature: 'G. 엔크바트',
+        heroEyebrow: 'CEO 인사말',
+        roleLine: '이사',
       },
       projects: {
         title: '완료된 프로젝트',

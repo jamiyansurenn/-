@@ -224,9 +224,27 @@ export const getNewsBySlug = async (slug: string) => {
 
 export const getTeamMembers = async () => {
   const fallbackTeam = [
-    { id: 1, name: 'Б. Бат-Эрдэнэ', position: 'Ерөнхий Захирал', bio: 'Салбартаа 20 гаруй жил ажилласан туршлагатай.' },
-    { id: 2, name: 'Д. Оюун', position: 'Хүний нөөцийн захирал', bio: 'Багийн үнэт зүйлийг бүрдүүлэхэд гол анхаарлаа хандуулан ажилладаг.' },
-    { id: 3, name: 'Г. Мөнхбат', position: 'Ерөнхий Инженер', bio: 'Тоног төхөөрөмжийн найдвартай, аюулгүй байдлыг бүрэн хариуцдаг.' }
+    {
+      id: 'local-ceo',
+      name: 'Б. Бат-Эрдэнэ',
+      position: 'Ерөнхий захирал',
+      bio: 'Төслийн гүйцэтгэл, аюулгүй байдал, чанарын стандартыг талбай дээр бодитой хэрэгжүүлэхэд манлайлдаг.',
+      image: '/images/team/ceo-construction.png',
+    },
+    {
+      id: 'local-marketing',
+      name: 'О. Номин-Эрдэнэ',
+      position: 'Маркетингийн захирал',
+      bio: 'Брэнд, харилцагчийн туршлагыг сайжруулах стратеги болон олон сувагт харилцааг хариуцдаг.',
+      image: '/images/team/marketing-director.png',
+    },
+    {
+      id: 'local-director',
+      name: 'Г. Энхбаатар',
+      position: 'Захирал',
+      bio: 'Компанийн урт хугацааны чиг хандлага, үнэт зүйлийг тодорхойлж, түншлэлээ бэхжүүлнэ.',
+      image: '/images/team/director.png',
+    },
   ];
   try {
     const response = await api.get('/team-members/public');

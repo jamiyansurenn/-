@@ -5,6 +5,7 @@ import { getCompanyInfo, getTeamMembers } from '@/lib/api';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
+import leadershipStyles from '@/app/about/aboutLeadership.module.css';
 
 // Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
@@ -197,41 +198,39 @@ export default async function AboutPage() {
         )}
 
         {teamMembers.data && teamMembers.data.length > 0 && (
-          <section style={{ background: '#fafafa' }}>
+          <section className={leadershipStyles.leadershipSection}>
             <div className="container">
-              <AnimateOnScroll>
-                <h2 className="section-title">{tx.pages?.about?.teamTitle || 'Манай баг'}</h2>
-              </AnimateOnScroll>
-              <div className="grid">
+              <header className={leadershipStyles.sectionHeader}>
+                <AnimateOnScroll>
+                  <h2 className={leadershipStyles.sectionTitle}>
+                    {tx.pages?.about?.teamTitle || 'Удирдлагын баг'}
+                  </h2>
+                  {tx.pages?.about?.teamLead ? (
+                    <p className={leadershipStyles.sectionLead}>{tx.pages.about.teamLead}</p>
+                  ) : null}
+                </AnimateOnScroll>
+              </header>
+              <div className={leadershipStyles.grid}>
                 {teamMembers.data.map((member: any, index: number) => {
                   const imageUrl = getImageUrl(member.image, 'team', index);
                   return (
                     <AnimateOnScroll key={member.id} delay={index * 100}>
-                      <div className="card" style={{ textAlign: 'center' }}>
-                        <div style={{
-                          position: 'relative',
-                          width: '150px',
-                          height: '150px',
-                          borderRadius: '50%',
-                          margin: '1.5rem auto',
-                          overflow: 'hidden',
-                        }}>
+                      <article className={leadershipStyles.card}>
+                        <div className={leadershipStyles.photoWrap}>
                           <Image
                             src={imageUrl}
                             alt={member.name}
                             fill
-                            style={{ objectFit: 'cover' }}
-                            sizes="150px"
+                            style={{ objectFit: 'cover', objectPosition: index === 1 ? 'center 15%' : 'center center' }}
+                            sizes="(max-width: 768px) 100vw, 320px"
                           />
                         </div>
-                        <div style={{ padding: '1.5rem' }}>
-                          <h3 style={{ marginBottom: '0.5rem' }}>{member.name}</h3>
-                          <p style={{ color: 'var(--primary-orange, #FF6B35)', marginBottom: '1rem', fontWeight: '500' }}>
-                            {member.position}
-                          </p>
-                          {member.bio && <p style={{ color: '#666', fontSize: '0.9rem' }}>{member.bio}</p>}
+                        <div className={leadershipStyles.cardBody}>
+                          <h3 className={leadershipStyles.name}>{member.name}</h3>
+                          <p className={leadershipStyles.position}>{member.position}</p>
+                          {member.bio ? <p className={leadershipStyles.bio}>{member.bio}</p> : null}
                         </div>
-                      </div>
+                      </article>
                     </AnimateOnScroll>
                   );
                 })}
