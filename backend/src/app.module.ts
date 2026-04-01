@@ -14,6 +14,7 @@ import { UploadModule } from './upload/upload.module';
 import { HeroSettingsModule } from './hero-settings/hero-settings.module';
 import { CareersModule } from './careers/careers.module';
 import { PagesModule } from './pages/pages.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { PagesModule } from './pages/pages.module';
     HeroSettingsModule,
     CareersModule,
     PagesModule,
+    HealthModule,
   ],
 })
 export class AppModule {}

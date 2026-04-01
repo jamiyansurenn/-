@@ -7,6 +7,9 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.enableShutdownHooks();
+  app.set('trust proxy', 1);
+  app.disable('x-powered-by');
 
   // Serve static files
   // Serve files from backend/uploads (same directory UploadService writes to).
@@ -41,14 +44,16 @@ async function bootstrap() {
   );
 
   // Swagger API documentation
-  const config = new DocumentBuilder()
-    .setTitle('ДААЦЫН ЦАМХАГ API')
-    .setDescription('Corporate website API')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  if (process.env.ENABLE_SWAGGER === 'true' || process.env.NODE_ENV !== 'production') {
+    const config = new DocumentBuilder()
+      .setTitle('ДААЦЫН ЦАМХАГ API')
+      .setDescription('Corporate website API')
+      .setVersion('1.0')
+      .addBearerAuth()
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document);
+  }
 
   const port = process.env.PORT || 3001;
   await app.listen(port);
