@@ -47,7 +47,7 @@ export default function LocationSection() {
             <div className={styles.locationCard}>
               <div className={styles.locationImageWrap} aria-hidden="true">
                 <Image
-                  src="/images/projects/hos_tsamhag.jpeg"
+                  src="/images/projects/hos_tsamhag.png"
                   alt=""
                   fill
                   className={styles.locationImage}

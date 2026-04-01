@@ -10,7 +10,7 @@ export { ABOUT_COLLAGE_IMAGE_CHAINS };
 
 /** Local assets when you add files under public/ */
 const local = {
-  hos: '/images/projects/hos_tsamhag.jpeg',
+  hos: '/images/projects/hos_tsamhag.png',
   b7: '/images/projects/b7.png',
 };
 

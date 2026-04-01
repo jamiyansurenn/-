@@ -98,7 +98,7 @@ async function main() {
       title: 'Хос Цамхаг Апартмент',
       description: 'Эрдэнэт хотод баригдаж буй 12 давхар бүхий орчин үеийн цогцолбор',
       content: 'Орчин үеийн хэв маягийг илтгэсэн Хос Цамхаг апартмент нь оршин суугчдын тав тухыг бүрэн хангасан, европ стандартын материал бүхий тансаг зэрэглэлийн хуучин болон шинэ хотын төвд байршилтай төсөл юм.',
-      image: '/images/projects/hos_tsamhag.jpeg',
+      image: '/images/projects/hos_tsamhag.png',
       slug: 'hos-tsamhag',
       status: 'PUBLISHED',
       featured: true,
