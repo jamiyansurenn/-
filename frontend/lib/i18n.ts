@@ -93,9 +93,9 @@ export const translations = {
           'Бид Монголын бүтээн байгуулалтад бодитой хувь нэмэр оруулж, харилцагч таны итгэлийг ажил хэргээр баталгаажуулна.\n\nБид юу хийдэг вэ?\n\nБарилга угсралт\n• Улаанбаатар хот — Шинэ Амгалан цогцолбор хорооллын 4-р болон 6-р ээлжийн төслүүд\n• Эрдэнэт — «Хос Цамхаг» апартмент: 128 айлын 2 блок орон сууц\n\nГазо хөнгөн блок\n• Улаанбаатар — Бэлх дахь үйлдвэр (утас: 9992-1096)\n• Эрдэнэт — үйлдвэр (9955-0933)\n• Завхан аймаг — үйлдвэр\n\nТавилгын үйлдвэр — утас: 7766-0933, 8058-0933, 8011-4447\n\nЦамхагт краны нэгдсэн эксперт үйлчилгээ — 7766-0933\n\nАвто болон суурин помпын үйлчилгээ — 7766-0933\n\nЦахилгаан шат, урсдаг шат нийлүүлэлт — 7766-0933\n\nЭБА төв — 7766-0933\n• Фитнесс, спиннинг төв\n• Авто угаалга\n• Автомат хувцас угаалга\n\nАмралтын газар — Завхан аймаг, Тосонцэнгэл сумд байрладаг.',
         missionTitle: 'Зорилго',
         mission:
-          'Аюулгүй ажиллагаа, чанар, хугацааны төлөвлөгөөг эрхэмлэн харилцагчдад найдвартай, урт настай бүтээгдэхүүн, үйлчилгээг хүргэх. Дэвшилтэт шийдэл, ёс зүйтэй харилцааар түншлэлээ бэхжүүлнэ.',
+          'Манай компанийн зорилго нь барилгын салбарт чанар, аюулгүй байдал, орчин үеийн шийдлийг нэвтрүүлсэн бүтээн байгуулалтыг хэрэгжүүлж, иргэдийг тав тухтай, аюулгүй орон сууц, барилга байгууламжаар хангах явдал юм.\n\nБид Улаанбаатар хот болон орон нутагт орон сууц, үйлдвэрлэл, барилгын угсралт, барилгын материалын нийлүүлэлт, цамхагт краны үйлчилгээ зэрэг чиглэлээр тогтвортой үйл ажиллагаа явуулж, салбартаа найдвартай, хариуцлагатай компани байхыг зорин ажиллаж байна.',
         values:
-          'Чанар, стандарт — салбарын шаардлагыг чанд мөрдөнө.\n\nАюулгүй байдал — ажилтнууд, оршин суугчдын эрүүл мэнд, ажлын талбайн аюулгүй байдлыг эхний байранд тавина.\n\nИтгэлцэл, ил тод байдал — гэрээ, үнийн нөхцөл, ажлын явцад нухацтай, нээлттэй хандах.\n\nТогтвортой хөгжил — орон нутаг, нийгэмд урт хугацааны үр өгөөжтэй төсөл, үйлчилгээг сонгон хөгжүүлнэ.',
+          '• Чанар\n• Аюулгүй байдал\n• Хариуцлага\n• Итгэлцэл\n• Харилцагчийн сэтгэл ханамж\n• Шударга, ил тод үйл ажиллагаа\n• Багийн ажиллагаа\n• Тогтвортой хөгжил\n• Шинэ санаа, инноваци\n• Хамтдаа хөгжих зарчим\n\nМанай компанийн үнэт зүйлс нь чанар, аюулгүй байдал, хариуцлага, харилцагчийн сэтгэл ханамж, багийн ажиллагаа, шударга ил тод үйл ажиллагаа, тогтвортой хөгжилд суурилсан зарчим юм. Бид хамтдаа хөгжиж, хамтдаа бүтээх зорилготойгоор үйл ажиллагаагаа явуулдаг.',
         introEyebrow: 'Товч танилцуулга',
         brandLine: 'ДААЦЫН ЦАМХАГ ГРУПП',
         experienceBadge: '14+ ЖИЛИЙН ТУРШЛАГА',
@@ -356,9 +356,10 @@ export const translations = {
         visionTitle: 'Vision',
         vision: 'We aim to be a valuable contributor to the development of Mongolia, a leader in our industry, and a trusted partner for our customers.',
         missionTitle: 'Mission',
-        mission: 'Prioritizing safety and quality, we deliver reliable services to our customers using modern advanced technology.',
+        mission:
+          'Our mission is to deliver construction that embeds quality, safety, and modern solutions, and to provide residents with comfortable, secure housing and buildings.\n\nWe operate steadily in housing, manufacturing, construction, building materials supply, and tower crane services in Ulaanbaatar and rural areas, striving to be a reliable and accountable industry partner.',
         values:
-          'Quality & standards — we rigorously follow industry requirements.\n\nSafety — we put the health of our people and safe job sites first.\n\nTrust & transparency — we are clear and accountable in contracts and delivery.\n\nSustainable development — we pursue projects that create long-term value.',
+          '• Quality\n• Safety\n• Accountability\n• Trust\n• Customer satisfaction\n• Fair, transparent operations\n• Teamwork\n• Sustainable development\n• Innovation\n• Growing together\n\nOur values rest on quality, safety, accountability, customer satisfaction, teamwork, transparency, and sustainable development. We run our business with the aim to grow and build together.',
         introEyebrow: 'Introduction',
         brandLine: 'DAATSIINTSAMKHAG GROUP',
         experienceBadge: '14+ YEARS OF EXPERIENCE',

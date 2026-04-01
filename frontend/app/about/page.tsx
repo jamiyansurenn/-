@@ -131,36 +131,13 @@ export default async function AboutPage() {
 
             <div className={contentStyles.subSectionsWrap}>
               <AnimateOnScroll delay={300}>
-                <div style={{ marginBottom: '3rem' }}>
-                  <h2
-                    style={{
-                      marginBottom: '1.5rem',
-                      fontSize: 'clamp(1.35rem, 2.5vw, 1.65rem)',
-                      fontWeight: 800,
-                      color: 'var(--text-dark, #0d1b2a)',
-                    }}
-                  >
+                <div className={contentStyles.serviceHighlightsBlock}>
+                  <h2 className={contentStyles.sectionHeading}>
                     {tx.pages?.about?.serviceHighlightsTitle || 'Үндсэн чиглэлүүд'}
                   </h2>
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                      gap: '0.9rem',
-                    }}
-                  >
-                    {serviceHighlights.map((item: string, index: number) => (
-                      <div
-                        key={item}
-                        style={{
-                          border: '1px solid rgba(13, 27, 42, 0.08)',
-                          borderRadius: '10px',
-                          padding: '0.9rem 1rem',
-                          background: index % 2 === 0 ? '#fff' : '#fafafa',
-                          fontWeight: 600,
-                          color: 'var(--text-dark)',
-                        }}
-                      >
+                  <div className={contentStyles.serviceGrid}>
+                    {serviceHighlights.map((item: string) => (
+                      <div key={item} className={contentStyles.serviceCard}>
                         {item}
                       </div>
                     ))}
@@ -169,24 +146,14 @@ export default async function AboutPage() {
               </AnimateOnScroll>
 
               <AnimateOnScroll delay={360}>
-                <div style={{ marginBottom: aboutBlocks.history ? '3rem' : '2rem' }}>
-                  <h2
-                    style={{
-                      marginBottom: '1.5rem',
-                      fontSize: 'clamp(1.35rem, 2.5vw, 1.65rem)',
-                      fontWeight: 800,
-                      color: 'var(--text-dark, #0d1b2a)',
-                    }}
-                  >
+                <div
+                  className={contentStyles.galleryBlock}
+                  style={{ marginBottom: aboutBlocks.history ? undefined : '2rem' }}
+                >
+                  <h2 className={contentStyles.sectionHeading}>
                     {tx.pages?.about?.galleryTitle || 'Бүтээн байгуулалтын зураг'}
                   </h2>
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                      gap: '1rem',
-                    }}
-                  >
+                  <div className={contentStyles.galleryGrid}>
                     {[0, 1, 2, 3, 4, 5].map((i) => (
                       <div
                         key={i}
