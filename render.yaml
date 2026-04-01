@@ -4,7 +4,7 @@ services:
     name: daatsin-tsamkhag-backend
     env: node
     plan: free
-    buildCommand: cd backend && npm install --include=dev && npx prisma migrate deploy && npm run build
+    buildCommand: cd backend && npm install --include=dev && npx prisma migrate deploy && npm run prisma:seed && npm run build
     startCommand: cd backend && node dist/src/main
     envVars:
       - key: NODE_ENV
