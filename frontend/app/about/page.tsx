@@ -42,6 +42,16 @@ export default async function AboutPage() {
     // Handle errors gracefully - page will render with empty data
   }
 
+  const ha = tx.home?.about ?? {};
+  const raw = companyInfo.data;
+  const aboutBlocks = {
+    aboutUs: raw?.aboutUs || ha.aboutUs,
+    vision: raw?.vision || ha.vision,
+    mission: raw?.mission || ha.mission,
+    values: raw?.values || ha.values,
+    history: raw?.history,
+  };
+
   return (
     <>
       <Header />
@@ -70,49 +80,48 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {companyInfo.data && (
-          <section>
+        <section>
             <div className="container">
               <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-                {companyInfo.data.aboutUs && (
+                {aboutBlocks.aboutUs && (
                   <AnimateOnScroll delay={100}>
                     <div style={{ marginBottom: '3rem' }}>
                       <h2 style={{ marginBottom: '1.5rem' }}>{t.pages.about.title}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {companyInfo.data.aboutUs}
+                        {aboutBlocks.aboutUs}
                       </p>
                     </div>
                   </AnimateOnScroll>
                 )}
 
-                {companyInfo.data.vision && (
+                {aboutBlocks.vision && (
                   <AnimateOnScroll delay={200}>
                     <div style={{ marginBottom: '3rem' }}>
                       <h2 style={{ marginBottom: '1.5rem' }}>{t.home.about.visionTitle}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {companyInfo.data.vision}
+                        {aboutBlocks.vision}
                       </p>
                     </div>
                   </AnimateOnScroll>
                 )}
 
-                {companyInfo.data.mission && (
+                {aboutBlocks.mission && (
                   <AnimateOnScroll delay={300}>
                     <div style={{ marginBottom: '3rem' }}>
                       <h2 style={{ marginBottom: '1.5rem' }}>{t.home.about.missionTitle}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {companyInfo.data.mission}
+                        {aboutBlocks.mission}
                       </p>
                     </div>
                   </AnimateOnScroll>
                 )}
 
-                {companyInfo.data.values && (
+                {aboutBlocks.values && (
                   <AnimateOnScroll delay={400}>
                     <div style={{ marginBottom: '3rem' }}>
                       <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.valuesTitle || 'Үнэт зүйлс'}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {companyInfo.data.values}
+                        {aboutBlocks.values}
                       </p>
                     </div>
                   </AnimateOnScroll>
@@ -182,12 +191,12 @@ export default async function AboutPage() {
                   </div>
                 </AnimateOnScroll>
 
-                {companyInfo.data.history && (
+                {aboutBlocks.history && (
                   <AnimateOnScroll delay={550}>
                     <div>
                       <h2 style={{ marginBottom: '1.5rem' }}>{tx.pages?.about?.historyTitle || 'Түүх'}</h2>
                       <p style={{ fontSize: '1.1rem', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
-                        {companyInfo.data.history}
+                        {aboutBlocks.history}
                       </p>
                     </div>
                   </AnimateOnScroll>
@@ -195,7 +204,6 @@ export default async function AboutPage() {
               </div>
             </div>
           </section>
-        )}
 
         {teamMembers.data && teamMembers.data.length > 0 && (
           <section className={leadershipStyles.leadershipSection}>
