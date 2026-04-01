@@ -7,12 +7,16 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
 import leadershipStyles from '@/app/about/aboutLeadership.module.css';
 import contentStyles from '@/app/about/aboutContent.module.css';
+import { mergeCompanyAboutBlocks } from '@/lib/companyAboutMerge';
+import PageHero from '@/components/corporate/PageHero';
+import { getCmsPage } from '@/lib/page-cms';
 
 // Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
   const t = await getTranslations();
+  const cmsPage = await getCmsPage('about');
   const tx = t as any;
   let companyInfo: { data: any } = { data: null };
   let teamMembers: { data: any } = { data: [] };
@@ -44,42 +48,18 @@ export default async function AboutPage() {
   }
 
   const ha = tx.home?.about ?? {};
-  const raw = companyInfo.data;
-  const aboutBlocks = {
-    aboutUs: raw?.aboutUs || ha.aboutUs,
-    vision: raw?.vision || ha.vision,
-    mission: raw?.mission || ha.mission,
-    values: raw?.values || ha.values,
-    history: raw?.history,
-  };
+  const aboutBlocks = mergeCompanyAboutBlocks(companyInfo.data, {
+    aboutUs: ha.aboutUs,
+    vision: ha.vision,
+    mission: ha.mission,
+    values: ha.values,
+  });
 
   return (
     <>
       <Header />
       <main>
-        <section className="hero" style={{
-          position: 'relative',
-          overflow: 'hidden',
-          backgroundImage: `url(${getImageUrl(undefined, 'default', 1)})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)'
-          }}></div>
-          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-            <AnimateOnScroll>
-              <h1>{t.pages.about.title}</h1>
-            </AnimateOnScroll>
-          </div>
-        </section>
+        <PageHero title={(cmsPage?.title as string) || t.pages.about.title} backgroundImage={getImageUrl(undefined, 'default', 1)} />
 
         <section className={contentStyles.section}>
           <div className="container">

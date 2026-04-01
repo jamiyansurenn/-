@@ -67,6 +67,9 @@ a {
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-xl: 28px;
+  --section-space: clamp(3.5rem, 6vw, 5.75rem);
+  --grid-gap: clamp(1rem, 2.2vw, 1.6rem);
+  --surface-muted: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
 }
 
 /* Smooth Scroll */
@@ -986,9 +989,9 @@ footer a:hover {
 
 /* AnimateOnScroll: stable initial paint, then reveal (avoids blank regions) */
 .fade-in-on-scroll {
-  opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  transition: opacity 0.55s ease, transform 0.55s ease;
+  opacity: 0.2;
+  transform: translate3d(0, 10px, 0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .fade-in-on-scroll.visible {

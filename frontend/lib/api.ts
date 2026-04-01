@@ -297,3 +297,12 @@ export const createContactMessage = async (data: any) => {
     return { data: null, error: error.message };
   }
 };
+
+export const getPublicPageBySlug = async (slug: string, lang?: string) => {
+  try {
+    const response = await api.get(`/pages/${slug}/public`, { params: { lang } });
+    return { data: safeGetData(response) };
+  } catch (error: any) {
+    return { data: null, error: error.message || 'Network error' };
+  }
+};

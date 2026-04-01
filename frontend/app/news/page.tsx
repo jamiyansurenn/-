@@ -3,15 +3,21 @@ import Footer from '@/components/Footer';
 import AnimateOnScroll from '@/components/AnimateOnScroll';
 import { getNews } from '@/lib/api';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
+import PageHero from '@/components/corporate/PageHero';
+import SectionBlock from '@/components/corporate/SectionBlock';
+import ContentCard from '@/components/corporate/ContentCard';
+import styles from '@/components/corporate/corporate.module.css';
+import { getCmsPage } from '@/lib/page-cms';
+import CmsSectionRenderer from '@/components/corporate/CmsSectionRenderer';
 
 // Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
 
 export default async function NewsPage() {
   const t = await getTranslations();
+  const cmsPage = await getCmsPage('news');
   let news = { data: [] };
 
   try {
@@ -25,61 +31,29 @@ export default async function NewsPage() {
     <>
       <Header />
       <main>
-        <section className="hero" style={{ 
-          position: 'relative', 
-          overflow: 'hidden',
-          backgroundImage: `url(${getImageUrl(undefined, 'news', 2)})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <div style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0, 
-            zIndex: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)'
-          }}></div>
-          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-            <h1>{t.nav.news}</h1>
-          </div>
-        </section>
+        <PageHero title={cmsPage?.title || t.nav.news} backgroundImage={getImageUrl(undefined, 'news', 2)} />
 
-        <section>
+        <SectionBlock>
           <div className="container">
+            {cmsPage?.sections?.length ? (
+              <div style={{ marginBottom: '1.5rem' }}>
+                {cmsPage.sections.map((section: any) => (
+                  <CmsSectionRenderer key={section.id} section={section} />
+                ))}
+              </div>
+            ) : null}
             {news.data && news.data.length > 0 ? (
-              <div className="grid">
+              <div className={styles.cardGrid}>
                 {news.data.map((item: any, index: number) => {
                   const imageUrl = getImageUrl(item.image, 'news', index);
                   return (
                   <AnimateOnScroll key={item.id} delay={index * 100}>
-                    <div className="card">
-                      <div style={{ position: 'relative', width: '100%', height: '250px', overflow: 'hidden' }}>
-                        <Image
-                          src={imageUrl}
-                          alt={item.title}
-                          fill
-                          style={{ objectFit: 'cover' }}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      </div>
-                    <div style={{ padding: '1.5rem' }}>
-                      <h3 style={{ marginBottom: '1rem' }}>{item.title}</h3>
-                      {item.excerpt && (
-                        <p style={{ marginBottom: '1rem', color: '#666' }}>{item.excerpt}</p>
-                      )}
-                      {item.publishedAt && (
-                        <p style={{ fontSize: '0.9rem', color: '#999', marginBottom: '1rem' }}>
-                          {new Date(item.publishedAt).toLocaleDateString('mn-MN')}
-                        </p>
-                      )}
-                      <Link href={`/news/${item.slug}`} className="btn">
-                        {t.common.readMore}
-                      </Link>
-                    </div>
-                  </div>
+                    <ContentCard
+                      title={item.title}
+                      description={`${item.excerpt || ''}${item.publishedAt ? ` (${new Date(item.publishedAt).toLocaleDateString('mn-MN')})` : ''}`}
+                      image={imageUrl}
+                      action={<Link href={`/news/${item.slug}`} className="btn">{t.common.readMore}</Link>}
+                    />
                   </AnimateOnScroll>
                   );
                 })}
@@ -90,7 +64,7 @@ export default async function NewsPage() {
               </div>
             )}
           </div>
-        </section>
+        </SectionBlock>
       </main>
       <Footer />
     </>

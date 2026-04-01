@@ -103,6 +103,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Ажлын зар', href: '/admin/careers' },
     { name: 'Багийн гишүүд', href: '/admin/team-members' },
     { name: 'Хамтрагчид', href: '/admin/partners' },
+    { name: 'Section Builder', href: '/admin/pages' },
     { name: 'Холбоо барих', href: '/admin/contact' },
   ];
 

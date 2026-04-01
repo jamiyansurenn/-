@@ -5,41 +5,26 @@ import Logo from '@/components/Logo';
 import { getCompanyInfo } from '@/lib/api';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
+import PageHero from '@/components/corporate/PageHero';
+import SectionBlock from '@/components/corporate/SectionBlock';
+import { getCmsPage } from '@/lib/page-cms';
 
 export default async function HistoryPage() {
   const companyInfo = await getCompanyInfo().catch(() => ({ data: null }));
   const t = await getTranslations();
+  const cmsPage = await getCmsPage('history');
 
   return (
     <>
       <Header />
       <main>
-        <section className="hero" style={{
-          position: 'relative',
-          overflow: 'hidden',
-          backgroundImage: `url(${getImageUrl(undefined, 'building', 2)})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)'
-          }}></div>
-          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-            <AnimateOnScroll>
-              <h1>{t.pages.history.title}</h1>
-              <p>{t.pages.history.subtitle}</p>
-            </AnimateOnScroll>
-          </div>
-        </section>
+        <PageHero
+          title={cmsPage?.title || t.pages.history.title}
+          subtitle={(cmsPage?.seoDescription as string) || t.pages.history.subtitle}
+          backgroundImage={getImageUrl(undefined, 'building', 2)}
+        />
 
-        <section style={{ padding: '4rem 0', background: 'var(--off-white)' }}>
+        <SectionBlock muted>
           <div className="container">
             <div className="history-alt">
               <div className="history-alt-logoWrap">
@@ -81,7 +66,7 @@ export default async function HistoryPage() {
               })}
             </div>
           </div>
-        </section>
+        </SectionBlock>
 
         {companyInfo.data?.history && (
           <section style={{ padding: '4rem 0' }}>

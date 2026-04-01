@@ -78,3 +78,19 @@ export const uploadFile = (file: File) => {
     },
   });
 };
+
+// Pages + Sections CMS
+export const getPagesAdmin = () => api.get('/pages', { headers: getAuthHeaders() });
+export const getPageAdmin = (id: string) => api.get(`/pages/${id}`, { headers: getAuthHeaders() });
+export const createPageAdmin = (data: any) => api.post('/pages', data, { headers: getAuthHeaders() });
+export const updatePageAdmin = (id: string, data: any) => api.patch(`/pages/${id}`, data, { headers: getAuthHeaders() });
+export const deletePageAdmin = (id: string) => api.delete(`/pages/${id}`, { headers: getAuthHeaders() });
+
+export const createPageSectionAdmin = (data: any) => api.post('/pages/sections', data, { headers: getAuthHeaders() });
+export const updatePageSectionAdmin = (id: string, data: any) =>
+  api.patch(`/pages/sections/${id}`, data, { headers: getAuthHeaders() });
+export const deletePageSectionAdmin = (id: string) => api.delete(`/pages/sections/${id}`, { headers: getAuthHeaders() });
+export const reorderPageSectionsAdmin = (pageId: string, sectionIds: string[]) =>
+  api.put(`/pages/${pageId}/sections/reorder`, { sectionIds }, { headers: getAuthHeaders() });
+export const togglePageSectionVisibilityAdmin = (id: string, isVisible: boolean) =>
+  api.put(`/pages/sections/${id}/visibility`, { isVisible }, { headers: getAuthHeaders() });

@@ -172,3 +172,35 @@ model ContactMessage {
 
   @@map("contact_messages")
 }
+
+model Page {
+  id              String        @id @default(uuid())
+  slug            String        @unique
+  title           String?
+  status          String        @default("DRAFT") // DRAFT or PUBLISHED
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  sections        PageSection[]
+
+  @@map("pages")
+}
+
+model PageSection {
+  id          String   @id @default(uuid())
+  pageId      String
+  type        String
+  title       String?
+  locale      String   @default("mn")
+  order       Int      @default(0)
+  isVisible   Boolean  @default(true)
+  contentJson String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  page        Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@index([pageId, order])
+  @@map("page_sections")
+}

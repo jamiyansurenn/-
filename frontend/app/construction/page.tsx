@@ -6,10 +6,15 @@ import Image from 'next/image';
 import { getNews } from '@/lib/api';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getLanguage, getTranslations } from '@/lib/getLanguage';
+import PageHero from '@/components/corporate/PageHero';
+import SectionBlock from '@/components/corporate/SectionBlock';
+import styles from '@/components/corporate/corporate.module.css';
+import { getCmsPage } from '@/lib/page-cms';
 
 export default async function ConstructionPage() {
   const lang = await getLanguage();
   const t = await getTranslations();
+  const cmsPage = await getCmsPage('construction', lang);
   const isEn = lang === 'en';
   const news = await getNews(true).catch(() => ({ data: [] }));
   type Section = {
@@ -184,6 +189,28 @@ export default async function ConstructionPage() {
           points: ['Авто угаалга', 'Автомат хувцас угаалга', 'Тавилгын захиалга', 'Фитнесс, спиннинг төв', 'Амралт, чөлөөт цагийн үйлчилгээ'],
         },
       ];
+  const advantageSection: Section = isEn
+    ? {
+        title: 'Our Advantages',
+        intro: 'We combine engineering, quality, and reliable execution into one integrated operating model.',
+        points: [
+          'Experienced engineering and technical team',
+          'Quality-assured services',
+          'Fast and reliable execution',
+          'Operations in Ulaanbaatar and nationwide',
+        ],
+      }
+    : {
+        title: 'Манай давуу тал',
+        intro: 'Манай компани дараах давуу талуудтай.',
+        points: [
+          'Туршлагатай инженер, техникийн баг',
+          'Чанарын баталгаатай үйлчилгээ',
+          'Түргэн шуурхай гүйцэтгэл',
+          'Улаанбаатар болон орон нутагт ажиллана',
+        ],
+      };
+  const masonrySections: Section[] = [...serviceSections, advantageSection];
 
   // Filter construction-related news
   const constructionNews = news.data?.filter((item: any) => 
@@ -195,52 +222,82 @@ export default async function ConstructionPage() {
     .map((item: any) => item?.image)
     .filter(Boolean)
     .slice(0, 6);
+  const sectionWrapStyle = {
+    padding: '4.5rem 0',
+    background: 'linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%)',
+  };
+  const pageContentStyle = {
+    maxWidth: '1040px',
+    margin: '0 auto',
+  };
+  const baseCardStyle = {
+    background: 'linear-gradient(180deg, #ffffff 0%, #fbfdff 100%)',
+    padding: '1.6rem 1.7rem',
+    borderRadius: '14px',
+    marginBottom: '1rem',
+    border: '1px solid rgba(15, 23, 42, 0.08)',
+    boxShadow: '0 16px 32px -24px rgba(15, 23, 42, 0.35)',
+  };
+  const cardMediaStyle = {
+    position: 'relative' as const,
+    width: '100%',
+    height: '140px',
+    borderRadius: '12px',
+    overflow: 'hidden' as const,
+    marginBottom: '1rem',
+    border: '1px solid rgba(15, 23, 42, 0.08)',
+  };
+  const headingStyle = {
+    marginBottom: '0.85rem',
+    color: 'var(--text-dark)',
+    letterSpacing: '-0.01em',
+  };
+  const leadTextStyle = {
+    marginBottom: '0.8rem',
+    lineHeight: '1.75',
+    color: '#475569',
+    fontSize: '0.99rem',
+  };
+  const listStyle = {
+    paddingLeft: '1.1rem',
+    margin: 0,
+    lineHeight: '1.75',
+    color: '#334155',
+    fontSize: '0.95rem',
+  };
+  const masonryStyle = {
+    columnCount: 2,
+    columnGap: '1rem',
+  };
+  const masonryItemStyle = {
+    breakInside: 'avoid' as const,
+    marginBottom: '1rem',
+  };
 
   return (
     <>
       <Header />
       <main>
-        <section className="hero" style={{ 
-          position: 'relative', 
-          overflow: 'hidden',
-          backgroundImage: `url(${getImageUrl(undefined, 'construction', 0)})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <div style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0, 
-            zIndex: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)'
-          }}></div>
-          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-            <AnimateOnScroll>
-              <h1>{isEn ? 'Completed Projects' : 'Хэрэгжүүлсэн төслүүд'}</h1>
-              <p>{isEn ? 'Construction Works' : 'Барилгын ажил'}</p>
-            </AnimateOnScroll>
-          </div>
-        </section>
+        <PageHero
+          title={(cmsPage?.title as string) || (isEn ? 'Completed Projects' : 'Хэрэгжүүлсэн төслүүд')}
+          subtitle={(cmsPage?.seoDescription as string) || (isEn ? 'Construction Works' : 'Барилгын ажил')}
+          backgroundImage={getImageUrl(undefined, 'construction', 0)}
+        />
 
-        <section style={{ padding: '4rem 0', background: '#fafafa' }}>
+        <SectionBlock muted>
           <div className="container">
-            <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <div style={pageContentStyle}>
               <AnimateOnScroll>
                 <div style={{ 
-                  background: '#fff', 
-                  padding: '2rem', 
-                  borderRadius: '12px', 
-                  marginBottom: '2rem',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                  ...baseCardStyle,
+                  marginBottom: '1.25rem',
+                  borderLeft: '4px solid #e08e6d'
                 }}>
-                  <h2 style={{ marginBottom: '1.5rem', color: 'var(--primary-orange)' }}>
+                  <h2 style={{ marginBottom: '0.8rem', color: 'var(--primary-orange)' }}>
                     {isEn ? 'Construction Works' : 'Барилгын ажил'}
                   </h2>
                   <div style={{ lineHeight: '1.8', color: 'var(--text-gray)' }}>
-                    <p style={{ marginBottom: '1.5rem' }}>
+                    <p style={{ ...leadTextStyle, marginBottom: 0 }}>
                       {isEn
                         ? 'Daatsiin Tsamkhag Group provides professional construction, lifting mechanism, and industrial equipment services.'
                         : '“Даацын Цамхаг Групп” ХХК нь барилга, өргөх механизм, үйлдвэрлэлийн тоног төхөөрөмжийн чиглэлээр доорх үйлчилгээнүүдийг мэргэжлийн өндөр түвшинд үзүүлдэг.'}
@@ -249,119 +306,55 @@ export default async function ConstructionPage() {
                 </div>
               </AnimateOnScroll>
 
-              {serviceSections.map((section, idx) => (
-                <AnimateOnScroll delay={100 + idx * 60} key={section.title}>
-                  <div
-                    style={{
-                      background: '#fff',
-                      padding: '2rem',
-                      borderRadius: '12px',
-                      marginBottom: '2rem',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    }}
-                  >
-                    <h3 style={{ marginBottom: '0.9rem', color: 'var(--text-dark)' }}>{section.title}</h3>
-                    <p style={{ marginBottom: '1rem', lineHeight: '1.8', color: 'var(--text-gray)' }}>{section.intro}</p>
-                    {section.points && section.points.length > 0 ? (
-                      <ul style={{ paddingLeft: '1.2rem', margin: 0, lineHeight: '1.9', color: 'var(--text-gray)' }}>
-                        {section.points.map((point) => (
-                          <li key={point}>{point}</li>
-                        ))}
-                      </ul>
-                    ) : null}
-                    {section.subSections?.map((sub) => (
-                      <div key={sub.title} style={{ marginTop: '1rem' }}>
-                        <h4 style={{ marginBottom: '0.45rem', color: 'var(--text-dark)' }}>{sub.title}</h4>
-                        <ul style={{ paddingLeft: '1.2rem', margin: 0, lineHeight: '1.9', color: 'var(--text-gray)' }}>
-                          {sub.points.map((point) => (
-                            <li key={point}>{point}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </AnimateOnScroll>
-              ))}
-
-              <AnimateOnScroll delay={220}>
-                <div
-                  style={{
-                    background: '#fff',
-                    padding: '2rem',
-                    borderRadius: '12px',
-                    marginBottom: '2rem',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                  }}
-                >
-                  <h3 style={{ marginBottom: '0.9rem', color: 'var(--text-dark)' }}>
-                    {isEn ? '✅ Our Advantages' : '✅ Манай давуу тал'}
-                  </h3>
-                  <ul style={{ paddingLeft: '1.2rem', margin: 0, lineHeight: '1.9', color: 'var(--text-gray)' }}>
-                    {isEn ? (
-                      <>
-                        <li>Experienced engineering and technical team</li>
-                        <li>Quality-assured services</li>
-                        <li>Fast and reliable execution</li>
-                        <li>We operate in Ulaanbaatar and nationwide</li>
-                      </>
-                    ) : (
-                      <>
-                        <li>Туршлагатай инженер, техникийн баг</li>
-                        <li>Чанарын баталгаатай үйлчилгээ</li>
-                        <li>Түргэн шуурхай гүйцэтгэл</li>
-                        <li>Улаанбаатар болон орон нутагт ажиллана</li>
-                      </>
-                    )}
-                  </ul>
-                </div>
-              </AnimateOnScroll>
-
-              <AnimateOnScroll delay={240}>
-                <div
-                  style={{
-                    background: '#fff',
-                    padding: '2rem',
-                    borderRadius: '12px',
-                    marginBottom: '2rem',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                  }}
-                >
-                  <h3 style={{ marginBottom: '1rem', color: 'var(--text-dark)' }}>
-                    {isEn ? 'Project Gallery' : 'Төслийн зургууд'}
-                  </h3>
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                      gap: '0.9rem',
-                    }}
-                  >
-                    {(galleryImages.length > 0 ? galleryImages : [0, 1, 2, 3, 4, 5]).map((img: any, i: number) => {
-                      const imageUrl = typeof img === 'string' ? getImageUrl(img, 'construction', i) : getImageUrl(undefined, 'construction', i);
-                      return (
-                        <div
-                          key={`${imageUrl}-${i}`}
-                          style={{
-                            position: 'relative',
-                            width: '100%',
-                            height: '180px',
-                            borderRadius: '10px',
-                            overflow: 'hidden',
-                          }}
-                        >
+              <div style={masonryStyle}>
+                {masonrySections.map((section, idx) => (
+                  <div key={section.title} style={masonryItemStyle}>
+                    <AnimateOnScroll delay={100 + idx * 60}>
+                      <div
+                        style={{
+                          ...baseCardStyle,
+                          marginBottom: 0,
+                          borderLeft:
+                            section.title === (isEn ? 'Our Advantages' : 'Манай давуу тал')
+                              ? '4px solid #16a34a'
+                              : '4px solid rgba(224, 142, 109, 0.55)',
+                          boxShadow: '0 20px 38px -24px rgba(15, 23, 42, 0.42)',
+                        }}
+                      >
+                        <div style={cardMediaStyle}>
                           <Image
-                            src={imageUrl}
-                            alt={`${isEn ? 'Construction work' : 'Барилгын ажил'} ${i + 1}`}
+                            src={getImageUrl(undefined, section.title === (isEn ? 'Our Advantages' : 'Манай давуу тал') ? 'building' : 'construction', idx)}
+                            alt={section.title}
                             fill
                             style={{ objectFit: 'cover' }}
-                            sizes="(max-width: 768px) 100vw, 33vw"
+                            sizes="(max-width: 768px) 100vw, 520px"
                           />
                         </div>
-                      );
-                    })}
+                        <h3 style={headingStyle}>{section.title}</h3>
+                        <p style={leadTextStyle}>{section.intro}</p>
+                        {section.points && section.points.length > 0 ? (
+                          <ul style={listStyle}>
+                            {section.points.map((point) => (
+                              <li key={point}>{point}</li>
+                            ))}
+                          </ul>
+                        ) : null}
+                        {section.subSections?.map((sub) => (
+                          <div key={sub.title} style={{ marginTop: '0.95rem' }}>
+                            <h4 style={{ marginBottom: '0.4rem', color: 'var(--text-dark)' }}>{sub.title}</h4>
+                            <ul style={listStyle}>
+                              {sub.points.map((point) => (
+                                <li key={point}>{point}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </AnimateOnScroll>
                   </div>
-                </div>
-              </AnimateOnScroll>
+                ))}
+              </div>
+
 
               {constructionNews.length > 0 && (
                 <AnimateOnScroll delay={200}>
@@ -369,7 +362,7 @@ export default async function ConstructionPage() {
                     <h2 className="section-title" style={{ marginBottom: '2rem' }}>
                       {t.pages.construction.latestNews}
                     </h2>
-                    <div className="grid">
+                    <div className={styles.cardGrid}>
                       {constructionNews.slice(0, 3).map((item: any, index: number) => {
                         const imageUrl = getImageUrl(item.image, 'news', index);
                         return (
@@ -403,7 +396,7 @@ export default async function ConstructionPage() {
               )}
             </div>
           </div>
-        </section>
+        </SectionBlock>
       </main>
       <Footer />
     </>

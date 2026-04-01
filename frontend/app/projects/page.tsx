@@ -3,15 +3,22 @@ import Footer from '@/components/Footer';
 import AnimateOnScroll from '@/components/AnimateOnScroll';
 import { getProjects } from '@/lib/api';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
+import PageHero from '@/components/corporate/PageHero';
+import SectionBlock from '@/components/corporate/SectionBlock';
+import ContentCard from '@/components/corporate/ContentCard';
+import styles from '@/components/corporate/corporate.module.css';
+import { getCmsPage } from '@/lib/page-cms';
+import SectionHeader from '@/components/corporate/SectionHeader';
+import CmsSectionRenderer from '@/components/corporate/CmsSectionRenderer';
 
 // Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
 
 export default async function ProjectsPage() {
   const t = await getTranslations();
+  const cmsPage = await getCmsPage('projects');
   let projects = { data: [] };
 
   try {
@@ -20,67 +27,67 @@ export default async function ProjectsPage() {
     // Handle errors gracefully - page will render with empty data
     projects = { data: [] };
   }
+  const allProjects = Array.isArray(projects.data) ? projects.data : [];
+  const ownProjects = allProjects.filter((p: any) => p.featured);
+  const contractedProjects =
+    ownProjects.length > 0 ? allProjects.filter((p: any) => !p.featured) : allProjects.slice(Math.ceil(allProjects.length / 2));
+  const fallbackOwn = ownProjects.length > 0 ? ownProjects : allProjects.slice(0, Math.ceil(allProjects.length / 2));
 
   return (
     <>
       <Header />
       <main>
-        <section className="hero" style={{ 
-          position: 'relative', 
-          overflow: 'hidden',
-          backgroundImage: `url(${getImageUrl(undefined, 'building', 1)})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <div style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0, 
-            zIndex: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)'
-          }}></div>
-          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-            <AnimateOnScroll>
-              <h1>{t.pages.projects.title}</h1>
-              <p>{t.pages.projects.subtitle}</p>
-            </AnimateOnScroll>
-          </div>
-        </section>
+        <PageHero
+          title={cmsPage?.title || t.pages.projects.title}
+          subtitle={(cmsPage?.seoDescription as string) || t.pages.projects.subtitle}
+          backgroundImage={getImageUrl(undefined, 'building', 1)}
+        />
 
-        <section style={{ padding: '4rem 0' }}>
+        <SectionBlock>
           <div className="container">
-            {projects.data && projects.data.length > 0 ? (
-              <div className="grid">
-                {projects.data.map((project: any, index: number) => {
+            {cmsPage?.sections?.length ? (
+              <div style={{ marginBottom: '1.5rem' }}>
+                {cmsPage.sections.map((section: any) => (
+                  <CmsSectionRenderer key={section.id} section={section} />
+                ))}
+              </div>
+            ) : null}
+            {allProjects.length > 0 ? (
+              <>
+              <SectionHeader title="Өөрийн хэрэгжүүлсэн төслүүд" />
+              <div className={styles.cardGrid} style={{ marginBottom: '1.5rem' }}>
+                {fallbackOwn.map((project: any, index: number) => {
                   const imageUrl = getImageUrl(project.image, 'building', index);
-                  
                   return (
                     <AnimateOnScroll key={project.id} delay={index * 100}>
-                      <div className="card">
-                        <div style={{ position: 'relative', width: '100%', height: '250px', overflow: 'hidden' }}>
-                          <Image
-                            src={imageUrl}
-                            alt={project.title}
-                            fill
-                            style={{ objectFit: 'cover' }}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          />
-                        </div>
-                        <div style={{ padding: '1.5rem' }}>
-                          <h3 style={{ marginBottom: '1rem' }}>{project.title}</h3>
-                          <p style={{ marginBottom: '1rem', color: '#666' }}>{project.description}</p>
-                          <Link href={`/projects/${project.slug}`} className="btn">
-                            {t.common.readMore}
-                          </Link>
-                        </div>
-                      </div>
+                      <ContentCard
+                        title={project.title}
+                        description={project.description}
+                        image={imageUrl}
+                        action={<Link href={`/projects/${project.slug}`} className="btn">{t.common.readMore}</Link>}
+                      />
                     </AnimateOnScroll>
                   );
                 })}
               </div>
+              {contractedProjects.length > 0 ? (
+                <>
+                  <SectionHeader title="Гэрээт төслүүд" />
+                  <div className={styles.cardGrid}>
+                    {contractedProjects.map((project: any, index: number) => (
+                      <AnimateOnScroll key={project.id} delay={index * 100}>
+                        <ContentCard
+                          title={project.title}
+                          description={project.description}
+                          image={getImageUrl(project.image, 'construction', index)}
+                          action={<Link href={`/projects/${project.slug}`} className="btn">{t.common.readMore}</Link>}
+                        />
+                      </AnimateOnScroll>
+                    ))}
+                  </div>
+                </>
+              ) : null}
+              </>
             ) : (
               <div style={{ textAlign: 'center', padding: '4rem 0' }}>
                 <AnimateOnScroll>
@@ -89,7 +96,7 @@ export default async function ProjectsPage() {
               </div>
             )}
           </div>
-        </section>
+        </SectionBlock>
       </main>
       <Footer />
     </>

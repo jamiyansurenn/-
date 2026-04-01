@@ -5,9 +5,16 @@ import Link from 'next/link';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
 import { getCareers } from '@/lib/api';
+import PageHero from '@/components/corporate/PageHero';
+import SectionBlock from '@/components/corporate/SectionBlock';
+import ContentCard from '@/components/corporate/ContentCard';
+import { getCmsPage } from '@/lib/page-cms';
+import styles from '@/components/corporate/corporate.module.css';
+import SectionHeader from '@/components/corporate/SectionHeader';
 
 export default async function CareersPage() {
   const t = await getTranslations();
+  const cmsPage = await getCmsPage('careers');
   const careersResponse = await getCareers();
   const jobPositions = careersResponse.data || [];
 
@@ -15,70 +22,39 @@ export default async function CareersPage() {
     <>
       <Header />
       <main>
-        <section className="hero" style={{ 
-          position: 'relative', 
-          overflow: 'hidden',
-          backgroundImage: `url(${getImageUrl(undefined, 'default', 3)})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <div style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0, 
-            zIndex: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)'
-          }}></div>
-          <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-            <AnimateOnScroll>
-              <h1>{t.pages.careers.title}</h1>
-              <p>{t.pages.careers.subtitle}</p>
-            </AnimateOnScroll>
-          </div>
-        </section>
+        <PageHero
+          title={cmsPage?.title || t.pages.careers.title}
+          subtitle={(cmsPage?.seoDescription as string) || t.pages.careers.subtitle}
+          backgroundImage={getImageUrl(undefined, 'default', 3)}
+        />
 
-        <section style={{ padding: '4rem 0', background: '#fafafa' }}>
+        <SectionBlock muted>
           <div className="container">
-            <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <SectionHeader
+                eyebrow="Human Resources"
+                title="Хүний нөөцийн бодлого"
+                description="Бид ур чадварт суурилсан сонгон шалгаруулалт, өсөлт хөгжил, аюулгүй ажлын орчны бодлогыг баримтална."
+              />
+              <div className={styles.cardGrid}>
+                <ContentCard title="Сонгон шалгаруулалт" description="Нээлттэй, шударга, ур чадварт тулгуурласан процесс." />
+                <ContentCard title="Өсөлт хөгжил" description="Сургалт, карьерын шатлал, гүйцэтгэлийн үнэлгээтэй." />
+                <ContentCard title="Ажлын орчин" description="ХАБЭА, багийн соёл, тогтвортой ажлын нөхцөлийг эрхэмлэнэ." />
+              </div>
+            </div>
+            <div className={styles.cardGrid} style={{ maxWidth: '1000px', margin: '0 auto' }}>
               {jobPositions.map((job: any, index: number) => (
                 <AnimateOnScroll key={job.id} delay={index * 100}>
-                  <div
-                    style={{
-                      background: '#fff',
-                      borderRadius: '12px',
-                      padding: '2rem',
-                      marginBottom: '2rem',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                    }}
-                    className="job-card card"
-                  >
-                    <h2 style={{ marginBottom: '1rem', color: 'var(--primary-orange)' }}>{job.title}</h2>
-                    <p style={{ marginBottom: '1.5rem', lineHeight: '1.8', color: 'var(--text-gray)' }}>
-                      {job.description}
-                    </p>
-                    {job.details && (
-                      <div style={{ marginBottom: '1.5rem' }}>
-                        <p style={{ whiteSpace: 'pre-line', lineHeight: '1.8', color: 'var(--text-gray)' }}>
-                          {job.details}
-                        </p>
-                      </div>
-                    )}
-                    <Link
-                      href={`/careers/application?position=${encodeURIComponent(job.title)}`}
-                      className="btn"
-                    >
-                      {t.pages.careers.apply}
-                    </Link>
-                  </div>
+                  <ContentCard
+                    title={job.title}
+                    description={`${job.description || ''}${job.details ? `\n${job.details}` : ''}`}
+                    action={<Link href={`/careers/application?position=${encodeURIComponent(job.title)}`} className="btn">{t.pages.careers.apply}</Link>}
+                  />
                 </AnimateOnScroll>
               ))}
             </div>
           </div>
-        </section>
+        </SectionBlock>
 
         <section style={{ padding: '4rem 0', textAlign: 'center' }}>
           <div className="container">
