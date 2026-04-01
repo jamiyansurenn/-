@@ -29,8 +29,11 @@ export class ServicesService {
   }
 
   findBySlug(slug: string) {
-    return this.prisma.service.findUnique({
-      where: { slug, status: 'PUBLISHED' },
+    return this.prisma.service.findFirst({
+      where: {
+        slug,
+        status: 'PUBLISHED',
+      },
     });
   }
 

@@ -50,8 +50,11 @@ export class ProjectsService {
   }
 
   async findBySlug(slug: string) {
-    const project = await this.prisma.project.findUnique({
-      where: { slug, status: 'PUBLISHED' },
+    const project = await this.prisma.project.findFirst({
+      where: {
+        slug,
+        status: 'PUBLISHED',
+      },
     });
     if (!project) return null;
     return {
