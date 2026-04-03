@@ -28,6 +28,8 @@ RUN npm run build
 
 EXPOSE 3001
 
-# Runtime schema sync + seed, then start.
-CMD ["sh", "-c", "npx prisma db push && npm run prisma:seed && node dist/src/main"]
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
