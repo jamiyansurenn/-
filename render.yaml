@@ -1,23 +1,31 @@
+# Blueprint: https://render.com/docs/blueprint-spec
+# After push: Render Dashboard → your Blueprint → Manual sync (or create resources from this file).
+databases:
+  - name: daatsin-tsamkhag-db
+    plan: free
+    databaseName: moncon
+    user: moncon
+
 services:
-  # Backend API Service
   - type: web
     name: daatsin-tsamkhag-backend
-    env: node
+    runtime: docker
+    dockerfilePath: ./Dockerfile
     plan: free
-    # Schema targets PostgreSQL; legacy migrations in repo are SQLite. Use db push until a Postgres migration baseline is added.
-    buildCommand: cd backend && npm install --include=dev && npx prisma db push && npm run prisma:seed && npm run build
-    startCommand: cd backend && node dist/src/main
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
       - key: DATABASE_URL
-        sync: false  # Set this in Render dashboard
+        fromDatabase:
+          name: daatsin-tsamkhag-db
+          property: connectionString
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ORIGIN
-        sync: false # Set this to your Vercel Frontend URL (e.g. https://your-project.vercel.app)
+        sync: false
       - key: STORAGE_DRIVER
         value: s3
       - key: S3_REGION
@@ -30,5 +38,3 @@ services:
         sync: false
       - key: S3_PUBLIC_BASE_URL
         sync: false
-    healthCheckPath: /health
-
