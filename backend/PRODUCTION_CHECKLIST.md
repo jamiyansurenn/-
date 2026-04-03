@@ -3,7 +3,7 @@
 ## Database (PostgreSQL)
 
 - Set `DATABASE_URL` to managed PostgreSQL connection string
-- Run migrations: `npm run prisma:migrate:deploy`
+- **Deploy note:** Render uses `prisma db push` because existing migration history is SQLite-shaped. For a clean production story, add a PostgreSQL migration baseline and switch the build back to `prisma migrate deploy`.
 - Seed once (optional): `npm run prisma:seed`
 
 ## Object Storage (S3)
