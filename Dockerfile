@@ -18,6 +18,9 @@ WORKDIR /app/backend
 # Generate Prisma client during build.
 RUN npx prisma generate
 
+# Build NestJS (creates `dist/`)
+RUN npm run build
+
 EXPOSE 3001
 
 # Runtime schema sync + seed, then start.
