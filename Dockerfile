@@ -6,11 +6,16 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Prisma on Alpine needs OpenSSL; otherwise generate / engines can fail.
+RUN apk add --no-cache openssl libc6-compat
+
 # Install dependencies (include dev deps because we run prisma:seed at runtime).
+# `npm ci` runs `postinstall` → `prisma generate`, so `prisma/schema.prisma` must exist first.
 COPY backend/package*.json ./backend/
+COPY backend/prisma ./backend/prisma
 RUN npm --prefix ./backend ci
 
-# Copy backend sources
+# Copy remaining backend sources
 COPY backend ./backend
 
 WORKDIR /app/backend
