@@ -1,11 +1,17 @@
 import axios from 'axios';
 import { getApiBaseUrl } from './apiBase';
 
-/** Render free tier cold starts often need 50s+; override via NEXT_PUBLIC_API_TIMEOUT_MS */
+/**
+ * Render free tier cold starts often need 50s+ at runtime.
+ * During CI/Vercel `next build`, use a short default so SSG does not hang on cold APIs.
+ * Override anytime with NEXT_PUBLIC_API_TIMEOUT_MS.
+ */
 const getApiTimeoutMs = () => {
   const raw = process.env.NEXT_PUBLIC_API_TIMEOUT_MS;
   const n = raw ? parseInt(raw, 10) : NaN;
-  return !Number.isNaN(n) && n >= 5000 ? n : 120000;
+  if (!Number.isNaN(n) && n >= 5000) return n;
+  if (process.env.CI === 'true') return 12000;
+  return 120000;
 };
 
 const api = axios.create({

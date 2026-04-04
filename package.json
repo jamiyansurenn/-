@@ -1,5 +1,9 @@
 {
+  "scripts": {
+    "build": "npm ci --prefix frontend --include=dev && npm run build --prefix frontend"
+  },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^1.3.1"
   }
 }
