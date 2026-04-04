@@ -15,6 +15,17 @@ if [ -z "$DATABASE_URL" ]; then
   exit 1
 fi
 
+if [ -z "$JWT_SECRET" ]; then
+  echo "============================================================"
+  echo "ERROR: JWT_SECRET is not set in the container environment."
+  echo ""
+  echo "Render → your Web Service → Environment → + Add variable"
+  echo "  KEY:   JWT_SECRET"
+  echo "  VALUE: long random secret (use \"Generated secret\" in the dropdown, or e.g. openssl rand -hex 32)"
+  echo "============================================================"
+  exit 1
+fi
+
 # Render "Hostname" in the dashboard is often shortened (dpg-xxx-a). Prisma needs the full
 # internal host (dpg-xxx-a.<region>-postgres.render.com). Default region suffix matches Oregon.
 if command -v node >/dev/null 2>&1; then
