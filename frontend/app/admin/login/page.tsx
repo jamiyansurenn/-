@@ -3,7 +3,19 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../admin.module.css';
+import api from '@/lib/api';
 import { getApiBaseUrl } from '@/lib/apiBase';
+
+function loginErrorMessage(res: any, errMsg?: string) {
+  const token = res?.data?.access_token;
+  if (token) return '';
+  const fromApi = res?.data?.message;
+  const net = errMsg || res?.error;
+  if (typeof net === 'string' && /network|failed to fetch|timeout/i.test(net)) {
+    return `Серверт холбогдож чадсангүй (${getApiBaseUrl()}). Backend асаасан эсэх эсвэл frontend/.env.local дахь NEXT_PUBLIC_API_URL-ийг шалгана уу.`;
+  }
+  return fromApi || (typeof net === 'string' ? net : null) || 'Нэвтрэхэд алдаа гарлаа';
+}
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -17,22 +29,16 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      const response = await fetch(`${getApiBaseUrl()}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Нэвтрэхэд алдаа гарлаа');
+      const res: any = await api.post('/auth/login', formData);
+      const token = res?.data?.access_token;
+      if (!token) {
+        setError(loginErrorMessage(res));
+        return;
       }
-
-      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('token', token);
       router.push('/admin');
     } catch (err: any) {
-      setError(err.message || 'Нэвтрэхэд алдаа гарлаа');
+      setError(err?.message || 'Нэвтрэхэд алдаа гарлаа');
     } finally {
       setLoading(false);
     }
