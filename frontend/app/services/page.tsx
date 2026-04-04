@@ -7,7 +7,7 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getLanguage, getTranslations } from '@/lib/getLanguage';
 import PageHero from '@/components/corporate/PageHero';
 import SectionBlock from '@/components/corporate/SectionBlock';
-import SectionHeader from '@/components/corporate/SectionHeader';
+import SectionHeader from '@/components/home/SectionHeader';
 import ContentCard from '@/components/corporate/ContentCard';
 import styles from '@/components/corporate/corporate.module.css';
 import { getCmsPage } from '@/lib/page-cms';
@@ -41,7 +41,7 @@ export default async function ServicesPage() {
 
         <SectionBlock>
           <div className="container">
-            <SectionHeader title={t.home.services.title} description={(t.pages as any)?.services?.subtitle || ''} />
+            <SectionHeader title={t.home.services.title} subtitle={t.home.services.description} />
             {cmsPage?.sections?.length ? (
               <div className={styles.cardGrid} style={{ marginBottom: '1.5rem' }}>
                 {cmsPage.sections.map((section: any) => {
@@ -61,15 +61,19 @@ export default async function ServicesPage() {
                       title={service.title}
                       description={service.description}
                       image={imageUrl}
-                      action={<Link href={`/services/${service.slug}`} className="btn">{t.common.readMore}</Link>}
+                      action={
+                        <Link href={`/services/${service.slug}`} className="btn btn-secondary">
+                          {t.common.readMore}
+                        </Link>
+                      }
                     />
                   </AnimateOnScroll>
                   );
                 })}
               </div>
             ) : (
-              <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-                <p style={{ fontSize: '1.2rem', color: '#666' }}>{(t.pages as any)?.services?.noServices || 'Үйлчилгээ олдсонгүй'}</p>
+              <div className={styles.listingEmpty}>
+                <p>{(t.pages as any)?.services?.noServices || (t.home.services as any)?.noServices || '—'}</p>
               </div>
             )}
           </div>

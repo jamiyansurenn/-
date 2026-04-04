@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
 import styles from '@/app/home.module.css';
+import SectionHeader from '@/components/home/SectionHeader';
 
 // Force dynamic rendering to prevent build-time static generation errors
 // This ensures pages render at request time, not build time
@@ -59,7 +60,10 @@ export default async function Home() {
         <NewsSection news={news.data} />
         <section className={styles.homeFeaturedSection}>
           <div className="container">
-            <h2 className="section-title">{tx.home?.featuredPages?.title || 'Онцлох хуудсууд'}</h2>
+            <SectionHeader
+              title={tx.home?.featuredPages?.title || 'Онцлох хуудсууд'}
+              subtitle={tx.home?.featuredPages?.sectionLead}
+            />
             <div className={styles.homeFeaturedGrid}>
               {[
                 {
@@ -87,7 +91,7 @@ export default async function Home() {
                   cat: 'team' as const,
                 },
               ].map((item, index) => (
-                <div key={item.href} className="card">
+                <div key={item.href} className={styles.homeFeaturedCard}>
                   <div className={styles.homeFeaturedCardImage}>
                     <Image
                       src={getImageUrl(undefined, item.cat, index)}
@@ -100,7 +104,7 @@ export default async function Home() {
                   <div className={styles.homeFeaturedCardBody}>
                     <h3>{item.title}</h3>
                     <p>{item.desc}</p>
-                    <Link href={item.href} className="btn">
+                    <Link href={item.href} className="btn btn-secondary">
                       {t.common.learnMore}
                     </Link>
                   </div>

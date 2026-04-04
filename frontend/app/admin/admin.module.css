@@ -58,21 +58,68 @@
   gap: 0.25rem;
 }
 
-.navLabel {
+.navLabelButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
   font-size: 0.7rem;
   font-weight: 700;
-  color: #64748b;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 0.5rem;
-  padding-left: 1rem;
+  text-align: left;
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navLabelButton:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+}
+
+.navLabelText {
+  flex: 1;
+  text-align: left;
+}
+
+.navChevron {
+  display: inline-flex;
+  color: #64748b;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.navChevronOpen {
+  transform: rotate(180deg);
+}
+
+.navLinksWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+  max-height: 1200px;
+  opacity: 1;
+}
+
+.navLinksWrapCollapsed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start;
+  text-align: left;
   min-height: 44px;
   padding: 0.85rem 1.2rem;
   border-radius: 12px;
@@ -97,7 +144,7 @@
 
 .logoutButton {
   width: 100%;
-  padding: 0.9rem;
+  padding: 0.9rem 1.2rem;
   background: rgba(239, 68, 68, 0.12);
   color: #ef4444;
   border: 1px solid rgba(239, 68, 68, 0.2);
@@ -106,7 +153,7 @@
   font-weight: 600;
   transition: all 0.3s ease;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 8px;
 }
@@ -483,4 +530,159 @@
   .pageTitle {
     font-size: 1.7rem;
   }
+}
+
+/* Section Builder (pages) — тод сонголт, select contrast */
+.builderFieldGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.builderSelectWrap select {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.65rem 2.75rem 0.65rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #0f172a;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.25rem;
+}
+
+.builderSelectWrap select:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+}
+
+.builderSelectWrap select option {
+  color: #0f172a;
+  background: #fff;
+  padding: 0.5rem;
+}
+
+.typePicker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+
+.typeChip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #0f172a;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.typeChip:hover {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+}
+
+.typeChipActive {
+  border-color: var(--primary-orange);
+  background: #fff7ed;
+  box-shadow: 0 0 0 1px rgba(255, 107, 53, 0.25);
+}
+
+.typeChipLabel {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.typeChipHint {
+  font-size: 0.72rem;
+  color: #64748b;
+  line-height: 1.25;
+}
+
+.typeChipCode {
+  font-size: 0.7rem;
+  font-family: ui-monospace, monospace;
+  color: #94a3b8;
+}
+
+.localeBar {
+  display: inline-flex;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+}
+
+.localeBtn {
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  font: inherit;
+}
+
+.localeBtn:hover {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.localeActive {
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  background: #ffffff;
+  color: #0f172a;
+  cursor: pointer;
+  font: inherit;
+  box-shadow: inset 0 0 0 1px #e2e8f0;
+}
+
+.slugQuickRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.slugQuickBtn {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+  font: inherit;
+}
+
+.slugQuickBtn:hover {
+  border-color: var(--primary-orange);
+  color: var(--primary-orange);
+}
+
+.builderJsonArea {
+  font-family: ui-monospace, 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  min-height: 8rem;
 }

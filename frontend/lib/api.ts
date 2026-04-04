@@ -143,9 +143,55 @@ export const getServiceBySlug = async (slug: string) => {
 
 export const getProjects = async (featured?: boolean) => {
   const fallbackProjects = [
-    { id: 1, slug: 'hos-tsamhag', title: 'Хос Цамхаг төсөл', description: 'Орчин үеийн шийдэл бүхий дээд зэрэглэлийн барилга угсралтын төсөл.', image: '' },
-    { id: 2, slug: 'b7-apartment', title: 'B7 Апартмент', description: 'Тав тухтай орчинг бүрдүүлсэн, бүрэн цутгамал орон сууц.', image: '' },
-    { id: 3, slug: 'airport', title: 'Хөшигтийн хөндийн нисэх буудал', description: 'Улсын хэмжээний томоохон байгууламжийн кран угсралтын ажил.', image: '' }
+    {
+      id: 1,
+      slug: 'hos-tsamhag',
+      title: 'Хос Цамхаг төсөл',
+      description: 'Орчин үеийн шийдэл бүхий дээд зэрэглэлийн барилга угсралтын төсөл.',
+      image: '',
+      featured: true,
+      portfolioMeta: {
+        category: 'residential',
+        progress: 'completed',
+        location: 'Орхон аймаг',
+        area: '12 400 м²',
+        floors: '16 давхар',
+        year: '2024',
+      },
+    },
+    {
+      id: 2,
+      slug: 'b7-apartment',
+      title: 'B7 Апартмент',
+      description:
+        'Шинэ Амгалан цогцолборын үргэлжлэл — тав тухтай орчинг бүрдүүлсэн, бүрэн цутгамал орон сууц. Барилга угсралтын ажил хэвийн үргэлжилж байна.',
+      image: '',
+      featured: false,
+      portfolioMeta: {
+        category: 'residential',
+        progress: 'in_progress',
+        location: 'Улаанбаатар, Баянзүрх',
+        area: '28 500 м²',
+        floors: '16 давхар',
+        year: '2025',
+      },
+    },
+    {
+      id: 3,
+      slug: 'airport',
+      title: 'Хөшигтийн хөндийн нисэх буудал',
+      description: 'Улсын хэмжээний томоохон байгууламжийн кран угсралт, нийлүүлэлтийн ажил.',
+      image: '',
+      featured: true,
+      portfolioMeta: {
+        category: 'infrastructure',
+        progress: 'completed',
+        location: 'Төв аймаг, Сэргэлэн сум',
+        area: '—',
+        floors: '—',
+        year: '2017',
+      },
+    },
   ];
   try {
     const response = await api.get('/projects/public', { params: { featured } });

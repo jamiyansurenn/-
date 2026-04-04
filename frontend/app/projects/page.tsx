@@ -1,101 +1,94 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import AnimateOnScroll from '@/components/AnimateOnScroll';
-import { getProjects } from '@/lib/api';
 import Link from 'next/link';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getLanguage, getTranslations } from '@/lib/getLanguage';
 import PageHero from '@/components/corporate/PageHero';
 import SectionBlock from '@/components/corporate/SectionBlock';
-import ContentCard from '@/components/corporate/ContentCard';
 import styles from '@/components/corporate/corporate.module.css';
 import { getCmsPage } from '@/lib/page-cms';
-import SectionHeader from '@/components/corporate/SectionHeader';
 import CmsSectionRenderer from '@/components/corporate/CmsSectionRenderer';
+import { getProjects } from '@/lib/api';
+import ProjectsPortfolioClient from '@/components/projects/ProjectsPortfolioClient';
+import type { ProjectsPortfolioCopy } from '@/components/projects/ProjectsPortfolioClient';
+import { normalizeProjectForPortfolio } from '@/lib/projectPortfolio';
+import portfolioStyles from '@/components/projects/projects-portfolio.module.css';
 
-// Force dynamic rendering to prevent build-time static generation errors
 export const dynamic = 'force-dynamic';
 
 export default async function ProjectsPage() {
   const t = await getTranslations();
   const lang = await getLanguage();
   const cmsPage = await getCmsPage('projects', lang);
-  let projects = { data: [] };
+  const tp = t.pages.projects as typeof t.pages.projects & Record<string, string>;
 
+  let projects = { data: [] as Record<string, unknown>[] };
   try {
-    projects = await getProjects().catch(() => ({ data: [] }));
-  } catch (error) {
-    // Handle errors gracefully - page will render with empty data
+    projects = (await getProjects().catch(() => ({ data: [] }))) as typeof projects;
+  } catch {
     projects = { data: [] };
   }
-  const allProjects = Array.isArray(projects.data) ? projects.data : [];
-  const ownProjects = allProjects.filter((p: any) => p.featured);
-  const contractedProjects =
-    ownProjects.length > 0 ? allProjects.filter((p: any) => !p.featured) : allProjects.slice(Math.ceil(allProjects.length / 2));
-  const fallbackOwn = ownProjects.length > 0 ? ownProjects : allProjects.slice(0, Math.ceil(allProjects.length / 2));
+
+  const allRaw = Array.isArray(projects.data) ? projects.data : [];
+  const portfolioProjects = allRaw.map((p) => normalizeProjectForPortfolio(p));
+
+  const copy: ProjectsPortfolioCopy = {
+    filterAriaLabel: tp.filterAriaLabel,
+    filterAll: tp.filterAll,
+    filterResidential: tp.filterResidential,
+    filterIndustrial: tp.filterIndustrial,
+    filterInfrastructure: tp.filterInfrastructure,
+    filterCompleted: tp.filterCompleted,
+    filterInProgress: tp.filterInProgress,
+    statusCompleted: tp.statusCompleted,
+    statusInProgress: tp.statusInProgress,
+    labelLocation: tp.labelLocation,
+    labelArea: tp.labelArea,
+    labelFloors: tp.labelFloors,
+    labelYear: tp.labelYear,
+    ctaViewProject: tp.ctaViewProject,
+    featuredBadge: tp.featuredBadge,
+    emptyFiltered: tp.emptyFiltered,
+    noProjects: tp.noProjects,
+  };
 
   return (
     <>
       <Header />
       <main>
         <PageHero
-          title={cmsPage?.title || t.pages.projects.title}
-          subtitle={(cmsPage?.seoDescription as string) || t.pages.projects.subtitle}
+          title={cmsPage?.title || tp.title}
+          subtitle={(cmsPage?.seoDescription as string) || tp.subtitle}
           backgroundImage={getImageUrl(undefined, 'building', 1)}
         />
 
-        <SectionBlock>
+        <SectionBlock muted>
           <div className="container">
+            <div className={portfolioStyles.introBlock}>
+              <header className={styles.sectionHeader}>
+                <p className={styles.sectionEyebrow}>{tp.portfolioEyebrow}</p>
+                <h2 className={styles.sectionTitle}>{tp.portfolioIntroTitle}</h2>
+                <p className={styles.sectionDescription}>{tp.portfolioIntroDescription}</p>
+              </header>
+            </div>
+
             {cmsPage?.sections?.length ? (
-              <div style={{ marginBottom: '1.5rem' }}>
-                {cmsPage.sections.map((section: any) => (
+              <div style={{ marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
+                {cmsPage.sections.map((section: { id: string } & Record<string, unknown>) => (
                   <CmsSectionRenderer key={section.id} section={section} />
                 ))}
               </div>
             ) : null}
-            {allProjects.length > 0 ? (
-              <>
-              <SectionHeader title="Өөрийн хэрэгжүүлсэн төслүүд" />
-              <div className={styles.cardGrid} style={{ marginBottom: '1.5rem' }}>
-                {fallbackOwn.map((project: any, index: number) => {
-                  const imageUrl = getImageUrl(project.image, 'building', index);
-                  return (
-                    <AnimateOnScroll key={project.id} delay={index * 100}>
-                      <ContentCard
-                        title={project.title}
-                        description={project.description}
-                        image={imageUrl}
-                        action={<Link href={`/projects/${project.slug}`} className="btn">{t.common.readMore}</Link>}
-                      />
-                    </AnimateOnScroll>
-                  );
-                })}
-              </div>
-              {contractedProjects.length > 0 ? (
-                <>
-                  <SectionHeader title="Гэрээт төслүүд" />
-                  <div className={styles.cardGrid}>
-                    {contractedProjects.map((project: any, index: number) => (
-                      <AnimateOnScroll key={project.id} delay={index * 100}>
-                        <ContentCard
-                          title={project.title}
-                          description={project.description}
-                          image={getImageUrl(project.image, 'construction', index)}
-                          action={<Link href={`/projects/${project.slug}`} className="btn">{t.common.readMore}</Link>}
-                        />
-                      </AnimateOnScroll>
-                    ))}
-                  </div>
-                </>
-              ) : null}
-              </>
-            ) : (
-              <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-                <AnimateOnScroll>
-                  <p style={{ fontSize: '1.2rem', color: '#666' }}>{t.pages.projects.noProjects}</p>
-                </AnimateOnScroll>
-              </div>
-            )}
+
+            <ProjectsPortfolioClient projects={portfolioProjects} copy={copy} />
+
+            <div className={portfolioStyles.ctaBand}>
+              <h2 className={portfolioStyles.ctaBandTitle}>{tp.ctaSectionTitle}</h2>
+              <p className={portfolioStyles.ctaBandText}>{tp.ctaSectionDescription}</p>
+              <Link href="/contact" className="btn btn-lg">
+                {tp.ctaContactButton}
+              </Link>
+            </div>
           </div>
         </SectionBlock>
       </main>

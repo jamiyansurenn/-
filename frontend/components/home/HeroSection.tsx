@@ -65,6 +65,15 @@ export default function HeroSection() {
     }, [isPaused, resolvedSlides.length]);
 
     const currentSlide = resolvedSlides[activeIndex % resolvedSlides.length];
+    const heroMeta = (t as any).home?.hero ?? {};
+    const supportHeadline =
+        (typeof currentSlide?.supportLine === 'string' && currentSlide.supportLine.trim()) ||
+        (typeof heroMeta.defaultSupport === 'string' && heroMeta.defaultSupport.trim()) ||
+        '';
+    const brandEyebrow =
+        (typeof heroMeta.brandEyebrow === 'string' && heroMeta.brandEyebrow.trim()) ||
+        (t as any).home?.hero?.subtitle ||
+        '';
 
     const goToSlide = (index: number) => {
         setActiveIndex(index);
@@ -132,32 +141,36 @@ export default function HeroSection() {
                     <motion.div
                         key={activeIndex}
                         className={styles.heroSlide}
-                        initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                        initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                         animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                        exit={reduceMotion ? undefined : { opacity: 0, y: -12 }}
-                        transition={{ duration: reduceMotion ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
+                        exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
+                        transition={{ duration: reduceMotion ? 0 : 0.52, ease: [0.22, 1, 0.36, 1] }}
                     >
                         <motion.span
                             className={styles.heroEyebrow}
-                            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
                             animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                            transition={{ duration: reduceMotion ? 0 : 0.3 }}
+                            transition={{ duration: reduceMotion ? 0 : 0.38 }}
                         >
-                            {currentSlide.subtitle}
+                            {brandEyebrow}
                         </motion.span>
                         <h1 className={styles.heroTitle}>{currentSlide.title}</h1>
+                        {supportHeadline ? <p className={styles.heroDescription}>{supportHeadline}</p> : null}
                         {(currentSlide.description || '').trim() ? (
-                            <p className={styles.heroDescription}>{currentSlide.description}</p>
+                            <p className={styles.heroDescriptionSecondary}>{currentSlide.description}</p>
                         ) : null}
                         <div className={styles.heroCtas}>
                             <Link
                                 href={currentSlide.cta?.href || currentSlide.ctaHref || '/contact'}
-                                className="btn"
+                                className="btn btn-lg btn-hero-primary"
                             >
-                                {currentSlide.cta?.label || currentSlide.ctaLabel || t.nav.contact}
+                                {currentSlide.cta?.label ||
+                                    currentSlide.ctaLabel ||
+                                    (t.common as any).ctaConsultation ||
+                                    t.nav.contact}
                             </Link>
-                            <Link href="/projects" className="btn btn-secondary">
-                                {t.common.viewAll}
+                            <Link href="/projects" className="btn btn-lg btn-hero-outline">
+                                {(t.common as any).ctaExploreProjects || t.common.viewAll}
                             </Link>
                         </div>
 

@@ -12,6 +12,7 @@ export type HeroSlide = {
   title?: string;
   subtitle?: string;
   description?: string;
+  supportLine?: string;
   image?: string;
   overlayImage?: string;
   ctaLabel?: string;

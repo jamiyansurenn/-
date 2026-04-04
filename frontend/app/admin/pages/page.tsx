@@ -25,6 +25,69 @@ function tryParseJson(raw: string): { ok: true; value: unknown } | { ok: false; 
 
 const PUBLIC_SLUG_HINTS = ['services', 'news', 'projects'] as const;
 
+const SECTION_TYPE_OPTIONS: { value: string; label: string; hint: string }[] = [
+  { value: 'text', label: 'Текст', hint: 'Гарчиг, параграф' },
+  { value: 'hero', label: 'Hero', hint: 'Том гарчиг, CTA' },
+  { value: 'list', label: 'Жагсаалт', hint: 'Bullet / numbered' },
+  { value: 'cards', label: 'Картууд', hint: 'Сүлжээ картууд' },
+  { value: 'gallery', label: 'Галерей', hint: 'Зургийн сүлжээ' },
+  { value: 'timeline', label: 'Хуанли', hint: 'Он цагийн шугам' },
+];
+
+function LocaleToggle({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div className={styles.localeBar} role="group" aria-label="Locale">
+      <button
+        type="button"
+        className={value === 'mn' ? styles.localeActive : styles.localeBtn}
+        onClick={() => onChange('mn')}
+      >
+        Монгол (mn)
+      </button>
+      <button
+        type="button"
+        className={value === 'en' ? styles.localeActive : styles.localeBtn}
+        onClick={() => onChange('en')}
+      >
+        English (en)
+      </button>
+    </div>
+  );
+}
+
+function SectionTypePicker({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div className={styles.typePicker} role="listbox" aria-label="Section type">
+      {SECTION_TYPE_OPTIONS.map((t) => (
+        <button
+          key={t.value}
+          type="button"
+          role="option"
+          aria-selected={value === t.value}
+          className={`${styles.typeChip} ${value === t.value ? styles.typeChipActive : ''}`}
+          onClick={() => onChange(t.value)}
+        >
+          <span className={styles.typeChipLabel}>{t.label}</span>
+          <span className={styles.typeChipHint}>{t.hint}</span>
+          <span className={styles.typeChipCode}>{t.value}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function AdminPagesBuilderPage() {
   const [pages, setPages] = useState<any[]>([]);
   const [activePageId, setActivePageId] = useState('');
@@ -226,6 +289,13 @@ export default function AdminPagesBuilderPage() {
         <div className="form-group">
           <label>Slug</label>
           <input value={newSlug} onChange={(e) => setNewSlug(e.target.value)} placeholder="services эсвэл news" />
+          <div className={styles.slugQuickRow}>
+            {PUBLIC_SLUG_HINTS.map((s) => (
+              <button key={s} type="button" className={styles.slugQuickBtn} onClick={() => setNewSlug(s)}>
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
         <button type="button" className="btn" onClick={createPage}>
           Үүсгэх
@@ -235,14 +305,18 @@ export default function AdminPagesBuilderPage() {
       <div className={styles.formCard} style={{ marginBottom: '1.25rem' }}>
         <div className="form-group">
           <label>Page сонгох</label>
-          <select value={activePageId} onChange={(e) => setActivePageId(e.target.value)}>
-            <option value="">-- Сонгох --</option>
-            {pages.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.slug} ({p.status})
+          <div className={styles.builderSelectWrap}>
+            <select value={activePageId} onChange={(e) => setActivePageId(e.target.value)}>
+              <option value="">
+                {pages.length === 0 ? '— Эхлээд дээрээс page үүсгэнэ үү —' : '— Хуудас сонгох —'}
               </option>
-            ))}
-          </select>
+              {pages.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.slug} · {p.status}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         {activePage ? (
           <button type="button" className="btn btn-secondary" onClick={togglePagePublish}>
@@ -277,23 +351,15 @@ export default function AdminPagesBuilderPage() {
 
           <div className={styles.formCard} style={{ marginBottom: '1.25rem' }}>
             <h3 style={{ marginBottom: '0.75rem' }}>Section нэмэх</h3>
-            <div className="form-group">
-              <label>Type</label>
-              <select value={newSectionType} onChange={(e) => setNewSectionType(e.target.value)}>
-                <option value="text">text</option>
-                <option value="hero">hero</option>
-                <option value="list">list</option>
-                <option value="cards">cards</option>
-                <option value="gallery">gallery</option>
-                <option value="timeline">timeline</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label>Locale</label>
-              <select value={newSectionLocale} onChange={(e) => setNewSectionLocale(e.target.value)}>
-                <option value="mn">mn</option>
-                <option value="en">en</option>
-              </select>
+            <div className={styles.builderFieldGrid}>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label>Төрөл</label>
+                <SectionTypePicker value={newSectionType} onChange={setNewSectionType} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label>Хэл</label>
+                <LocaleToggle value={newSectionLocale} onChange={setNewSectionLocale} />
+              </div>
             </div>
             <div className="form-group">
               <label>Title</label>
@@ -301,7 +367,12 @@ export default function AdminPagesBuilderPage() {
             </div>
             <div className="form-group">
               <label>contentJson</label>
-              <textarea rows={6} value={newSectionJson} onChange={(e) => setNewSectionJson(e.target.value)} />
+              <textarea
+                className={styles.builderJsonArea}
+                rows={6}
+                value={newSectionJson}
+                onChange={(e) => setNewSectionJson(e.target.value)}
+              />
             </div>
             <button type="button" className="btn btn-secondary" onClick={applyTemplate} style={{ marginRight: '0.5rem' }}>
               Template
@@ -373,23 +444,15 @@ export default function AdminPagesBuilderPage() {
           {editingSectionId ? (
             <div className={styles.formCard} style={{ marginTop: '1.25rem' }}>
               <h3 style={{ marginBottom: '0.75rem' }}>Section засах</h3>
-              <div className="form-group">
-                <label>Type</label>
-                <select value={editingType} onChange={(e) => setEditingType(e.target.value)}>
-                  <option value="text">text</option>
-                  <option value="hero">hero</option>
-                  <option value="list">list</option>
-                  <option value="cards">cards</option>
-                  <option value="gallery">gallery</option>
-                  <option value="timeline">timeline</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Locale</label>
-                <select value={editingLocale} onChange={(e) => setEditingLocale(e.target.value)}>
-                  <option value="mn">mn</option>
-                  <option value="en">en</option>
-                </select>
+              <div className={styles.builderFieldGrid}>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label>Төрөл</label>
+                  <SectionTypePicker value={editingType} onChange={setEditingType} />
+                </div>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label>Хэл</label>
+                  <LocaleToggle value={editingLocale} onChange={setEditingLocale} />
+                </div>
               </div>
               <div className="form-group">
                 <label>Title</label>
@@ -397,7 +460,12 @@ export default function AdminPagesBuilderPage() {
               </div>
               <div className="form-group">
                 <label>contentJson</label>
-                <textarea rows={10} value={editingJson} onChange={(e) => setEditingJson(e.target.value)} />
+                <textarea
+                  className={styles.builderJsonArea}
+                  rows={10}
+                  value={editingJson}
+                  onChange={(e) => setEditingJson(e.target.value)}
+                />
               </div>
               <button type="button" className="btn btn-secondary" onClick={formatEditingJson} style={{ marginRight: '0.5rem' }}>
                 JSON format

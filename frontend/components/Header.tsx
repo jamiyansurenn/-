@@ -12,12 +12,22 @@ export default function Header() {
   const pathname = usePathname();
   const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
   useEffect(() => {
     closeMobile();
   }, [pathname, closeMobile]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -52,8 +62,10 @@ export default function Header() {
   const isActive = (href: string) => pathname === href;
   const isActivePrefix = (prefix: string) => pathname?.startsWith(prefix) ?? false;
 
+  const headerClass = `site-header${scrolled ? ' site-header--scrolled' : ''}`;
+
   return (
-    <header>
+    <header className={headerClass}>
       <div className="container header-shell">
         <nav className="header-nav-row" aria-label={t.common.a11y.mainNav}>
           <Link href="/" className="header-brand" onClick={closeMobile}>
@@ -80,6 +92,11 @@ export default function Header() {
             <li>
               <Link href="/contact" className={pathname === '/contact' ? 'active' : ''}>
                 {t.nav.contact}
+              </Link>
+            </li>
+            <li className="header-cta-wrap">
+              <Link href="/contact" className="header-cta">
+                {(t.common as any).ctaHeaderNav || t.nav.contact}
               </Link>
             </li>
             <li className="header-lang-desktop">
@@ -173,6 +190,16 @@ export default function Header() {
                 onClick={closeMobile}
               >
                 {t.nav.contact}
+              </Link>
+            </div>
+            <div className="header-mobile-cta">
+              <Link
+                href="/contact"
+                className="header-cta"
+                style={{ width: '100%', justifyContent: 'center' }}
+                onClick={closeMobile}
+              >
+                {(t.common as any).ctaHeaderNav || t.nav.contact}
               </Link>
             </div>
             <div className="header-mobile-lang">

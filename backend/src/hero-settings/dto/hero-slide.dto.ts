@@ -17,6 +17,14 @@ export class HeroSlideDto {
   @IsString()
   description?: string;
 
+  @ApiProperty({
+    required: false,
+    description: 'Short supporting line under the headline (replaces i18n default when set)',
+  })
+  @IsOptional()
+  @IsString()
+  supportLine?: string;
+
   @ApiProperty({ required: false, description: 'Background image URL for this slide (upload path or absolute URL)' })
   @IsOptional()
   @IsString()

@@ -12,6 +12,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [navMenuOpen, setNavMenuOpen] = useState(true);
 
   // Skip auth check for login page
   const isLoginPage = pathname === '/admin/login';
@@ -119,19 +120,40 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <nav className={styles.nav}>
-          <div className={styles.navLabel}>Цэс</div>
-          {navItems.map((item) => {
-            const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
-              >
-                {item.name}
-              </Link>
-            );
-          })}
+          <button
+            type="button"
+            className={styles.navLabelButton}
+            onClick={() => setNavMenuOpen((o) => !o)}
+            aria-expanded={navMenuOpen}
+            aria-controls="admin-nav-links"
+          >
+            <span className={styles.navLabelText}>Цэс</span>
+            <span
+              className={`${styles.navChevron} ${navMenuOpen ? styles.navChevronOpen : ''}`}
+              aria-hidden
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </span>
+          </button>
+          <div
+            id="admin-nav-links"
+            className={navMenuOpen ? styles.navLinksWrap : `${styles.navLinksWrap} ${styles.navLinksWrapCollapsed}`}
+          >
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+          </div>
 
           <div style={{ marginTop: 'auto', paddingTop: '2rem' }}>
             <button

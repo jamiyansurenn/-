@@ -1,190 +1,348 @@
 .section {
-  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 45%, #f1f5f9 100%);
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 38%, #f1f5f9 100%);
 }
 
-.introBlock {
-  max-width: 820px;
-  margin: 0 auto 2.75rem;
-}
-
-.introEyebrow {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--primary-orange, #e08e6d);
-  margin: 0 0 0.4rem;
-}
-
-.introBrand {
-  font-size: clamp(1.15rem, 2.2vw, 1.4rem);
-  font-weight: 800;
-  color: var(--text-dark, #0d1b2a);
-  margin: 0 0 1rem;
-  letter-spacing: 0.02em;
-  line-height: 1.25;
-}
-
-.introTitle {
-  font-size: clamp(1.5rem, 2.8vw, 1.85rem);
-  font-weight: 800;
-  color: var(--text-dark, #0d1b2a);
-  margin: 0 0 1rem;
-  letter-spacing: -0.02em;
-}
-
-.introBody {
-  margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.82;
-  color: var(--text-medium, #475569);
-  white-space: pre-line;
-}
-
-.pillarSection {
-  margin-top: 0.5rem;
-  padding-top: 2rem;
-  padding-bottom: clamp(2rem, 5vw, 3.5rem);
-  margin-bottom: clamp(2.25rem, 5.5vw, 4.25rem);
-  border-top: 1px solid rgba(13, 27, 42, 0.08);
-}
-
-.pillarGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2rem 2.25rem;
-  align-items: stretch;
-}
-
-@media (min-width: 1200px) {
-  .pillarGrid {
-    gap: 2.35rem 3rem;
-  }
-}
-
-@media (max-width: 1100px) {
-  .pillarGrid {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: 2.1rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .pillarGrid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-}
-
-.pillarCard {
-  background: #fff;
-  border: 1px solid rgba(13, 27, 42, 0.08);
-  border-radius: 14px;
-  padding: 1.5rem 1.5rem 1.6rem;
-  box-shadow: 0 10px 36px -22px rgba(13, 27, 42, 0.22);
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.pillarCard:hover {
-  box-shadow: 0 16px 44px -18px rgba(13, 27, 42, 0.28);
-  transform: translateY(-2px);
-}
-
-.pillarTitle {
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--text-dark, #0d1b2a);
-  margin: 0 0 0.75rem;
-  padding-bottom: 0.55rem;
-  border-bottom: 3px solid var(--primary-orange, #e08e6d);
-  letter-spacing: 0.01em;
-  flex-shrink: 0;
-}
-
-.pillarBody {
-  margin: 0;
-  font-size: 0.94rem;
-  line-height: 1.68;
-  color: var(--text-medium, #64748b);
-  white-space: pre-line;
-  flex: 1;
-}
-
-.subSectionsWrap {
-  max-width: 1180px;
+.pageInner {
+  max-width: 1120px;
   margin: 0 auto;
 }
 
-.sectionHeading {
-  margin-bottom: 1.5rem;
-  font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+/* —— Intro: stacked panels (reduces “wall of text”) —— */
+.introStack {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.introMeta {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto 1.75rem;
+}
+
+.introEyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary-orange, #e85d04);
+  margin: 0 0 0.5rem;
+}
+
+.introBrand {
+  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
   font-weight: 800;
   color: var(--text-dark, #0d1b2a);
+  margin: 0 0 1.25rem;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+}
+
+.introSectionLabel {
+  font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 1.25rem;
   letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.introPanels {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.introPanel {
+  background: #fff;
+  border: 1px solid rgba(13, 27, 42, 0.07);
+  border-radius: var(--radius-xl, 28px);
+  padding: clamp(1.25rem, 3vw, 1.65rem) clamp(1.35rem, 3vw, 1.85rem);
+  box-shadow: 0 4px 22px rgba(13, 27, 42, 0.05);
+}
+
+.introPanelLead {
+  border-left: 3px solid rgba(232, 93, 4, 0.65);
+}
+
+.introPanel p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.72;
+  color: var(--text-medium, #475569);
+}
+
+.introPanelLead p {
+  font-size: 1.02rem;
+  line-height: 1.78;
+  color: #334155;
+}
+
+/* —— Vision / Mission / Values highlight cards —— */
+.highlightSection {
+  margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid rgba(13, 27, 42, 0.07);
+}
+
+.highlightGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.1rem, 2.2vw, 1.5rem);
+  align-items: stretch;
+}
+
+@media (max-width: 960px) {
+  .highlightGrid {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+}
+
+.highlightCard {
+  background: linear-gradient(165deg, #ffffff 0%, #fafbfc 100%);
+  border: 1px solid rgba(13, 27, 42, 0.08);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem 1.45rem 1.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 100%;
+  box-shadow: 0 6px 28px rgba(13, 27, 42, 0.06);
+  transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.25s ease;
+}
+
+.highlightCard:hover {
+  box-shadow: 0 14px 40px rgba(13, 27, 42, 0.09);
+  transform: translateY(-2px);
+  border-color: rgba(232, 93, 4, 0.12);
+}
+
+.highlightIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-orange);
+  background: rgba(232, 93, 4, 0.1);
+  flex-shrink: 0;
+}
+
+.highlightIcon svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.highlightTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text-dark);
+  line-height: 1.3;
+}
+
+.highlightBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  flex: 1;
+}
+
+.highlightBody p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.68;
+  color: var(--text-medium);
+}
+
+.highlightList {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.highlightList li {
+  margin-bottom: 0.35rem;
+}
+
+/* —— What we do (service cards from vision split) —— */
+.whatWeDoSection {
+  margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
+  padding-top: clamp(1.25rem, 2.5vw, 2rem);
+  border-top: 1px solid rgba(13, 27, 42, 0.06);
+}
+
+.blockSectionTitle {
+  margin: 0 0 1.35rem;
+  font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-dark);
+  text-align: center;
+}
+
+.whatWeDoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: clamp(1rem, 2vw, 1.35rem);
+}
+
+.whatWeDoCard {
+  background: #fff;
+  border: 1px solid rgba(13, 27, 42, 0.07);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.3rem 1.35rem;
+  box-shadow: 0 4px 20px rgba(13, 27, 42, 0.05);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.whatWeDoCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(13, 27, 42, 0.08);
+}
+
+.whatWeDoCardTitle {
+  margin: 0 0 0.55rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary-orange);
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+}
+
+.whatWeDoCardBody {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--text-medium);
+  white-space: pre-line;
+}
+
+/* —— Service highlights (icon + label) —— */
+.subSectionsWrap {
+  max-width: 1120px;
+  margin: 0 auto;
 }
 
 .serviceHighlightsBlock {
-  margin-top: clamp(0.5rem, 2vw, 1.25rem);
-  padding-top: clamp(1.25rem, 3vw, 2.25rem);
-  border-top: 1px solid rgba(13, 27, 42, 0.06);
-  margin-bottom: 3.5rem;
+  margin-top: clamp(0.25rem, 2vw, 1rem);
+  padding-top: clamp(1.75rem, 3vw, 2.5rem);
+  border-top: 1px solid rgba(13, 27, 42, 0.07);
+  margin-bottom: clamp(2.25rem, 4vw, 3.25rem);
+}
+
+.sectionHeading {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: -0.02em;
+  text-align: center;
 }
 
 .serviceGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(248px, 1fr));
-  gap: clamp(1.5rem, 3vw, 2rem);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: clamp(1rem, 2vw, 1.35rem);
 }
 
-@media (min-width: 768px) {
-  .serviceGrid {
-    gap: 1.85rem 2rem;
-  }
+.serviceHighlightCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1.15rem 1.2rem;
+  background: #fff;
+  border: 1px solid rgba(13, 27, 42, 0.07);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 16px rgba(13, 27, 42, 0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  min-height: 4.5rem;
 }
 
-@media (min-width: 1100px) {
-  .serviceGrid {
-    gap: 2.25rem 2.5rem;
-  }
+.serviceHighlightCard:hover {
+  border-color: rgba(232, 93, 4, 0.2);
+  box-shadow: 0 8px 26px rgba(13, 27, 42, 0.07);
 }
 
-.serviceCard {
-  border: 1px solid rgba(13, 27, 42, 0.1);
-  border-radius: 12px;
-  padding: 1.45rem 1.5rem;
-  min-height: 5rem;
+.serviceIconWrap {
+  flex-shrink: 0;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  color: var(--primary-orange);
+  background: rgba(232, 93, 4, 0.09);
+}
+
+.serviceIconWrap svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.serviceHighlightLabel {
+  font-size: 0.9rem;
   font-weight: 600;
-  font-size: 0.98rem;
   line-height: 1.45;
-  color: var(--text-dark, #0d1b2a);
-  background: #fff;
-  box-shadow: 0 2px 8px -2px rgba(13, 27, 42, 0.06);
+  color: var(--text-dark);
+  margin: 0;
+  padding-top: 0.12rem;
 }
 
-.serviceCard:nth-child(even) {
-  background: #fafbfc;
-}
-
+/* —— Gallery —— */
 .galleryBlock {
-  margin-bottom: 3rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 .galleryGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(1rem, 2vw, 1.35rem);
 }
 
-@media (min-width: 768px) {
-  .galleryGrid {
-    gap: 1.65rem 1.75rem;
+.galleryCell {
+  position: relative;
+  width: 100%;
+  height: 168px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 6px 22px rgba(13, 27, 42, 0.08);
+  border: 1px solid rgba(13, 27, 42, 0.06);
+  transition: transform 0.45s ease, box-shadow 0.45s ease;
+}
+
+.galleryCell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(13, 27, 42, 0.1);
+}
+
+/* —— History —— */
+.historyBlock {
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid rgba(13, 27, 42, 0.07);
+  margin-bottom: 0;
+}
+
+.historyTitle {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .highlightCard:hover,
+  .whatWeDoCard:hover,
+  .galleryCell:hover,
+  .serviceHighlightCard:hover {
+    transform: none;
   }
 }

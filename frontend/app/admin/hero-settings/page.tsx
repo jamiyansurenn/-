@@ -11,6 +11,8 @@ type HeroSlide = {
   title?: string;
   subtitle?: string;
   description?: string;
+  /** Гарчгийн доорх богино дэмжих мөр (сонголттой) */
+  supportLine?: string;
   /** Слайдын өөрийн арын зураг */
   image?: string;
   /** Ил тод / чимэглэлийн overlay зураг (PNG гэх мэт) */
@@ -38,6 +40,7 @@ function normalizeSettings(input: any): HeroSettingsForm {
       title: s.title,
       subtitle: s.subtitle,
       description: s.description,
+      supportLine: s.supportLine,
       image: s.image,
       overlayImage: s.overlayImage,
       ctaLabel: s.ctaLabel,
@@ -149,6 +152,7 @@ export default function HeroSettingsPage() {
           title: s.title || '',
           subtitle: s.subtitle || '',
           description: s.description || '',
+          supportLine: s.supportLine || '',
           image: toStoredUrl(s.image || ''),
           overlayImage: toStoredUrl(s.overlayImage || ''),
           ctaLabel: s.ctaLabel || 'Холбоо барих',
@@ -234,7 +238,17 @@ export default function HeroSettingsPage() {
             </div>
 
             <div className="form-group">
-              <label>Нэмэлт текст (гарчигийн доор — заавал биш)</label>
+              <label>Support line (гарчгийн доор — богино дэд гарчиг, сонголттой)</label>
+              <textarea
+                value={form.slides[i]?.supportLine || ''}
+                onChange={(e) => handleSlideChange(i, 'supportLine', e.target.value)}
+                rows={2}
+                placeholder="Жишээ: Цамхагт краны мэргэжлийн цогц үйлчилгээ."
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Нэмэлт текст (урт тайлбар — заавал биш)</label>
               <textarea value={form.slides[i]?.description || ''} onChange={(e) => handleSlideChange(i, 'description', e.target.value)} rows={3} />
             </div>
 

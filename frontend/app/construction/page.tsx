@@ -8,8 +8,20 @@ import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getLanguage, getTranslations } from '@/lib/getLanguage';
 import PageHero from '@/components/corporate/PageHero';
 import SectionBlock from '@/components/corporate/SectionBlock';
+import SectionHeader from '@/components/home/SectionHeader';
 import styles from '@/components/corporate/corporate.module.css';
+import homeStyles from '@/app/home.module.css';
 import { getCmsPage } from '@/lib/page-cms';
+
+function formatPublishedDate(value: string | null | undefined) {
+  if (!value) return '';
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return '';
+  const yyyy = d.getUTCFullYear();
+  const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(d.getUTCDate()).padStart(2, '0');
+  return `${yyyy}.${mm}.${dd}`;
+}
 
 export default async function ConstructionPage() {
   const lang = await getLanguage();
@@ -213,66 +225,18 @@ export default async function ConstructionPage() {
   const masonrySections: Section[] = [...serviceSections, advantageSection];
 
   // Filter construction-related news
-  const constructionNews = news.data?.filter((item: any) => 
-    item.title?.toLowerCase().includes('барилг') || 
-    item.title?.toLowerCase().includes('construction') ||
-    item.content?.toLowerCase().includes('барилг')
-  ) || [];
-  const galleryImages = constructionNews
-    .map((item: any) => item?.image)
-    .filter(Boolean)
-    .slice(0, 6);
-  const sectionWrapStyle = {
-    padding: '4.5rem 0',
-    background: 'linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%)',
-  };
-  const pageContentStyle = {
-    maxWidth: '1040px',
-    margin: '0 auto',
-  };
-  const baseCardStyle = {
-    background: 'linear-gradient(180deg, #ffffff 0%, #fbfdff 100%)',
-    padding: '1.6rem 1.7rem',
-    borderRadius: '14px',
-    marginBottom: '1rem',
-    border: '1px solid rgba(15, 23, 42, 0.08)',
-    boxShadow: '0 16px 32px -24px rgba(15, 23, 42, 0.35)',
-  };
-  const cardMediaStyle = {
-    position: 'relative' as const,
-    width: '100%',
-    height: '140px',
-    borderRadius: '12px',
-    overflow: 'hidden' as const,
-    marginBottom: '1rem',
-    border: '1px solid rgba(15, 23, 42, 0.08)',
-  };
-  const headingStyle = {
-    marginBottom: '0.85rem',
-    color: 'var(--text-dark)',
-    letterSpacing: '-0.01em',
-  };
-  const leadTextStyle = {
-    marginBottom: '0.8rem',
-    lineHeight: '1.75',
-    color: '#475569',
-    fontSize: '0.99rem',
-  };
-  const listStyle = {
-    paddingLeft: '1.1rem',
-    margin: 0,
-    lineHeight: '1.75',
-    color: '#334155',
-    fontSize: '0.95rem',
-  };
-  const masonryStyle = {
-    columnCount: 2,
-    columnGap: '1rem',
-  };
-  const masonryItemStyle = {
-    breakInside: 'avoid' as const,
-    marginBottom: '1rem',
-  };
+  const constructionNews =
+    news.data?.filter(
+      (item: any) =>
+        item.title?.toLowerCase().includes('барилг') ||
+        item.title?.toLowerCase().includes('construction') ||
+        item.content?.toLowerCase().includes('барилг')
+    ) || [];
+
+  const introTitle = isEn ? 'Construction Works' : 'Барилгын ажил';
+  const introSubtitle = isEn
+    ? 'Daatsiin Tsamkhag Group provides professional construction, lifting mechanism, and industrial equipment services.'
+    : '“Даацын Цамхаг Групп” ХХК нь барилга, өргөх механизм, үйлдвэрлэлийн тоног төхөөрөмжийн чиглэлээр доорх үйлчилгээнүүдийг мэргэжлийн өндөр түвшинд үзүүлдэг.';
 
   return (
     <>
@@ -286,114 +250,99 @@ export default async function ConstructionPage() {
 
         <SectionBlock muted>
           <div className="container">
-            <div style={pageContentStyle}>
+            <div className={styles.constructionPageInner}>
               <AnimateOnScroll>
-                <div style={{ 
-                  ...baseCardStyle,
-                  marginBottom: '1.25rem',
-                  borderLeft: '4px solid #e08e6d'
-                }}>
-                  <h2 style={{ marginBottom: '0.8rem', color: 'var(--primary-orange)' }}>
-                    {isEn ? 'Construction Works' : 'Барилгын ажил'}
-                  </h2>
-                  <div style={{ lineHeight: '1.8', color: 'var(--text-gray)' }}>
-                    <p style={{ ...leadTextStyle, marginBottom: 0 }}>
-                      {isEn
-                        ? 'Daatsiin Tsamkhag Group provides professional construction, lifting mechanism, and industrial equipment services.'
-                        : '“Даацын Цамхаг Групп” ХХК нь барилга, өргөх механизм, үйлдвэрлэлийн тоног төхөөрөмжийн чиглэлээр доорх үйлчилгээнүүдийг мэргэжлийн өндөр түвшинд үзүүлдэг.'}
-                    </p>
-                  </div>
-                </div>
+                <SectionHeader title={introTitle} subtitle={introSubtitle} />
               </AnimateOnScroll>
 
-              <div style={masonryStyle}>
-                {masonrySections.map((section, idx) => (
-                  <div key={section.title} style={masonryItemStyle}>
-                    <AnimateOnScroll delay={100 + idx * 60}>
-                      <div
-                        style={{
-                          ...baseCardStyle,
-                          marginBottom: 0,
-                          borderLeft:
-                            section.title === (isEn ? 'Our Advantages' : 'Манай давуу тал')
-                              ? '4px solid #16a34a'
-                              : '4px solid rgba(224, 142, 109, 0.55)',
-                          boxShadow: '0 20px 38px -24px rgba(15, 23, 42, 0.42)',
-                        }}
-                      >
-                        <div style={cardMediaStyle}>
-                          <Image
-                            src={getImageUrl(undefined, section.title === (isEn ? 'Our Advantages' : 'Манай давуу тал') ? 'building' : 'construction', idx)}
-                            alt={section.title}
-                            fill
-                            style={{ objectFit: 'cover' }}
-                            sizes="(max-width: 768px) 100vw, 520px"
-                          />
-                        </div>
-                        <h3 style={headingStyle}>{section.title}</h3>
-                        <p style={leadTextStyle}>{section.intro}</p>
-                        {section.points && section.points.length > 0 ? (
-                          <ul style={listStyle}>
-                            {section.points.map((point) => (
-                              <li key={point}>{point}</li>
-                            ))}
-                          </ul>
-                        ) : null}
-                        {section.subSections?.map((sub) => (
-                          <div key={sub.title} style={{ marginTop: '0.95rem' }}>
-                            <h4 style={{ marginBottom: '0.4rem', color: 'var(--text-dark)' }}>{sub.title}</h4>
-                            <ul style={listStyle}>
-                              {sub.points.map((point) => (
-                                <li key={point}>{point}</li>
-                              ))}
-                            </ul>
+              <div className={styles.premiumMasonry}>
+                {masonrySections.map((section, idx) => {
+                  const isAdvantage = section.title === (isEn ? 'Our Advantages' : 'Манай давуу тал');
+                  return (
+                    <div key={section.title} className={styles.premiumMasonryItem}>
+                      <AnimateOnScroll delay={80 + idx * 50}>
+                        <article
+                          className={`${styles.premiumDetailCard} ${isAdvantage ? styles.premiumDetailCardAdvantage : ''}`}
+                        >
+                          <div className={styles.premiumDetailMedia}>
+                            <Image
+                              src={getImageUrl(undefined, isAdvantage ? 'building' : 'construction', idx)}
+                              alt={section.title}
+                              fill
+                              className={styles.premiumDetailImage}
+                              sizes="(max-width: 768px) 100vw, 520px"
+                            />
                           </div>
-                        ))}
-                      </div>
-                    </AnimateOnScroll>
-                  </div>
-                ))}
+                          <div className={styles.premiumDetailBody}>
+                            <h3 className={styles.premiumDetailTitle}>{section.title}</h3>
+                            <p className={styles.premiumDetailIntro}>{section.intro}</p>
+                            {section.points && section.points.length > 0 ? (
+                              <ul className={styles.premiumDetailList}>
+                                {section.points.map((point) => (
+                                  <li key={point}>{point}</li>
+                                ))}
+                              </ul>
+                            ) : null}
+                            {section.subSections?.map((sub) => (
+                              <div key={sub.title} className={styles.premiumSubBlock}>
+                                <h4 className={styles.premiumSubTitle}>{sub.title}</h4>
+                                <ul className={styles.premiumDetailList}>
+                                  {sub.points.map((point) => (
+                                    <li key={point}>{point}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        </article>
+                      </AnimateOnScroll>
+                    </div>
+                  );
+                })}
               </div>
 
-
-              {constructionNews.length > 0 && (
-                <AnimateOnScroll delay={200}>
-                  <div>
-                    <h2 className="section-title" style={{ marginBottom: '2rem' }}>
-                      {t.pages.construction.latestNews}
-                    </h2>
-                    <div className={styles.cardGrid}>
+              {constructionNews.length > 0 ? (
+                <AnimateOnScroll delay={120}>
+                  <div style={{ marginTop: 'clamp(2.5rem, 5vw, 4rem)' }}>
+                    <SectionHeader title={t.pages.construction.latestNews} />
+                    <div className={homeStyles.newsGridHome}>
                       {constructionNews.slice(0, 3).map((item: any, index: number) => {
                         const imageUrl = getImageUrl(item.image, 'news', index);
+                        const dateStr = formatPublishedDate(item.publishedAt);
                         return (
-                        <AnimateOnScroll key={item.id} delay={index * 100}>
-                          <div className="card">
-                            <div style={{ position: 'relative', width: '100%', height: '200px', overflow: 'hidden' }}>
-                              <Image
-                                src={imageUrl}
-                                alt={item.title}
-                                fill
-                                style={{ objectFit: 'cover' }}
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              />
-                            </div>
-                            <div style={{ padding: '1.5rem' }}>
-                              <h3 style={{ marginBottom: '1rem' }}>{item.title}</h3>
-                              {item.excerpt && (
-                                <p style={{ marginBottom: '1rem', color: '#666' }}>{item.excerpt}</p>
-                              )}
-                              <Link href={`/news/${item.slug}`} className="btn">
-                                {t.common.readMore}
-                              </Link>
-                            </div>
-                          </div>
-                        </AnimateOnScroll>
+                          <AnimateOnScroll key={item.id} delay={index * 70}>
+                            <article className={homeStyles.newsCardHome}>
+                              <div className={homeStyles.newsCardImageWrap}>
+                                <Image
+                                  src={imageUrl}
+                                  alt={item.title}
+                                  fill
+                                  className={homeStyles.newsCardImage}
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                />
+                              </div>
+                              <div className={homeStyles.newsCardBody}>
+                                <div className={homeStyles.newsMetaRow}>
+                                  <span className={homeStyles.newsCardLabel}>{t.nav.news}</span>
+                                  {dateStr ? <span className={homeStyles.cardDate}>{dateStr}</span> : null}
+                                </div>
+                                <h3 className={homeStyles.newsCardTitle}>{item.title}</h3>
+                                {item.excerpt ? <p className={homeStyles.newsCardExcerpt}>{item.excerpt}</p> : null}
+                                <div className={homeStyles.newsCardFooter}>
+                                  <Link href={`/news/${item.slug}`} className={homeStyles.newsReadLink}>
+                                    {t.common.readMore}
+                                    <span aria-hidden>→</span>
+                                  </Link>
+                                </div>
+                              </div>
+                            </article>
+                          </AnimateOnScroll>
                         );
                       })}
                     </div>
                   </div>
                 </AnimateOnScroll>
-              )}
+              ) : null}
             </div>
           </div>
         </SectionBlock>
