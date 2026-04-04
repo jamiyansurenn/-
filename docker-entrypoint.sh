@@ -15,6 +15,16 @@ if [ -z "$DATABASE_URL" ]; then
   exit 1
 fi
 
+# Render "Hostname" in the dashboard is often shortened (dpg-xxx-a). Prisma needs the full
+# internal host (dpg-xxx-a.<region>-postgres.render.com). Default region suffix matches Oregon.
+if command -v node >/dev/null 2>&1; then
+  export DATABASE_URL="$(
+    DATABASE_URL="$DATABASE_URL" \
+    DATABASE_INTERNAL_HOST_SUFFIX="${DATABASE_INTERNAL_HOST_SUFFIX:-oregon-postgres.render.com}" \
+    node -e 'const u=process.env.DATABASE_URL;const suffix=process.env.DATABASE_INTERNAL_HOST_SUFFIX||"oregon-postgres.render.com";const w=s=>process.stdout.write(s);try{const url=new URL(u.replace(/^postgres(ql)?:/i,"http:"));const h=url.hostname;if(/^dpg-[a-z0-9]+-a$/i.test(h)&&!h.includes(".")){url.hostname=h+"."+suffix;console.error("docker-entrypoint: expanded Postgres host; set DATABASE_INTERNAL_HOST_SUFFIX if DB is not in that region, or use full Internal URL from Render.");w(url.toString().replace(/^http:/i,"postgresql:"));}else{w(u);}}catch{w(u);}'
+  )"
+fi
+
 # Render Postgres + Prisma: TLS is required unless the URL already sets ssl/sslmode.
 with_ssl_if_needed() {
   u="$1"
