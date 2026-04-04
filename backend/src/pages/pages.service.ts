@@ -67,14 +67,31 @@ export class PagesService {
       where: { slug, status: 'PUBLISHED' },
       include: {
         sections: {
-          where: {
-            isVisible: true,
-            ...(locale ? { locale } : {}),
-          },
+          where: { isVisible: true },
           orderBy: { order: 'asc' },
         },
       },
     });
+    if (!page) return null;
+    // Optional i18n: if client sends ?lang=, prefer that locale per order, else fall back to `mn`.
+    if (locale && locale !== 'mn') {
+      const byOrder = new Map<number, typeof page.sections>();
+      for (const s of page.sections) {
+        const list = byOrder.get(s.order) ?? [];
+        list.push(s);
+        byOrder.set(s.order, list);
+      }
+      const picked: typeof page.sections = [];
+      for (const order of [...byOrder.keys()].sort((a, b) => a - b)) {
+        const list = byOrder.get(order) ?? [];
+        const match = list.find((x) => x.locale === locale);
+        const fallback = list.find((x) => x.locale === 'mn');
+        picked.push(match ?? fallback ?? list[0]);
+      }
+      return { ...page, sections: picked };
+    }
+    // Default (mn site): only `mn` sections so en-only rows do not leak onto Mongolian page.
+    page.sections = page.sections.filter((s) => s.locale === 'mn' || !s.locale);
     return page;
   }
 }

@@ -4,7 +4,7 @@ import AnimateOnScroll from '@/components/AnimateOnScroll';
 import { getNews } from '@/lib/api';
 import Link from 'next/link';
 import { getImageUrl } from '@/lib/imagePlaceholder';
-import { getTranslations } from '@/lib/getLanguage';
+import { getLanguage, getTranslations } from '@/lib/getLanguage';
 import PageHero from '@/components/corporate/PageHero';
 import SectionBlock from '@/components/corporate/SectionBlock';
 import ContentCard from '@/components/corporate/ContentCard';
@@ -17,7 +17,8 @@ export const dynamic = 'force-dynamic';
 
 export default async function NewsPage() {
   const t = await getTranslations();
-  const cmsPage = await getCmsPage('news');
+  const lang = await getLanguage();
+  const cmsPage = await getCmsPage('news', lang);
   let news = { data: [] };
 
   try {
