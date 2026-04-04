@@ -21,12 +21,19 @@ async function bootstrap() {
   // `frontend` дээрх запросууд зөвхөн `Authorization` header-оор JWT явуулдаг тул cookies хэрэггүй.
   // Origin таарахгүй бол browser "Failed to fetch" / CORS алдаагаар request-ийг тасалдаг.
   const corsOrigin = process.env.CORS_ORIGIN || process.env.FRONTEND_URL;
-  const normalizedOrigins = corsOrigin
+  let normalizedOrigins = corsOrigin
     ? corsOrigin
         .split(',')
         .map((origin) => origin.trim())
         .filter(Boolean)
     : [];
+  // Local `next dev` (localhost:3000) → production API on Render: allow preflight without editing CORS_ORIGIN.
+  // Set CORS_ALLOW_LOCALHOST_DEV=false on Render if you must forbid local origins.
+  const allowLocalNextDev = process.env.CORS_ALLOW_LOCALHOST_DEV !== 'false';
+  if (normalizedOrigins.length > 0 && allowLocalNextDev) {
+    const localNext = ['http://localhost:3000', 'http://127.0.0.1:3000'];
+    normalizedOrigins = [...new Set([...normalizedOrigins, ...localNext])];
+  }
   app.enableCors({
     // Хэрвээ origin тодорхойлоогүй бол бүх origin-ыг зөвшөөрнө.
     // Render/Vercel дээр env-г яг тохируулахгүйгээс үүдэлтэй гардаг блоклалтыг арилгана.
