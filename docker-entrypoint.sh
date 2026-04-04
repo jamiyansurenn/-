@@ -15,6 +15,26 @@ if [ -z "$DATABASE_URL" ]; then
   exit 1
 fi
 
+# Render Postgres + Prisma: TLS is required unless the URL already sets ssl/sslmode.
+with_ssl_if_needed() {
+  u="$1"
+  case "$u" in
+    *sslmode=*)
+      printf '%s\n' "$u"
+      return
+      ;;
+  esac
+  case "$u" in
+    *\?*)
+      printf '%s\n' "${u}&sslmode=require"
+      ;;
+    *)
+      printf '%s\n' "${u}?sslmode=require"
+      ;;
+  esac
+}
+export DATABASE_URL="$(with_ssl_if_needed "$DATABASE_URL")"
+
 echo "Running prisma db push..."
 npx prisma db push
 
