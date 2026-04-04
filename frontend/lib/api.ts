@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { getApiBaseUrl } from './apiBase';
 
-/** Render free tier / cold starts can exceed 10s; override via NEXT_PUBLIC_API_TIMEOUT_MS */
+/** Render free tier cold starts often need 50s+; override via NEXT_PUBLIC_API_TIMEOUT_MS */
 const getApiTimeoutMs = () => {
   const raw = process.env.NEXT_PUBLIC_API_TIMEOUT_MS;
   const n = raw ? parseInt(raw, 10) : NaN;
-  return !Number.isNaN(n) && n >= 5000 ? n : 45000;
+  return !Number.isNaN(n) && n >= 5000 ? n : 120000;
 };
 
 const api = axios.create({
