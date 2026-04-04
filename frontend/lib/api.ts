@@ -230,7 +230,12 @@ export const getProjectBySlug = async (slug: string) => {
   }
 };
 
-export const getNews = async (featured?: boolean, limit?: number) => {
+export const getNews = async (
+  featured?: boolean,
+  limit?: number,
+  options?: { useFallback?: boolean }
+) => {
+  const useFallback = options?.useFallback !== false;
   const fallbackNews = [
     { id: 1, slug: 'new-crane-2026', title: 'Шинэ загварын цамхагт кран оруулж ирлээ', excerpt: 'Бид үйл ажиллагаагаа өргөжүүлэн, шинэ үеийн аюулгүй байдлын систем бүхий крануудыг нэвтрүүллээ.', image: '', publishedAt: new Date().toISOString() },
     { id: 2, slug: 'award-2025', title: 'Шилдэг барилгын туслан гүйцэтгэгчээр шалгарлаа', excerpt: 'Даацын Цамхаг Групп ХХК нь 2025 оны салбарын шилдэг байгууллагаар шалгарлаа.', image: '', publishedAt: new Date().toISOString() }
@@ -238,9 +243,10 @@ export const getNews = async (featured?: boolean, limit?: number) => {
   try {
     const response = await api.get('/news/public', { params: { featured, limit } });
     const data = safeGetData(response);
-    return { data: data && data.length > 0 ? data : fallbackNews };
+    if (data && data.length > 0) return { data };
+    return { data: useFallback ? fallbackNews : [] };
   } catch (error: any) {
-    return { data: fallbackNews };
+    return { data: useFallback ? fallbackNews : [] };
   }
 };
 

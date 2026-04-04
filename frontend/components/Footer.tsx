@@ -35,6 +35,9 @@ export default function Footer() {
   const tf = t.footer as any;
   const year = new Date().getFullYear();
   const copyright = t.footer.copyright.replace(/\{\{year\}\}/g, String(year));
+  const mapHref = t.contact?.address
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(t.contact.address)}`
+    : '';
 
   return (
     <footer className="site-footer">
@@ -102,6 +105,13 @@ export default function Footer() {
               <IconPin />
               <span>{t.contact.address}</span>
             </p>
+            {mapHref ? (
+              <p className="footer-contact-row footer-map-row">
+                <a href={mapHref} target="_blank" rel="noreferrer" className="footer-map-link">
+                  {(tf as { openInMaps?: string }).openInMaps || 'Google Maps'}
+                </a>
+              </p>
+            ) : null}
           </div>
         </div>
 

@@ -6,47 +6,32 @@ import AboutSection from '@/components/home/AboutSection';
 import ValuesPillarsSection from '@/components/home/ValuesPillarsSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
 import NewsSection from '@/components/home/NewsSection';
-import LocationSection from '@/components/home/LocationSection';
-import Link from 'next/link';
-import Image from 'next/image';
-import { getImageUrl } from '@/lib/imagePlaceholder';
-import { getTranslations } from '@/lib/getLanguage';
-import styles from '@/app/home.module.css';
-import SectionHeader from '@/components/home/SectionHeader';
 
-// Force dynamic rendering to prevent build-time static generation errors
-// This ensures pages render at request time, not build time
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const t = await getTranslations();
-  const tx = t as any;
-  // Initialize with safe defaults - page will always render
-  let companyInfo: { data: any } = { data: null };
-  let projects: { data: any[] } = { data: [] };
-  let news: { data: any[] } = { data: [] };
+  let companyInfo: { data: unknown } = { data: null };
+  let projects: { data: unknown[] } = { data: [] };
+  let news: { data: unknown[] } = { data: [] };
 
   try {
-    // Use Promise.allSettled to ensure all promises complete
     const results = await Promise.allSettled([
       getCompanyInfo().catch(() => ({ data: null })),
       getProjects(true).catch(() => ({ data: [] })),
-      getNews(true, 9).catch(() => ({ data: [] })),
+      getNews(true, 9, { useFallback: false }).catch(() => ({ data: [] })),
     ]);
 
-    // Safely extract data from each result
     if (results[0].status === 'fulfilled') {
-      companyInfo = results[0].value || { data: null };
+      companyInfo = (results[0].value as typeof companyInfo) || { data: null };
     }
     if (results[1].status === 'fulfilled') {
-      projects = results[1].value || { data: [] };
+      projects = (results[1].value as typeof projects) || { data: [] };
     }
     if (results[2].status === 'fulfilled') {
-      news = results[2].value || { data: [] };
+      news = (results[2].value as typeof news) || { data: [] };
     }
-  } catch (error) {
-    // Final safety net - page will render with empty data
-    // This should never happen due to Promise.allSettled, but just in case
+  } catch {
+    /* page still renders */
   }
 
   return (
@@ -56,64 +41,8 @@ export default async function Home() {
         <HeroSection />
         <AboutSection companyInfo={companyInfo} />
         <ValuesPillarsSection />
-        <ProjectsSection projects={projects.data} />
-        <NewsSection news={news.data} />
-        <section className={styles.homeFeaturedSection}>
-          <div className="container">
-            <SectionHeader
-              title={tx.home?.featuredPages?.title || 'Онцлох хуудсууд'}
-              subtitle={tx.home?.featuredPages?.sectionLead}
-            />
-            <div className={styles.homeFeaturedGrid}>
-              {[
-                {
-                  title: tx.home?.featuredPages?.aboutTitle || 'Танилцуулга',
-                  href: '/about',
-                  desc: tx.home?.featuredPages?.aboutDesc || 'Компанийн зорилго, чиглэл, үнэт зүйлс',
-                  cat: 'building' as const,
-                },
-                {
-                  title: tx.home?.featuredPages?.historyTitle || 'Түүхэн замнал',
-                  href: '/history',
-                  desc: tx.home?.featuredPages?.historyDesc || '2009 оноос хойшх бүтээн байгуулалтын замнал',
-                  cat: 'construction' as const,
-                },
-                {
-                  title: tx.home?.featuredPages?.constructionTitle || 'Хэрэгжүүлсэн төслүүд',
-                  href: '/construction',
-                  desc: tx.home?.featuredPages?.constructionDesc || 'Төсөл, кран, барилгын цогц үйлчилгээ',
-                  cat: 'service' as const,
-                },
-                {
-                  title: tx.home?.featuredPages?.careersTitle || 'Хүний нөөц',
-                  href: '/careers',
-                  desc: tx.home?.featuredPages?.careersDesc || 'Нээлттэй ажлын байр',
-                  cat: 'team' as const,
-                },
-              ].map((item, index) => (
-                <div key={item.href} className={styles.homeFeaturedCard}>
-                  <div className={styles.homeFeaturedCardImage}>
-                    <Image
-                      src={getImageUrl(undefined, item.cat, index)}
-                      alt={item.title}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                      sizes="(max-width: 768px) 100vw, 25vw"
-                    />
-                  </div>
-                  <div className={styles.homeFeaturedCardBody}>
-                    <h3>{item.title}</h3>
-                    <p>{item.desc}</p>
-                    <Link href={item.href} className="btn btn-secondary">
-                      {t.common.learnMore}
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        <LocationSection />
+        <ProjectsSection projects={projects.data as any[]} />
+        <NewsSection news={news.data as any[]} />
       </main>
       <Footer />
     </>

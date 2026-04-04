@@ -70,12 +70,16 @@ export default function AboutSection({ companyInfo: _companyInfo }: AboutSection
   const tx = t as any;
   const ha = tx.home?.about ?? {};
 
+  const introShort = typeof ha.introShort === 'string' ? ha.introShort.trim() : '';
   const introLead =
-    typeof ha.aboutUs === 'string' && ha.aboutUs.includes('\n\n')
+    introShort ||
+    (typeof ha.aboutUs === 'string' && ha.aboutUs.includes('\n\n')
       ? ha.aboutUs.split('\n\n')[0].trim()
-      : ha.aboutUs;
+      : ha.aboutUs);
 
-  const bullets = serviceBulletsForLang(language, tx);
+  const coreFromHome = Array.isArray(ha.coreAreas) ? ha.coreAreas.filter((x: unknown) => typeof x === 'string') : [];
+  const bullets =
+    coreFromHome.length >= 4 ? coreFromHome.slice(0, 4) : serviceBulletsForLang(language, tx).slice(0, 4);
 
   const eyebrow = ha.introEyebrow ?? ha.title;
   const brand = ha.brandLine ?? t.home.hero.title;
@@ -107,7 +111,7 @@ export default function AboutSection({ companyInfo: _companyInfo }: AboutSection
               <h2 className={styles.homeAboutBrand}>{brand}</h2>
               <p className={styles.homeAboutLead}>{introLead}</p>
               <ul className={styles.homeAboutBullets}>
-                {bullets.map((item) => (
+                {bullets.map((item: string) => (
                   <li key={item} className={styles.homeAboutBullet}>
                     {item}
                   </li>

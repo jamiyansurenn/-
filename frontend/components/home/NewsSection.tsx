@@ -28,12 +28,30 @@ export default function NewsSection({ news }: NewsSectionProps) {
   const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
 
+  const th = (t as any).home ?? {};
+
   if (!news || news.length === 0) {
+    const emptyTitle = th.newsEmptyTitle || (t.common as any).newsSectionEmpty;
+    const emptyBody = th.newsEmptyBody || '';
     return (
       <section className={styles.newsSection}>
         <div className="container">
           <SectionHeader title={t.pages.construction.latestNews} />
-          <p className={styles.newsEmptyNote}>{(t.common as any).newsSectionEmpty}</p>
+          <div className={styles.newsEmptyHome}>
+            <p className={styles.newsEmptyHomeTitle}>{emptyTitle}</p>
+            {emptyBody ? <p className={styles.newsEmptyHomeBody}>{emptyBody}</p> : null}
+            <div className={styles.newsEmptyHomeActions}>
+              <Link href="/projects" className="btn btn-secondary">
+                {(t.common as any).ctaExploreProjects || t.common.viewAll}
+              </Link>
+              <Link href="/contact" className="btn btn-secondary">
+                {t.nav.contact}
+              </Link>
+              <Link href="/news" className={styles.newsEmptyHomeLink}>
+                {th.newsViewArchive || t.common.viewAll}
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     );

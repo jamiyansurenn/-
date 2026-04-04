@@ -56,6 +56,7 @@ export const translations = {
       companyTitle: 'Компани',
       linksTitle: 'Холбоосууд',
       contactTitle: 'Холбоо барих',
+      openInMaps: 'Газрын зураг дээр нээх',
       copyright: '© {{year}} ДААЦЫН ЦАМХАГ Групп. Бүх эрх хуулиар хамгаалагдсан.',
     },
     home: {
@@ -63,8 +64,7 @@ export const translations = {
         title: 'ДААЦЫН ЦАМХАГ Групп',
         subtitle: 'Даацтай бизнес ба даацтай амьдрал',
         brandEyebrow: 'Барилга · Хөгжил · Найдварт түншлэл',
-        defaultSupport:
-          'Улаанбаатар болон орон нутагт орон сууц, дэд бүтэц, цамхагт кран — цогц шийдэл, чанартай гүйцэтгэл.',
+        defaultSupport: 'Орон сууц, дэд бүтэц, цамхагт кран — Улаанбаатар болон орон нутагт.',
       },
       heroSlides: [
         {
@@ -114,15 +114,26 @@ export const translations = {
         introEyebrow: 'Товч танилцуулга',
         brandLine: 'ДААЦЫН ЦАМХАГ ГРУПП',
         experienceBadge: '14+ ЖИЛИЙН ТУРШЛАГА',
+        introShort:
+          '2009 оноос барилга, дэд бүтэц, өргөх механизмын цогц үйлчилгээг мэргэжлийн түвшинд үзүүлдэг. Улаанбаатар болон орон нутагт тогтвортой гүйцэтгэлээр танигдсан түнш.',
+        coreAreas: [
+          'Барилга угсралт',
+          'Цамхагт краны нэгдсэн үйлчилгээ',
+          'Барилгын материалын үйлдвэрлэл',
+          'Бүс нутгийн төсөл хэрэгжүүлэлт',
+        ],
       },
       services: {
         title: 'Үйлчилгээ',
         description: 'Бидний санал болгож буй үйлчилгээнүүд',
         noServices: 'Үйлчилгээ олдсонгүй',
       },
+      newsEmptyTitle: 'Мэдээ одоогоор байхгүй',
+      newsEmptyBody: 'Шинэ мэдээ нийтлэгдмэгц энд харагдана. Төсөл, холбоо барих мэдээллийг доорх холбоосоор үзнэ үү.',
+      newsViewArchive: 'Бүх мэдээ',
       projects: {
         title: 'Төслүүд',
-        description: 'Манай хэрэгжүүлсэн төслүүд',
+        description: 'Сонгодог төслүүдээс',
       },
       projectFeaturedBadge: 'Онцлох',
       projectTypeBadge: 'Төсөл',
@@ -140,26 +151,26 @@ export const translations = {
       },
       pillars: {
         title: 'Үндсэн зарчмууд',
-        subtitle: 'Бидний ажиллах ухагдахуун, чиглэл',
+        subtitle: 'Ажиллах зарчим',
         items: [
           {
             title: 'Хүн',
-            description: 'Ажилтнууд, харилцагчдын эрх ашиг, аюулгүй байдал.',
+            description: 'Аюулгүй байдал, хүндэтгэл.',
             imageSeed: 'dtg-pillar-human',
           },
           {
             title: 'Ёс зүй',
-            description: 'Шударга, ил тод, хүлээсэн үүргээ биелүүлэх.',
+            description: 'Шударга, ил тод.',
             imageSeed: 'dtg-pillar-ethics',
           },
           {
             title: 'Чанар, стандарт',
-            description: 'OHSAS болон салбарын стандартыг баримтална.',
+            description: 'Салбарын стандарт.',
             imageSeed: 'dtg-pillar-quality',
           },
           {
             title: 'Тогтвортой хөгжил',
-            description: 'Урт хугацааны үр өгөөжтэй бүтээн байгуулалт.',
+            description: 'Урт хугацааны үр өгөөж.',
             imageSeed: 'dtg-pillar-sustain',
           },
         ],
@@ -366,6 +377,7 @@ export const translations = {
       companyTitle: 'Company',
       linksTitle: 'Links',
       contactTitle: 'Contact',
+      openInMaps: 'Open in Google Maps',
       copyright: '© {{year}} DAATSIINTSAMKHAG Group. All rights reserved.',
     },
     home: {
@@ -422,15 +434,27 @@ export const translations = {
         introEyebrow: 'Introduction',
         brandLine: 'DAATSIINTSAMKHAG GROUP',
         experienceBadge: '14+ YEARS OF EXPERIENCE',
+        introShort:
+          'Since 2009 we have delivered construction, infrastructure, and lifting services with disciplined execution across Ulaanbaatar and regional projects.',
+        coreAreas: [
+          'Construction & installation',
+          'Integrated tower crane services',
+          'Building materials manufacturing',
+          'Regional project delivery',
+        ],
       },
       services: {
         title: 'Services',
         description: 'Services we offer',
         noServices: 'No services found',
       },
+      newsEmptyTitle: 'No news yet',
+      newsEmptyBody:
+        'New items will appear here once published. Explore projects or get in touch using the links below.',
+      newsViewArchive: 'All news',
       projects: {
         title: 'Projects',
-        description: 'Our completed projects',
+        description: 'Selected delivery experience',
       },
       projectFeaturedBadge: 'Featured',
       projectTypeBadge: 'Project',
@@ -448,26 +472,26 @@ export const translations = {
       },
       pillars: {
         title: 'Our pillars',
-        subtitle: 'How we work, every day',
+        subtitle: 'How we work',
         items: [
           {
             title: 'People',
-            description: 'Safety and respect for employees and customers.',
+            description: 'Safety and respect first.',
             imageSeed: 'dtg-pillar-human',
           },
           {
             title: 'Integrity',
-            description: 'Fair, transparent, accountable delivery.',
+            description: 'Fair, transparent delivery.',
             imageSeed: 'dtg-pillar-ethics',
           },
           {
             title: 'Quality & standards',
-            description: 'OHSAS-oriented, industry-grade execution.',
+            description: 'Industry-grade execution.',
             imageSeed: 'dtg-pillar-quality',
           },
           {
             title: 'Sustainable growth',
-            description: 'Long-term impact for communities and partners.',
+            description: 'Long-term value.',
             imageSeed: 'dtg-pillar-sustain',
           },
         ],
@@ -664,6 +688,7 @@ export const translations = {
       companyTitle: '公司',
       linksTitle: '链接',
       contactTitle: '联系我们',
+      openInMaps: '在 Google 地图中打开',
       copyright: '© {{year}} 达茨因察姆哈格集团。保留所有权利。',
     },
     home: {
@@ -711,11 +736,16 @@ export const translations = {
         introEyebrow: '公司简介',
         brandLine: '达茨因察姆哈格集团',
         experienceBadge: '逾14年行业经验',
+        introShort: '自2009年起，我们在蒙古提供建筑、基础设施与起重一体化专业服务，覆盖乌兰巴托及周边地区。',
+        coreAreas: ['建筑安装', '塔式起重机综合服务', '建材生产', '区域项目交付'],
       },
       services: {
         title: '服务',
         description: '我们提供的服务',
       },
+      newsEmptyTitle: '暂无新闻',
+      newsEmptyBody: '新闻发布后将显示在此处。您可查看项目或通过下方链接联系我们。',
+      newsViewArchive: '全部新闻',
       projects: {
         title: '项目',
         description: '我们完成的项目',
@@ -735,12 +765,12 @@ export const translations = {
       },
       pillars: {
         title: '核心原则',
-        subtitle: '我们的工作方式',
+        subtitle: '工作准则',
         items: [
-          { title: '人', description: '重视员工与客户的安全与尊严。', imageSeed: 'dtg-pillar-human' },
-          { title: '道德', description: '公平、透明、守约。', imageSeed: 'dtg-pillar-ethics' },
-          { title: '质量与标准', description: '遵循OHSAS及行业标准。', imageSeed: 'dtg-pillar-quality' },
-          { title: '可持续发展', description: '追求长期价值。', imageSeed: 'dtg-pillar-sustain' },
+          { title: '人', description: '安全与尊重。', imageSeed: 'dtg-pillar-human' },
+          { title: '道德', description: '公平透明。', imageSeed: 'dtg-pillar-ethics' },
+          { title: '质量与标准', description: '行业标准。', imageSeed: 'dtg-pillar-quality' },
+          { title: '可持续发展', description: '长期价值。', imageSeed: 'dtg-pillar-sustain' },
         ],
       },
       partnersStrip: {
@@ -892,6 +922,7 @@ export const translations = {
       companyTitle: 'Компания',
       linksTitle: 'Ссылки',
       contactTitle: 'Контакты',
+      openInMaps: 'Открыть в Google Картах',
       copyright: '© {{year}} Группа ДААЦЫН ЦАМХАГ. Все права защищены.',
     },
     home: {
@@ -940,11 +971,22 @@ export const translations = {
         introEyebrow: 'Краткое описание',
         brandLine: 'ГРУППА ДААЦЫН ЦАМХАГ',
         experienceBadge: 'БОЛЕЕ 14 ЛЕТ ОПЫТА',
+        introShort:
+          'С 2009 года — строительство, инфраструктура и подъёмная техника: комплексные услуги в Улан-Баторе и регионах.',
+        coreAreas: [
+          'Строительство и монтаж',
+          'Комплексные услуги башенных кранов',
+          'Производство стройматериалов',
+          'Региональные проекты',
+        ],
       },
       services: {
         title: 'Услуги',
         description: 'Услуги, которые мы предлагаем',
       },
+      newsEmptyTitle: 'Новостей пока нет',
+      newsEmptyBody: 'После публикации материалы появятся здесь. Проекты и контакты — по ссылкам ниже.',
+      newsViewArchive: 'Все новости',
       projects: {
         title: 'Проекты',
         description: 'Наши завершенные проекты',
@@ -964,12 +1006,12 @@ export const translations = {
       },
       pillars: {
         title: 'Принципы',
-        subtitle: 'Как мы работаем',
+        subtitle: 'Наши ориентиры',
         items: [
-          { title: 'Люди', description: 'Безопасность и уважение к сотрудникам и клиентам.', imageSeed: 'dtg-pillar-human' },
-          { title: 'Этика', description: 'Честность, прозрачность, ответственность.', imageSeed: 'dtg-pillar-ethics' },
-          { title: 'Качество', description: 'Стандарты OHSAS и отрасли.', imageSeed: 'dtg-pillar-quality' },
-          { title: 'Устойчивость', description: 'Долгосрочный эффект для партнёров.', imageSeed: 'dtg-pillar-sustain' },
+          { title: 'Люди', description: 'Безопасность и уважение.', imageSeed: 'dtg-pillar-human' },
+          { title: 'Этика', description: 'Честность и прозрачность.', imageSeed: 'dtg-pillar-ethics' },
+          { title: 'Качество', description: 'Отраслевые стандарты.', imageSeed: 'dtg-pillar-quality' },
+          { title: 'Устойчивость', description: 'Долгосрочная ценность.', imageSeed: 'dtg-pillar-sustain' },
         ],
       },
       partnersStrip: {
@@ -1124,6 +1166,7 @@ export const translations = {
       companyTitle: '会社情報',
       linksTitle: 'リンク',
       contactTitle: 'お問い合わせ',
+      openInMaps: 'Google マップで開く',
       copyright: '© {{year}} DAATSIINTSAMKHAGグループ',
     },
     home: {
@@ -1171,11 +1214,16 @@ export const translations = {
         introEyebrow: '会社概要',
         brandLine: 'DAATSIINTSAMKHAG グループ',
         experienceBadge: '14年以上の実績',
+        introShort: '2009年より建設・インフラ・揚重の統合サービスを、ウランバートルと地方で提供しています。',
+        coreAreas: ['建設・据付', 'タワークレーン総合', '建材製造', '地域プロジェクト'],
       },
       services: {
         title: 'サービス',
         description: '提供するサービス',
       },
+      newsEmptyTitle: 'ニュースはまだありません',
+      newsEmptyBody: '公開後にここに表示されます。プロジェクトやお問い合わせは下のリンクから。',
+      newsViewArchive: 'ニュース一覧',
       projects: {
         title: 'プロジェクト',
         description: '完了したプロジェクト',
@@ -1195,12 +1243,12 @@ export const translations = {
       },
       pillars: {
         title: '基本原則',
-        subtitle: '私たちの姿勢',
+        subtitle: '行動指針',
         items: [
-          { title: '人', description: '従業員とお客様の安全と尊厳。', imageSeed: 'dtg-pillar-human' },
-          { title: '倫理', description: '公正・透明・約束の履行。', imageSeed: 'dtg-pillar-ethics' },
-          { title: '品質・基準', description: 'OHSASと業界基準。', imageSeed: 'dtg-pillar-quality' },
-          { title: '持続可能性', description: '長期的な価値。', imageSeed: 'dtg-pillar-sustain' },
+          { title: '人', description: '安全と尊重。', imageSeed: 'dtg-pillar-human' },
+          { title: '倫理', description: '公正・透明。', imageSeed: 'dtg-pillar-ethics' },
+          { title: '品質・基準', description: '業界水準。', imageSeed: 'dtg-pillar-quality' },
+          { title: '持続可能性', description: '長期的価値。', imageSeed: 'dtg-pillar-sustain' },
         ],
       },
       partnersStrip: {
@@ -1352,6 +1400,7 @@ export const translations = {
       companyTitle: '회사',
       linksTitle: '링크',
       contactTitle: '연락처',
+      openInMaps: 'Google 지도에서 열기',
       copyright: '© {{year}} DAATSIINTSAMKHAG 그룹. 무단 복제 금지.',
     },
     home: {
@@ -1399,11 +1448,16 @@ export const translations = {
         introEyebrow: '회사 소개',
         brandLine: 'DAATSIINTSAMKHAG 그룹',
         experienceBadge: '14년 이상의 경험',
+        introShort: '2009년부터 건설·인프라·양중 장비를 울란바토르와 지역에서 통합 제공합니다.',
+        coreAreas: ['건설·설치', '타워크레인 통합', '건자재 생산', '지역 프로젝트'],
       },
       services: {
         title: '서비스',
         description: '제공하는 서비스',
       },
+      newsEmptyTitle: '아직 뉴스가 없습니다',
+      newsEmptyBody: '게시되면 이곳에 표시됩니다. 프로젝트와 문의는 아래 링크를 이용하세요.',
+      newsViewArchive: '전체 뉴스',
       projects: {
         title: '프로젝트',
         description: '완료된 프로젝트',
@@ -1423,12 +1477,12 @@ export const translations = {
       },
       pillars: {
         title: '핵심 원칙',
-        subtitle: '일하는 방식',
+        subtitle: '행동 기준',
         items: [
-          { title: '사람', description: '직원과 고객의 안전과 존중.', imageSeed: 'dtg-pillar-human' },
-          { title: '윤리', description: '공정·투명·약속 이행.', imageSeed: 'dtg-pillar-ethics' },
-          { title: '품질·표준', description: 'OHSAS 및 업계 표준.', imageSeed: 'dtg-pillar-quality' },
-          { title: '지속가능성', description: '장기적 가치.', imageSeed: 'dtg-pillar-sustain' },
+          { title: '사람', description: '안전과 존중.', imageSeed: 'dtg-pillar-human' },
+          { title: '윤리', description: '공정·투명.', imageSeed: 'dtg-pillar-ethics' },
+          { title: '품질·표준', description: '업계 표준.', imageSeed: 'dtg-pillar-quality' },
+          { title: '지속가능성', description: '장기 가치.', imageSeed: 'dtg-pillar-sustain' },
         ],
       },
       partnersStrip: {

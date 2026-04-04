@@ -100,7 +100,8 @@ export default function HeroSection() {
           };
     const heroFallbackImage = `url('${activeBackground.local}'), url('${activeBackground.fallback}')`;
     const posterUrl = activeBackground.fallback;
-    const showHeroVideo = !slideCustomBg;
+    /** Still image–first hero for a calmer, lighter composition (video adds visual noise). */
+    const showHeroVideo = false;
     const overlayUrl = resolveHeroMediaUrl(currentSlide?.overlayImage);
     const quickStats = [
         { value: '14+', label: t.common.heroStats.years },
@@ -116,18 +117,19 @@ export default function HeroSection() {
                     style={{ backgroundImage: heroFallbackImage }}
                     aria-hidden="true"
                 />
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    poster={posterUrl}
-                    className={styles.heroVideo}
-                    style={showHeroVideo ? undefined : { opacity: 0, pointerEvents: 'none' }}
-                >
-                    <source src="https://cdn.pixabay.com/video/2021/08/29/86716-595085449_large.mp4" type="video/mp4" />
-                    <source src="https://assets.mixkit.co/videos/preview/mixkit-modern-city-skyscrapers-in-the-business-district-1442-large.mp4" type="video/mp4" />
-                </video>
+                {showHeroVideo ? (
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        poster={posterUrl}
+                        className={styles.heroVideo}
+                    >
+                        <source src="https://cdn.pixabay.com/video/2021/08/29/86716-595085449_large.mp4" type="video/mp4" />
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-modern-city-skyscrapers-in-the-business-district-1442-large.mp4" type="video/mp4" />
+                    </video>
+                ) : null}
                 <div className={styles.heroOverlay} />
                 <div className={styles.heroAmbient} />
                 <div className={styles.heroNoise} />
