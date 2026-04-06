@@ -1,8 +1,13 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import './globals.css';
 import { LanguageProvider } from '@/contexts/LanguageContext';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+
+/** Client-only: package uses usePathname/useSearchParams — SSR/Turbo can throw useContext null. */
+const SpeedInsights = dynamic(
+  () => import('@vercel/speed-insights/next').then((m) => m.SpeedInsights),
+  { ssr: false }
+);
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
@@ -41,10 +46,7 @@ export default function RootLayout({
         <LanguageProvider>
           {children}
         </LanguageProvider>
-        {/* Speed Insights uses usePathname/useSearchParams; parent Suspense avoids SSR/Turbo "useContext of null". */}
-        <Suspense fallback={null}>
-          <SpeedInsights />
-        </Suspense>
+        <SpeedInsights />
       </body>
     </html>
   );

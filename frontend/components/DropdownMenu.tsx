@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect, useCallback, useId } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const OPEN_DELAY_MS = 100;
@@ -17,15 +16,16 @@ interface DropdownMenuProps {
   labelKey: string;
   items: DropdownItem[];
   href?: string;
+  /** From Header (single usePathname) — avoids nested navigation hooks under Suspense/Turbo SSR. */
+  pathname: string;
 }
 
-export default function DropdownMenu({ labelKey, items, href }: DropdownMenuProps) {
+export default function DropdownMenu({ labelKey, items, href, pathname }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pathname = usePathname();
   const { t } = useLanguage();
   const menuId = useId();
 

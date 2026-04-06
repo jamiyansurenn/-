@@ -1,13 +1,13 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import styles from './admin.module.css';
 import { getApiBaseUrl } from '@/lib/apiBase';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
@@ -177,5 +177,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </motion.div>
       </main>
     </div>
+  );
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense
+      fallback={
+        <div className={styles.loadingScreen}>
+          <div className={styles.loadingSpinner} aria-hidden />
+          <p className={styles.loadingText}>Уншиж байна...</p>
+        </div>
+      }
+    >
+      <AdminLayoutInner>{children}</AdminLayoutInner>
+    </Suspense>
   );
 }

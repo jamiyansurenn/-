@@ -202,10 +202,15 @@ function HeaderInner() {
 
           <ul className="header-nav-desktop">
             <li>
-              <DropdownMenu labelKey="about" items={aboutMenuItems} href="/about" />
+              <DropdownMenu labelKey="about" items={aboutMenuItems} href="/about" pathname={pathname} />
             </li>
             <li>
-              <DropdownMenu labelKey="construction" items={constructionMenuItems} href="/projects" />
+              <DropdownMenu
+                labelKey="construction"
+                items={constructionMenuItems}
+                href="/projects"
+                pathname={pathname}
+              />
             </li>
             <li>
               <Link href="/news" className={isActivePrefix('/news') ? 'active' : ''}>
@@ -213,7 +218,7 @@ function HeaderInner() {
               </Link>
             </li>
             <li>
-              <DropdownMenu labelKey="hr" items={hrMenuItems} href="/careers" />
+              <DropdownMenu labelKey="hr" items={hrMenuItems} href="/careers" pathname={pathname} />
             </li>
             <li>
               <Link href="/contact" className={pathname === '/contact' ? 'active' : ''}>
