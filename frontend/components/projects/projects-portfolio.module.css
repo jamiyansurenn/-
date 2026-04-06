@@ -215,43 +215,11 @@
   flex: 1;
 }
 
-.metaRow {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem 0.75rem;
-  margin: 0.35rem 0 0;
-  padding: 0.85rem 0 0;
-  border-top: 1px solid rgba(13, 27, 42, 0.08);
-}
-
-.metaItem {
-  min-width: 0;
-}
-
-.metaItem dt {
-  margin: 0 0 0.2rem;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-light);
-}
-
-.metaItem dd {
-  margin: 0;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--text-dark);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .cardCta {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  margin-top: 0.5rem;
+  margin-top: 0.65rem;
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--primary-orange);

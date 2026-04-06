@@ -22,13 +22,8 @@ export type PortfolioProject = {
   meta: PortfolioMeta;
 };
 
-export type PortfolioFilter =
-  | 'all'
-  | 'residential'
-  | 'industrial'
-  | 'infrastructure'
-  | 'completed'
-  | 'in_progress';
+/** Public portfolio filter tabs: All, Residential (орон сууц), Ongoing (явж байгаа). */
+export type PortfolioFilter = 'all' | 'residential' | 'in_progress';
 
 function parseMeta(raw: unknown): Partial<PortfolioMeta> | null {
   if (!raw) return null;
@@ -64,7 +59,7 @@ function inferMeta(p: {
   const desc = `${p.description || ''}`.toLowerCase();
   const text = `${title} ${desc}`;
 
-  let category: ProjectCategory = 'infrastructure';
+  let category: ProjectCategory = 'residential';
   if (
     /орон сууц|апартмент|apartment|residential|айлын|хотхон|байр|b7|hos-tsamhag|цамхаг|орон сууцны|128 айл|360 айл|300 айл/.test(
       text
@@ -172,8 +167,8 @@ export function filterPortfolioProjects(
   filter: PortfolioFilter
 ): PortfolioProject[] {
   if (filter === 'all') return projects;
-  if (filter === 'completed' || filter === 'in_progress') {
-    return projects.filter((p) => p.meta.progress === filter);
+  if (filter === 'in_progress') {
+    return projects.filter((p) => p.meta.progress === 'in_progress');
   }
-  return projects.filter((p) => p.meta.category === filter);
+  return projects.filter((p) => p.meta.category === 'residential');
 }

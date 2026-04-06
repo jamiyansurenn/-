@@ -16,28 +16,21 @@ export type ProjectsPortfolioCopy = {
   filterAriaLabel: string;
   filterAll: string;
   filterResidential: string;
-  filterIndustrial: string;
-  filterInfrastructure: string;
-  filterCompleted: string;
   filterInProgress: string;
   statusCompleted: string;
   statusInProgress: string;
   labelLocation: string;
-  labelArea: string;
-  labelFloors: string;
-  labelYear: string;
   ctaViewProject: string;
   featuredBadge: string;
   emptyFiltered: string;
   noProjects: string;
 };
 
-const FILTERS: { id: PortfolioFilter; labelKey: keyof ProjectsPortfolioCopy }[] = [
+type FilterLabelKey = 'filterAll' | 'filterResidential' | 'filterInProgress';
+
+const FILTERS: { id: PortfolioFilter; labelKey: FilterLabelKey }[] = [
   { id: 'all', labelKey: 'filterAll' },
   { id: 'residential', labelKey: 'filterResidential' },
-  { id: 'industrial', labelKey: 'filterIndustrial' },
-  { id: 'infrastructure', labelKey: 'filterInfrastructure' },
-  { id: 'completed', labelKey: 'filterCompleted' },
   { id: 'in_progress', labelKey: 'filterInProgress' },
 ];
 
@@ -134,20 +127,6 @@ export default function ProjectsPortfolioClient({ projects, copy }: Props) {
                           </p>
                         ) : null}
                         <p className={styles.cardDesc}>{project.description}</p>
-                        <dl className={styles.metaRow}>
-                          <div className={styles.metaItem}>
-                            <dt>{copy.labelArea}</dt>
-                            <dd>{project.meta.area ?? '—'}</dd>
-                          </div>
-                          <div className={styles.metaItem}>
-                            <dt>{copy.labelFloors}</dt>
-                            <dd>{project.meta.floors ?? '—'}</dd>
-                          </div>
-                          <div className={styles.metaItem}>
-                            <dt>{copy.labelYear}</dt>
-                            <dd>{project.meta.year ?? '—'}</dd>
-                          </div>
-                        </dl>
                         <span className={styles.cardCta}>
                           {copy.ctaViewProject}
                           <span className={styles.cardCtaIcon} aria-hidden>

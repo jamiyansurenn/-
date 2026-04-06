@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import './globals.css';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -40,7 +41,10 @@ export default function RootLayout({
         <LanguageProvider>
           {children}
         </LanguageProvider>
-        <SpeedInsights />
+        {/* Speed Insights uses usePathname/useSearchParams; parent Suspense avoids SSR/Turbo "useContext of null". */}
+        <Suspense fallback={null}>
+          <SpeedInsights />
+        </Suspense>
       </body>
     </html>
   );

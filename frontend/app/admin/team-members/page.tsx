@@ -17,10 +17,12 @@ export default function TeamMembersPage() {
   const loadMembers = async () => {
     try {
       const response = await getTeamMembers();
-      setMembers(response.data);
+      const list = response?.data;
+      setMembers(Array.isArray(list) ? list : []);
     } catch (error) {
       console.error('Failed to load team members:', error);
       setError('Багийн гишүүдийг уншихад алдаа гарлаа.');
+      setMembers([]);
     } finally {
       setLoading(false);
     }
@@ -69,7 +71,7 @@ export default function TeamMembersPage() {
             </tr>
           </thead>
           <tbody>
-            {members.map((member) => (
+            {(members ?? []).map((member) => (
               <tr key={member.id} className={styles.tableRow}>
                 <td>{member.name}</td>
                 <td>{member.position}</td>

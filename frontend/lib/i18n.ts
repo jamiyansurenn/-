@@ -250,9 +250,9 @@ export const translations = {
         noProjects: 'Төсөл олдсонгүй',
         galleryTitle: 'Зурагнууд',
         portfolioEyebrow: 'Портфолио',
-        portfolioIntroTitle: 'Барилга, дэд бүтцийн төслүүд',
+        portfolioIntroTitle: 'Орон сууцны болон бүтээн байгуулалтын төслүүд',
         portfolioIntroDescription:
-          'Орон сууц, үйлдвэр, дэд бүтцийн чиглэлээр хэрэгжүүлсэн сонгодог төслүүдээс сонгож үзнэ үү. Чанар, аюулгүй байдал, хугацааны уялдааг баримталсан гүйцэтгэл.',
+          'Доорх шүүлтүүрээр «Бүгд», «Орон сууц», «Явж байгаа» гэж сонгож үзнэ үү. Дэлгэрэнгүй мэдээллийг төсөл бүрийн хуудсаас авах боломжтой.',
         filterAriaLabel: 'Төсөл шүүх',
         filterAll: 'Бүгд',
         filterResidential: 'Орон сууц',
@@ -560,9 +560,9 @@ export const translations = {
         noProjects: 'No projects found',
         galleryTitle: 'Gallery',
         portfolioEyebrow: 'Portfolio',
-        portfolioIntroTitle: 'Construction & infrastructure delivery',
+        portfolioIntroTitle: 'Residential & construction projects',
         portfolioIntroDescription:
-          'Explore a curated selection of residential, industrial, and infrastructure work — executed with quality, safety, and schedule discipline.',
+          'Use the filters for All, Residential, or In progress. Open a project for full details.',
         filterAriaLabel: 'Filter projects',
         filterAll: 'All',
         filterResidential: 'Residential',

@@ -38,6 +38,10 @@ export default function TeamMemberEditPage() {
   const loadMember = async () => {
     try {
       const response = await getTeamMember(id);
+      if ((response as any)?.error != null || response.data == null) {
+        setError('Гишүүн олдсонгүй эсвэл сервертэй холбогдож чадсангүй.');
+        return;
+      }
       const member = response.data;
       setFormData({
         name: member.name || '',
@@ -47,7 +51,7 @@ export default function TeamMemberEditPage() {
         email: member.email || '',
         phone: member.phone || '',
         linkedin: member.linkedin || '',
-        order: member.order || 0,
+        order: member.order ?? 0,
         status: member.status || 'DRAFT',
       });
     } catch (error) {
@@ -61,10 +65,20 @@ export default function TeamMemberEditPage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setError('');
 
     try {
       const response = await uploadFile(file);
-      setFormData({ ...formData, image: response.data.url });
+      if ((response as any)?.error) {
+        setError((response as any).error || 'Файл хуулахад алдаа гарлаа.');
+        return;
+      }
+      const url = response?.data?.url;
+      if (!url) {
+        setError('Зургийн хариу серверээс ирээгүй. Дахин оролдоно уу.');
+        return;
+      }
+      setFormData((prev) => ({ ...prev, image: url }));
     } catch (error) {
       setError('Файл хуулахад алдаа гарлаа.');
     }
@@ -75,11 +89,26 @@ export default function TeamMemberEditPage() {
     setSaving(true);
     setError('');
     try {
-      if (isNew) {
-        await createTeamMember(formData);
-      } else {
-        await updateTeamMember(id, formData);
+      const payload = {
+        name: formData.name.trim(),
+        position: formData.position.trim(),
+        bio: formData.bio.trim() || undefined,
+        image: formData.image.trim() || undefined,
+        email: formData.email.trim() || undefined,
+        phone: formData.phone.trim() || undefined,
+        linkedin: formData.linkedin.trim() || undefined,
+        order: Number.isFinite(formData.order) ? formData.order : 0,
+        status: formData.status,
+      };
+
+      const response = isNew ? await createTeamMember(payload) : await updateTeamMember(id, payload);
+
+      if ((response as any)?.error != null || response.data == null) {
+        const msg = (response as any).error;
+        setError(typeof msg === 'string' ? msg : 'Хадгалахад алдаа гарлаа. Дахин оролдоно уу.');
+        return;
       }
+
       router.push('/admin/team-members');
     } catch (error: any) {
       setError(error.response?.data?.message || 'Алдаа гарлаа');
