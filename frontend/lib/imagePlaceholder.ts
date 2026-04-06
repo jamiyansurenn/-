@@ -45,6 +45,78 @@ export function getPlaceholderImage(category: ImageCategory = 'default', index?:
   return images[Math.floor(Math.random() * images.length)];
 }
 
+function normalizeStoredImageUrl(raw: string): string {
+  let s = raw.trim();
+  if (
+    (s.startsWith('"') && s.endsWith('"')) ||
+    (s.startsWith("'") && s.endsWith("'"))
+  ) {
+    s = s.slice(1, -1).trim();
+  }
+  return s;
+}
+
+/**
+ * Turn DB / upload API strings into a browser-usable absolute or site-relative URL.
+ * Returns null only when the value should fall back to a stock placeholder.
+ */
+export function resolveStoredImageToUrl(normalized: string): string | null {
+  if (!normalized) return null;
+  const apiBase = getApiBaseUrl();
+  if (normalized.startsWith('/uploads/')) {
+    return `${apiBase}${normalized}`;
+  }
+  if (normalized.startsWith('uploads/')) {
+    return `${apiBase}/${normalized}`;
+  }
+  if (normalized.startsWith('//')) {
+    return `https:${normalized}`;
+  }
+  if (/^https?:\/\//i.test(normalized)) {
+    return normalized;
+  }
+  if (normalized.startsWith('data:') || normalized.startsWith('blob:')) {
+    return normalized;
+  }
+  if (normalized.startsWith('/')) {
+    return normalized;
+  }
+  return null;
+}
+
+/** Normalize + resolve a stored image field (admin preview, validation). */
+export function resolveImageFieldToUrl(raw: string | null | undefined): string | null {
+  if (raw == null) return null;
+  const normalized = normalizeStoredImageUrl(String(raw).trim());
+  return resolveStoredImageToUrl(normalized);
+}
+
+/** Cover image: main `image` field, else first entry in `images` (array or JSON string). */
+export function resolveProjectCoverImage(project: {
+  image?: string | null;
+  images?: unknown;
+}): string | undefined {
+  const main = typeof project.image === 'string' ? project.image.trim() : '';
+  if (main) return main;
+  const imgs = project.images;
+  if (Array.isArray(imgs)) {
+    const first = imgs.find((x) => typeof x === 'string' && String(x).trim());
+    if (first != null) return String(first).trim();
+  }
+  if (typeof imgs === 'string' && imgs.trim()) {
+    try {
+      const arr = JSON.parse(imgs) as unknown;
+      if (Array.isArray(arr)) {
+        const first = arr.find((x) => typeof x === 'string' && String(x).trim());
+        if (first != null) return String(first).trim();
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+  return undefined;
+}
+
 /**
  * Get image URL with fallback to placeholder
  */
@@ -53,32 +125,18 @@ export function getImageUrl(
   category: ImageCategory = 'default',
   index?: number
 ): string {
-  const apiBase = getApiBaseUrl();
   const rawUrl =
     typeof imageUrl === 'string'
       ? imageUrl
       : imageUrl && typeof imageUrl === 'object' && typeof imageUrl.url === 'string'
         ? imageUrl.url
         : '';
-  const normalized = rawUrl.trim();
-
-  if (normalized) {
-    if (normalized.startsWith('/uploads/')) {
-      return `${apiBase}${normalized}`;
-    }
-    if (normalized.startsWith('/')) {
-      return normalized;
-    }
-    if (
-      normalized.startsWith('http://') ||
-      normalized.startsWith('https://') ||
-      normalized.startsWith('data:') ||
-      normalized.startsWith('blob:')
-    ) {
-      return normalized;
-    }
+  const resolved = resolveImageFieldToUrl(rawUrl);
+  if (resolved !== null) {
+    return resolved;
+  }
+  if (normalizeStoredImageUrl(rawUrl.trim())) {
     return getPlaceholderImage(category, index);
   }
-
   return getPlaceholderImage(category, index);
 }

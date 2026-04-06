@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
@@ -26,6 +26,13 @@ export default function HeroSection() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const [heroSettings, setHeroSettings] = useState<any>(null);
+    /** Increments when slide index changes; first value keeps initial={false} for instant readable hero. */
+    const heroSlideEnterGen = useRef(0);
+    const heroPrevIndex = useRef(activeIndex);
+    if (heroPrevIndex.current !== activeIndex) {
+        heroSlideEnterGen.current += 1;
+        heroPrevIndex.current = activeIndex;
+    }
 
     const slides = useMemo(() => {
         const list = t.home.heroSlides ?? [];
@@ -55,6 +62,29 @@ export default function HeroSection() {
     }, []);
 
     const resolvedSlides = (Array.isArray(heroSettings?.slides) && heroSettings.slides.length > 0 ? heroSettings.slides : slides) as any[];
+
+    useEffect(() => {
+        if (typeof document === 'undefined') return;
+        const list = resolvedSlides;
+        if (!list.length) return;
+        const idx = activeIndex % list.length;
+        const cur = list[idx];
+        const stockPrimary = STOCK_HERO_BACKGROUNDS[idx % STOCK_HERO_BACKGROUNDS.length];
+        const adminB = resolveHeroMediaUrl(heroSettings?.backgrounds?.[idx]);
+        const slideCustomB = resolveHeroMediaUrl(cur?.image);
+        const url = slideCustomB || adminB || stockPrimary;
+        if (!url) return;
+        const id = 'hero-lcp-preload';
+        let link = document.getElementById(id) as HTMLLinkElement | null;
+        if (!link) {
+            link = document.createElement('link');
+            link.id = id;
+            link.rel = 'preload';
+            link.as = 'image';
+            document.head.appendChild(link);
+        }
+        link.href = url;
+    }, [activeIndex, heroSettings, slides]);
 
     useEffect(() => {
         if (isPaused) return;
@@ -143,19 +173,18 @@ export default function HeroSection() {
                     <motion.div
                         key={activeIndex}
                         className={styles.heroSlide}
-                        initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-                        animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                        exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
-                        transition={{ duration: reduceMotion ? 0 : 0.52, ease: [0.22, 1, 0.36, 1] }}
+                        initial={
+                            reduceMotion
+                                ? false
+                                : heroSlideEnterGen.current === 0
+                                  ? false
+                                  : { opacity: 0.92, y: 4 }
+                        }
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={reduceMotion ? undefined : { opacity: 0, y: -4 }}
+                        transition={{ duration: reduceMotion ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        <motion.span
-                            className={styles.heroEyebrow}
-                            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                            animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                            transition={{ duration: reduceMotion ? 0 : 0.38 }}
-                        >
-                            {brandEyebrow}
-                        </motion.span>
+                        {brandEyebrow ? <span className={styles.heroEyebrow}>{brandEyebrow}</span> : null}
                         <h1 className={styles.heroTitle}>{currentSlide.title}</h1>
                         {supportHeadline ? <p className={styles.heroDescription}>{supportHeadline}</p> : null}
                         {(currentSlide.description || '').trim() ? (

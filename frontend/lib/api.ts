@@ -41,11 +41,19 @@ api.interceptors.response.use(
       });
     }
 
+    const body = error.response?.data;
+    let serverMessage: string | undefined;
+    if (typeof body?.message === 'string') {
+      serverMessage = body.message;
+    } else if (Array.isArray(body?.message)) {
+      serverMessage = body.message.filter(Boolean).join('; ');
+    }
+
     // Always return a resolved promise with error data
     // This prevents unhandled promise rejections
     return Promise.resolve({
       data: null,
-      error: error.message || 'Network error',
+      error: serverMessage || error.message || 'Network error',
       status: error.response?.status || 500,
     });
   }
@@ -194,9 +202,36 @@ export const getProjects = async (featured?: boolean) => {
     },
   ];
   try {
-    const response = await api.get('/projects/public', { params: { featured } });
-    const data = safeGetData(response);
-    return { data: data && data.length > 0 ? data : fallbackProjects };
+    const response: any = await api.get('/projects/public', {
+      params: featured === true ? { featured: true } : {},
+    });
+
+    // Interceptor turns HTTP failures into { error, data: null } — do not treat as "empty DB".
+    if (response.error) {
+      return { data: fallbackProjects };
+    }
+
+    let data: unknown[] = Array.isArray(response.data) ? response.data : [];
+
+    /**
+     * Home calls getProjects(true). If nothing is marked featured, the API returns [] and we
+     * used to substitute demo projects (empty image → stock placeholders like B-7). Load all
+     * published projects instead so uploaded cover images show.
+     */
+    if (data.length === 0 && featured === true) {
+      const resAll: any = await api.get('/projects/public');
+      if (!resAll.error && Array.isArray(resAll.data) && resAll.data.length > 0) {
+        data = [...resAll.data].sort((a: any, b: any) => {
+          if (a.featured === b.featured) return (a.order ?? 0) - (b.order ?? 0);
+          return a.featured ? -1 : 1;
+        });
+      }
+    }
+
+    if (data.length > 0) {
+      return { data };
+    }
+    return { data: [] };
   } catch (error: any) {
     return { data: fallbackProjects };
   }

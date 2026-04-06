@@ -93,7 +93,7 @@ export default function ProjectsPortfolioClient({ projects, copy }: Props) {
 
             return (
               <li key={String(project.id)}>
-                <AnimateOnScroll delay={Math.min(index * 60, 400)}>
+                <AnimateOnScroll delay={Math.min(index * 40, 140)}>
                   <article className={styles.card}>
                     <Link href={`/projects/${project.slug}`} className={styles.cardLink}>
                       <div className={styles.cardMedia}>

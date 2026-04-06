@@ -66,10 +66,10 @@ export default function NewsSection({ news }: NewsSectionProps) {
           {...(reduceMotion
             ? {}
             : {
-                initial: { opacity: 0, y: 16 },
+                initial: { opacity: 0.94, y: 6 },
                 whileInView: { opacity: 1, y: 0 },
-                viewport: { once: true, margin: '-40px' },
-                transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+                viewport: { once: true, margin: '80px 0px' },
+                transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
               })}
         >
           <SectionHeader title={t.pages.construction.latestNews} />
@@ -78,7 +78,7 @@ export default function NewsSection({ news }: NewsSectionProps) {
         <div className={styles.newsGridHome}>
           {list.map((item: any, index: number) => {
             const imageUrl = getImageUrl(item.image, 'news', index);
-            const delay = reduceMotion ? 0 : Math.min(index * 0.07, 0.21);
+            const delay = reduceMotion ? 0 : Math.min(index * 0.04, 0.1);
             return (
               <motion.article
                 key={item.id}
@@ -86,10 +86,10 @@ export default function NewsSection({ news }: NewsSectionProps) {
                 {...(reduceMotion
                   ? {}
                   : {
-                      initial: { opacity: 0, y: 18 },
+                      initial: { opacity: 0.94, y: 6 },
                       whileInView: { opacity: 1, y: 0 },
-                      viewport: { once: true, margin: '-32px' },
-                      transition: { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] },
+                      viewport: { once: true, margin: '80px 0px' },
+                      transition: { duration: 0.32, delay, ease: [0.22, 1, 0.36, 1] },
                     })}
               >
                 <div className={styles.newsCardImageWrap}>
@@ -97,6 +97,7 @@ export default function NewsSection({ news }: NewsSectionProps) {
                     src={imageUrl}
                     alt={item.title}
                     fill
+                    priority={index === 0}
                     className={styles.newsCardImage}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
@@ -127,10 +128,10 @@ export default function NewsSection({ news }: NewsSectionProps) {
           {...(reduceMotion
             ? {}
             : {
-                initial: { opacity: 0, y: 10 },
+                initial: { opacity: 0.95, y: 5 },
                 whileInView: { opacity: 1, y: 0 },
-                viewport: { once: true },
-                transition: { duration: 0.45, delay: 0.06 },
+                viewport: { once: true, margin: '60px 0px' },
+                transition: { duration: 0.28, delay: 0.03 },
               })}
         >
           <Link href="/news" className="btn btn-secondary btn-lg">

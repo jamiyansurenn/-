@@ -20,17 +20,17 @@ export default function ValuesPillarsSection() {
           {...(reduceMotion
             ? {}
             : {
-                initial: { opacity: 0, y: 14 },
+                initial: { opacity: 0.94, y: 6 },
                 whileInView: { opacity: 1, y: 0 },
-                viewport: { once: true, margin: '-40px' },
-                transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+                viewport: { once: true, margin: '80px 0px' },
+                transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
               })}
         >
           <SectionHeader title={p.title} subtitle={p.subtitle} />
         </motion.div>
         <div className={styles.homePillarsGrid}>
           {items.map((item, index) => {
-            const delay = reduceMotion ? 0 : Math.min(index * 0.06, 0.18);
+            const delay = reduceMotion ? 0 : Math.min(index * 0.04, 0.1);
             return (
               <motion.article
                 key={`${item.title}-${index}`}
@@ -38,10 +38,10 @@ export default function ValuesPillarsSection() {
                 {...(reduceMotion
                   ? {}
                   : {
-                      initial: { opacity: 0, y: 16 },
+                      initial: { opacity: 0.94, y: 6 },
                       whileInView: { opacity: 1, y: 0 },
-                      viewport: { once: true, margin: '-28px' },
-                      transition: { duration: 0.48, delay, ease: [0.22, 1, 0.36, 1] },
+                      viewport: { once: true, margin: '80px 0px' },
+                      transition: { duration: 0.32, delay, ease: [0.22, 1, 0.36, 1] },
                     })}
               >
                 <div className={styles.homePillarImageWrap}>
@@ -49,8 +49,9 @@ export default function ValuesPillarsSection() {
                   <img
                     src={STOCK_PILLAR_IMAGES[index % STOCK_PILLAR_IMAGES.length]}
                     alt=""
-                    loading="lazy"
+                    loading={index === 0 ? 'eager' : 'lazy'}
                     decoding="async"
+                    fetchPriority={index === 0 ? 'high' : 'low'}
                     className={styles.homePillarImg}
                   />
                   <div className={styles.homePillarImageOverlay} aria-hidden />

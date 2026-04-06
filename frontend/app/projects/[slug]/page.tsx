@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import { getProjectBySlug } from '@/lib/api';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { getImageUrl } from '@/lib/imagePlaceholder';
+import { getImageUrl, resolveProjectCoverImage } from '@/lib/imagePlaceholder';
 import { getTranslations } from '@/lib/getLanguage';
 
 // Force dynamic rendering to prevent build-time static generation errors
@@ -46,7 +46,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <div style={{ maxWidth: '900px', margin: '0 auto' }}>
               <div style={{ position: 'relative', width: '100%', height: '400px', borderRadius: '8px', marginBottom: '2rem', overflow: 'hidden' }}>
                 <Image
-                  src={getImageUrl(project.data.image, 'building')}
+                  src={getImageUrl(resolveProjectCoverImage(project.data), 'building')}
                   alt={project.data.title}
                   fill
                   style={{ objectFit: 'cover' }}

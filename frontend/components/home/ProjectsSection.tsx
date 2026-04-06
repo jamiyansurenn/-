@@ -4,7 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getImageUrl } from '@/lib/imagePlaceholder';
+import { getImageUrl, resolveProjectCoverImage } from '@/lib/imagePlaceholder';
 import styles from '@/app/home.module.css';
 import SectionHeader from './SectionHeader';
 
@@ -40,10 +40,10 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           {...(reduceMotion
             ? {}
             : {
-                initial: { opacity: 0, y: 18 },
+                initial: { opacity: 0.94, y: 6 },
                 whileInView: { opacity: 1, y: 0 },
-                viewport: { once: true, margin: '-40px' },
-                transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+                viewport: { once: true, margin: '80px 0px' },
+                transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
               })}
         >
           <SectionHeader title={t.home.projects.title} subtitle={t.home.projects.description} />
@@ -51,8 +51,8 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
 
         <div className={styles.projectsGridHome}>
           {projects.slice(0, 3).map((project: any, index: number) => {
-            const imageUrl = getImageUrl(project.image, 'building', index);
-            const delay = reduceMotion ? 0 : Math.min(index * 0.07, 0.21);
+            const imageUrl = getImageUrl(resolveProjectCoverImage(project), 'building', index);
+            const delay = reduceMotion ? 0 : Math.min(index * 0.04, 0.1);
             return (
               <motion.article
                 key={project.id}
@@ -60,10 +60,10 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                 {...(reduceMotion
                   ? {}
                   : {
-                      initial: { opacity: 0, y: 20 },
+                      initial: { opacity: 0.94, y: 6 },
                       whileInView: { opacity: 1, y: 0 },
-                      viewport: { once: true, margin: '-32px' },
-                      transition: { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] },
+                      viewport: { once: true, margin: '80px 0px' },
+                      transition: { duration: 0.32, delay, ease: [0.22, 1, 0.36, 1] },
                     })}
               >
                 <div className={styles.projectCardImageShell}>
@@ -79,6 +79,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                     src={imageUrl}
                     alt={project.title}
                     fill
+                    priority={index === 0}
                     className={styles.projectCardImage}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
@@ -101,10 +102,10 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           {...(reduceMotion
             ? {}
             : {
-                initial: { opacity: 0, y: 10 },
+                initial: { opacity: 0.95, y: 5 },
                 whileInView: { opacity: 1, y: 0 },
-                viewport: { once: true },
-                transition: { duration: 0.45, delay: 0.08 },
+                viewport: { once: true, margin: '60px 0px' },
+                transition: { duration: 0.28, delay: 0.03 },
               })}
         >
           <Link href="/projects" className="btn btn-secondary btn-lg">

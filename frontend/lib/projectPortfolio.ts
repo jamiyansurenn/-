@@ -137,12 +137,29 @@ export function normalizeProjectForPortfolio(p: Record<string, unknown>): Portfo
     year: fromApi?.year ?? inferred.year,
   };
 
+  const gallery = Array.isArray(p.images)
+    ? (p.images as string[])
+    : typeof p.images === 'string'
+      ? (() => {
+          try {
+            const a = JSON.parse(p.images as string);
+            return Array.isArray(a) ? (a as string[]) : [];
+          } catch {
+            return [];
+          }
+        })()
+      : [];
+  const cover =
+    (typeof p.image === 'string' && p.image.trim()) ||
+    gallery.find((x) => typeof x === 'string' && x.trim()) ||
+    null;
+
   return {
     id: (p.id as string | number) ?? p.slug,
     slug: String(p.slug ?? ''),
     title: String(p.title ?? ''),
     description: String(p.description ?? ''),
-    image: (p.image as string) ?? null,
+    image: cover,
     featured: Boolean(p.featured),
     startDate: (p.startDate as string) ?? null,
     endDate: (p.endDate as string) ?? null,

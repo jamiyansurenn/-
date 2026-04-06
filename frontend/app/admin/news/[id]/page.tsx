@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter, useParams } from 'next/navigation';
 import { getNewsItem, createNews, updateNews, uploadFile } from '@/lib/admin-api';
 import styles from '../../admin.module.css';
-import { getApiBaseUrl } from '@/lib/apiBase';
+import { resolveImageFieldToUrl } from '@/lib/imagePlaceholder';
 
 const toSlug = (value: string) =>
   value
@@ -18,22 +18,10 @@ const toSlug = (value: string) =>
 const isValidImageUrl = (value: string) => {
   const v = value.trim();
   if (!v) return true; // image is optional
-  if (v.startsWith('/uploads/')) return true;
-  if (v.startsWith('/')) return true;
-  if (v.startsWith('http://') || v.startsWith('https://')) return true;
-  if (v.startsWith('data:') || v.startsWith('blob:')) return true;
-  return false;
+  return resolveImageFieldToUrl(v) !== null;
 };
 
-const resolvePreviewUrl = (value: string) => {
-  const v = value.trim();
-  if (!v) return '';
-  if (v.startsWith('/uploads/')) {
-    const apiBase = getApiBaseUrl();
-    return `${apiBase}${v}`;
-  }
-  return v;
-};
+const resolvePreviewUrl = (value: string) => resolveImageFieldToUrl(value) || '';
 
 export default function NewsEditPage() {
   const router = useRouter();

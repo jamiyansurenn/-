@@ -5,7 +5,6 @@ import { getCompanyInfo, getTeamMembers } from '@/lib/api';
 import Image from 'next/image';
 import { getImageUrl } from '@/lib/imagePlaceholder';
 import { getLanguage, getTranslations } from '@/lib/getLanguage';
-import leadershipStyles from '@/app/about/aboutLeadership.module.css';
 import contentStyles from '@/app/about/aboutContent.module.css';
 import { mergeCompanyAboutBlocks } from '@/lib/companyAboutMerge';
 import {
@@ -242,34 +241,59 @@ export default async function AboutPage() {
         </section>
 
         {teamMembers.data && teamMembers.data.length > 0 ? (
-          <section className={leadershipStyles.leadershipSection}>
+          <section
+            className="border-t border-slate-200/70 bg-[#fafafa] py-20 md:py-24 lg:py-28"
+            aria-labelledby="leadership-heading"
+          >
             <div className="container">
-              <header className={leadershipStyles.sectionHeader}>
+              <header className="mx-auto mb-16 max-w-2xl text-center md:mb-20">
                 <AnimateOnScroll>
-                  <h2 className={leadershipStyles.sectionTitle}>{pa.teamTitle || 'Удирдлагын баг'}</h2>
-                  {pa.teamLead ? <p className={leadershipStyles.sectionLead}>{pa.teamLead}</p> : null}
+                  <h2
+                    id="leadership-heading"
+                    className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl"
+                  >
+                    {pa.teamTitle || 'Удирдлагын баг'}
+                  </h2>
+                  {pa.teamLead ? (
+                    <p className="mt-4 text-base font-normal leading-relaxed text-slate-500">{pa.teamLead}</p>
+                  ) : null}
                 </AnimateOnScroll>
               </header>
-              <div className={leadershipStyles.grid}>
+              <div className="mx-auto grid max-w-6xl grid-cols-1 gap-x-10 gap-y-14 sm:gap-y-16 md:grid-cols-2 md:gap-x-12 xl:grid-cols-4 xl:gap-x-14 xl:gap-y-20">
                 {teamMembers.data.map((member: any, index: number) => {
                   const imageUrl = getImageUrl(member.image, 'team', index);
+                  const subtitle =
+                    typeof member.company === 'string' && member.company.trim()
+                      ? member.company.trim()
+                      : typeof member.subtitle === 'string' && member.subtitle.trim()
+                        ? member.subtitle.trim()
+                        : null;
+                  const tertiary =
+                    subtitle ||
+                    (typeof member.bio === 'string' && member.bio.trim() ? member.bio.trim() : null);
                   return (
-                    <AnimateOnScroll key={member.id} delay={index * 70}>
-                      <article className={leadershipStyles.card}>
-                        <div className={leadershipStyles.photoWrap}>
+                    <AnimateOnScroll key={member.id} delay={Math.min(index, 12) * 40}>
+                      <article className="flex h-full flex-col items-center px-2 text-center sm:px-3">
+                        <div className="relative mb-6 h-36 w-36 shrink-0 overflow-hidden rounded-full bg-slate-200/60 shadow-[0_1px_3px_rgba(15,23,42,0.06)] ring-1 ring-inset ring-slate-900/[0.06] sm:mb-7 sm:h-40 sm:w-40">
                           <Image
                             src={imageUrl}
                             alt={member.name}
                             fill
-                            style={{ objectFit: 'cover', objectPosition: index === 1 ? 'center 15%' : 'center center' }}
-                            sizes="(max-width: 768px) 100vw, 320px"
+                            className="object-cover object-center"
+                            sizes="(max-width: 768px) 160px, 176px"
                           />
                         </div>
-                        <div className={leadershipStyles.cardBody}>
-                          <h3 className={leadershipStyles.name}>{member.name}</h3>
-                          {member.position ? <span className={leadershipStyles.rolePill}>{member.position}</span> : null}
-                          {member.bio ? <p className={leadershipStyles.bio}>{member.bio}</p> : null}
-                        </div>
+                        <h3 className="text-base font-semibold leading-snug text-slate-900">{member.name}</h3>
+                        {member.position ? (
+                          <p className="mt-1.5 max-w-[16rem] text-sm font-normal leading-relaxed text-slate-500">
+                            {member.position}
+                          </p>
+                        ) : null}
+                        {tertiary ? (
+                          <p className="mt-2 max-w-[17rem] text-xs font-normal leading-relaxed text-slate-400 sm:text-[0.8125rem] line-clamp-4">
+                            {tertiary}
+                          </p>
+                        ) : null}
                       </article>
                     </AnimateOnScroll>
                   );

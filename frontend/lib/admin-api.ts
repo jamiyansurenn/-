@@ -67,7 +67,19 @@ export const getHeroSettingsAdmin = () => api.get('/hero-settings', { headers: g
 export const updateHeroSettingsAdmin = (data: any) =>
   api.put('/hero-settings', data, { headers: getAuthHeaders() });
 
-// Upload
+/**
+ * Default axios instance sets `Content-Type: application/json`. For FormData, axios would then
+ * stringify the body instead of sending multipart — Nest/multer sees no file → 400.
+ * Drop Content-Type so the browser sets multipart boundary; use a dedicated transform so we
+ * don't merge with the default transform (which would still see json content-type first).
+ */
+function uploadFormDataTransform(data: unknown, headers: { delete?: (name: string) => void }) {
+  if (data instanceof FormData && typeof headers?.delete === 'function') {
+    headers.delete('Content-Type');
+  }
+  return data;
+}
+
 export const uploadFile = (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
@@ -76,6 +88,7 @@ export const uploadFile = (file: File) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    transformRequest: [uploadFormDataTransform],
   });
 };
 
