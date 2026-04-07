@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter, useParams } from 'next/navigation';
 import { getTeamMember, createTeamMember, updateTeamMember, uploadFile } from '@/lib/admin-api';
-import { getImageUrl } from '@/lib/imagePlaceholder';
+import { getImageUrl, resolveImageFieldToUrl } from '@/lib/imagePlaceholder';
 import styles from '../../admin.module.css';
 
 export default function TeamMemberEditPage() {
@@ -43,11 +43,12 @@ export default function TeamMemberEditPage() {
         return;
       }
       const member = response.data;
+      const safeImage = resolveImageFieldToUrl(member.image) ?? '';
       setFormData({
         name: member.name || '',
         position: member.position || '',
         bio: member.bio || '',
-        image: member.image || '',
+        image: safeImage,
         email: member.email || '',
         phone: member.phone || '',
         linkedin: member.linkedin || '',
@@ -89,11 +90,12 @@ export default function TeamMemberEditPage() {
     setSaving(true);
     setError('');
     try {
+      const normalizedImage = resolveImageFieldToUrl(formData.image.trim());
       const payload = {
         name: formData.name.trim(),
         position: formData.position.trim(),
         bio: formData.bio.trim() || undefined,
-        image: formData.image.trim() || undefined,
+        image: normalizedImage || undefined,
         email: formData.email.trim() || undefined,
         phone: formData.phone.trim() || undefined,
         linkedin: formData.linkedin.trim() || undefined,

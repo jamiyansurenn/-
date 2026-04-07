@@ -62,6 +62,13 @@ function normalizeStoredImageUrl(raw: string): string {
  */
 export function resolveStoredImageToUrl(normalized: string): string | null {
   if (!normalized) return null;
+  /**
+   * Some legacy rows contain non-URL tokens (e.g. UUIDs).
+   * Treat them as invalid so UI falls back to placeholders instead of requesting `/uuid...` on Vercel.
+   */
+  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(normalized)) {
+    return null;
+  }
   const apiBase = getApiBaseUrl();
   if (normalized.startsWith('/uploads/')) {
     return `${apiBase}${normalized}`;

@@ -185,13 +185,18 @@ async function main() {
     });
   }
 
+  /**
+   * Зургийн замыг public/images/team доторх файл байхгүй үед ч ажиллах HTTPS URL ээр түгжсөн.
+   * Админоос солиход DB хадгалагдана. `prisma migrate reset` эсвэл re-seed хийвэл эндхийг дахин бичнэ — production дээр жинхэнэ зураг upload хийнэ.
+   */
   const leadershipTeam = [
     {
       id: '11111111-1111-4111-8111-111111110001',
       name: 'Б. Бат-Эрдэнэ',
       position: 'Ерөнхий захирал',
       bio: 'Төслийн гүйцэтгэл, аюулгүй байдал, чанарын стандартыг талбай дээр бодитой хэрэгжүүлэхэд манлайлдаг.',
-      image: '/images/team/ceo-construction.png',
+      image:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
       order: 1,
       status: 'PUBLISHED' as const,
     },
@@ -200,7 +205,8 @@ async function main() {
       name: 'О. Номин-Эрдэнэ',
       position: 'Маркетингийн захирал',
       bio: 'Брэнд, харилцагчийн туршлагыг сайжруулах стратеги болон олон сувагт харилцааг хариуцдаг.',
-      image: '/images/team/marketing-director.png',
+      image:
+        'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
       order: 2,
       status: 'PUBLISHED' as const,
     },
@@ -208,9 +214,20 @@ async function main() {
       id: '11111111-1111-4111-8111-111111110003',
       name: 'Г. Энхбаатар',
       position: 'Захирал',
-      bio: 'Компанийн урт хугацааны чиг хандлага, үнэт зүйлийг тодорхойлж, түншлэлээ бэхжүүлнэ.',
-      image: '/images/team/director.png',
+      bio: 'Компанийн урт хугацааны чиг хандлага, үнэт зүйлийг тодорхойлож, түншлэлээ бэхжүүлнэ.',
+      image:
+        'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
       order: 3,
+      status: 'PUBLISHED' as const,
+    },
+    {
+      id: '11111111-1111-4111-8111-111111110004',
+      name: 'Э. Отгонбаяр',
+      position: 'Ерөнхий инженер',
+      bio: 'Техникийн стандарт, чанарын хяналт, төслийн инженерийн зохион байгуулалтыг хариуцдаг.',
+      image:
+        'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80',
+      order: 4,
       status: 'PUBLISHED' as const,
     },
   ];

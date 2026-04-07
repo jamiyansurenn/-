@@ -322,21 +322,32 @@ export const getTeamMembers = async () => {
       name: 'Б. Бат-Эрдэнэ',
       position: 'Ерөнхий захирал',
       bio: 'Төслийн гүйцэтгэл, аюулгүй байдал, чанарын стандартыг талбай дээр бодитой хэрэгжүүлэхэд манлайлдаг.',
-      image: '/images/team/ceo-construction.png',
+      image:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'local-marketing',
       name: 'О. Номин-Эрдэнэ',
       position: 'Маркетингийн захирал',
       bio: 'Брэнд, харилцагчийн туршлагыг сайжруулах стратеги болон олон сувагт харилцааг хариуцдаг.',
-      image: '/images/team/marketing-director.png',
+      image:
+        'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'local-director',
       name: 'Г. Энхбаатар',
       position: 'Захирал',
-      bio: 'Компанийн урт хугацааны чиг хандлага, үнэт зүйлийг тодорхойлж, түншлэлээ бэхжүүлнэ.',
-      image: '/images/team/director.png',
+      bio: 'Компанийн урт хугацааны чиг хандлага, үнэт зүйлийг тодорхойлож, түншлэлээ бэхжүүлнэ.',
+      image:
+        'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      id: 'local-engineer',
+      name: 'Э. Отгонбаяр',
+      position: 'Ерөнхий инженер',
+      bio: 'Техникийн стандарт, чанарын хяналт, төслийн инженерийн зохион байгуулалтыг хариуцдаг.',
+      image:
+        'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80',
     },
   ];
 
