@@ -1,10 +1,17 @@
 .heroSection {
     position: relative;
     overflow: hidden;
-    min-height: 72vh;
+    min-height: clamp(300px, 46vh, 520px);
     display: flex;
     align-items: center;
     background: #0b0f19;
+}
+
+/* Beat globals `.hero` huge padding (10rem); keep header overlap */
+.heroSection:global(.hero) {
+    padding-top: clamp(3.5rem, 8vh, 5rem);
+    padding-bottom: clamp(0.85rem, 2vh, 1.35rem);
+    margin-top: -90px;
 }
 
 .heroReducedMotion .heroAmbient {
@@ -100,15 +107,15 @@
     text-align: center;
     max-width: min(920px, 100%);
     margin: 0 auto;
-    padding-top: 2rem;
-    padding-bottom: 0.5rem;
+    padding-top: 1rem;
+    padding-bottom: 0.25rem;
 }
 
 .heroSlide {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .heroEyebrow {
@@ -123,29 +130,29 @@
 
 .heroTitle {
     color: #ffffff;
-    font-size: clamp(2.35rem, 5.2vw, 4.15rem);
+    font-size: clamp(1.9rem, 4.2vw, 3.35rem);
     font-weight: 800;
     letter-spacing: -0.035em;
     line-height: 1.08;
     text-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.25rem;
 }
 
 .heroDescription {
     color: rgba(241, 245, 249, 0.94);
-    font-size: clamp(1.02rem, 2vw, 1.2rem);
-    line-height: 1.65;
+    font-size: clamp(0.98rem, 1.85vw, 1.12rem);
+    line-height: 1.62;
     max-width: 38rem;
-    margin: 0.5rem auto 1.75rem;
+    margin: 0.35rem auto 1.15rem;
     font-weight: 450;
 }
 
 .heroDescriptionSecondary {
     color: rgba(226, 232, 240, 0.88);
-    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
-    line-height: 1.65;
+    font-size: clamp(0.9rem, 1.65vw, 1rem);
+    line-height: 1.62;
     max-width: 640px;
-    margin: 0 auto 1.5rem;
+    margin: 0 auto 1.1rem;
 }
 
 .heroCtas {
@@ -154,13 +161,13 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1.65rem;
+    margin-bottom: 1.1rem;
 }
 
 .heroStats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.9rem;
+    gap: 0.65rem;
     width: min(760px, 100%);
     margin: 0 auto;
 }
@@ -171,7 +178,7 @@
     border-radius: var(--radius-md);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    padding: 0.95rem 1.05rem;
+    padding: 0.72rem 0.85rem;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -186,18 +193,18 @@
 
 .heroStatCard strong {
     color: var(--white);
-    font-size: 1.55rem;
+    font-size: 1.28rem;
     line-height: 1.1;
 }
 
 .heroStatCard span {
     color: rgba(241, 245, 249, 0.9);
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     letter-spacing: 0.03em;
 }
 
 .heroControls {
-    margin-top: 2.5rem;
+    margin-top: 1.35rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1196,8 +1203,11 @@
 }
 
 @media (max-width: 1024px) {
+    .heroSection:global(.hero),
     .heroSection {
-        min-height: 75vh;
+        min-height: clamp(280px, 44vh, 480px);
+        padding-top: clamp(3.25rem, 7vh, 4.5rem);
+        padding-bottom: clamp(0.75rem, 1.8vh, 1.15rem);
     }
 
     .cardImageWrapper {
@@ -1259,8 +1269,11 @@
 }
 
 @media (max-width: 768px) {
+    .heroSection:global(.hero),
     .heroSection {
-        min-height: 70vh;
+        min-height: clamp(260px, 42vh, 420px);
+        padding-top: clamp(3rem, 6.5vh, 4rem);
+        padding-bottom: clamp(0.65rem, 1.5vh, 1rem);
     }
 
     .heroCtas {
