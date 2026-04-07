@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter, useParams } from 'next/navigation';
 import { getProject, createProject, updateProject, uploadFile } from '@/lib/admin-api';
+import { getImageUrl, resolveImageFieldToUrl } from '@/lib/imagePlaceholder';
 import styles from '../../admin.module.css';
 
 export default function ProjectEditPage() {
@@ -42,11 +43,12 @@ export default function ProjectEditPage() {
     try {
       const response = await getProject(id);
       const project = response.data;
+      const normalizedImage = resolveImageFieldToUrl(project.image) ?? '';
       setFormData({
         title: project.title || '',
         description: project.description || '',
         content: project.content || '',
-        image: project.image || '',
+        image: normalizedImage,
         images: project.images || [],
         slug: project.slug || '',
         metaTitle: project.metaTitle || '',
@@ -82,8 +84,10 @@ export default function ProjectEditPage() {
     setSaving(true);
     setError('');
     try {
+      const normalizedImage = resolveImageFieldToUrl(formData.image.trim());
       const data = {
         ...formData,
+        image: normalizedImage || undefined,
         startDate: formData.startDate || undefined,
         endDate: formData.endDate || undefined,
       };
@@ -141,7 +145,7 @@ export default function ProjectEditPage() {
           <label>Зураг</label>
           <input type="file" accept="image/*" onChange={handleFileUpload} />
           {formData.image && (
-            <img src={formData.image} alt="Preview" className={styles.imagePreview} />
+            <img src={getImageUrl(formData.image, 'building', 0)} alt="Preview" className={styles.imagePreview} />
           )}
         </div>
         <div className="form-group">

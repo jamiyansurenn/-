@@ -86,7 +86,15 @@ export function resolveStoredImageToUrl(normalized: string): string | null {
     return normalized;
   }
   if (normalized.startsWith('/')) {
-    return normalized;
+    // Accept only clear site asset/upload paths or file-like paths.
+    if (
+      normalized.startsWith('/uploads/') ||
+      normalized.startsWith('/images/') ||
+      /\.[a-zA-Z0-9]{2,5}($|\?)/.test(normalized)
+    ) {
+      return normalized;
+    }
+    return null;
   }
   return null;
 }
