@@ -9,6 +9,15 @@
   margin: 0;
 }
 
+/**
+ * Sitewide ~75% visual scale (бүх хуудас нэгдмэл жижигрэлт).
+ * CSS `zoom` — Chrome / Edge / Safari; Firefox 126+.
+ * Хэрэглэгчийн өөрийн хөтөчийн text zoom-оос өөр — хангалтгүй хэрэглэгчид хүндрүүлж болно.
+ */
+html {
+  zoom: 0.75;
+}
+
 html,
 body {
   max-width: 100vw;
