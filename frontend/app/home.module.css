@@ -1,16 +1,16 @@
 .heroSection {
     position: relative;
     overflow: hidden;
-    min-height: clamp(300px, 46vh, 520px);
+    min-height: clamp(420px, 82vh, 920px);
     display: flex;
     align-items: center;
     background: #0b0f19;
 }
 
-/* Beat globals `.hero` huge padding (10rem); keep header overlap */
+/* Илүү амар зай: толгойноос доод хэсэг хүртэл; header overlap хадгална */
 .heroSection:global(.hero) {
-    padding-top: clamp(3.5rem, 8vh, 5rem);
-    padding-bottom: clamp(0.85rem, 2vh, 1.35rem);
+    padding-top: clamp(5.25rem, 12vh, 7.5rem);
+    padding-bottom: clamp(2.75rem, 6vh, 4.25rem);
     margin-top: -90px;
 }
 
@@ -65,19 +65,20 @@
     position: absolute;
     inset: 0;
     z-index: 1;
+    /* Доод манангүй тул бүх зургийн доод хэсэгт уншигдах байдлыг бага зэрэг илүү бүдгэрүүлнэ */
     background: linear-gradient(
             180deg,
-            rgba(13, 27, 42, 0.5) 0%,
-            rgba(13, 27, 42, 0.22) 42%,
-            rgba(20, 14, 10, 0.52) 100%
+            rgba(13, 27, 42, 0.52) 0%,
+            rgba(13, 27, 42, 0.32) 45%,
+            rgba(11, 15, 25, 0.72) 100%
         ),
         linear-gradient(
             115deg,
-            rgba(13, 27, 42, 0.4) 0%,
+            rgba(13, 27, 42, 0.38) 0%,
             transparent 52%,
-            rgba(232, 93, 4, 0.12) 100%
+            rgba(232, 93, 4, 0.1) 100%
         ),
-        radial-gradient(ellipse 90% 60% at 50% 100%, rgba(180, 83, 9, 0.09), transparent 55%);
+        radial-gradient(ellipse 95% 70% at 50% 100%, rgba(15, 23, 42, 0.45), transparent 58%);
 }
 
 .heroAmbient {
@@ -107,78 +108,80 @@
     text-align: center;
     max-width: min(920px, 100%);
     margin: 0 auto;
-    padding-top: 1rem;
-    padding-bottom: 0.25rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1rem;
 }
 
 .heroSlide {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.85rem;
 }
 
 .heroEyebrow {
     letter-spacing: 0.18em;
-    font-size: 0.72rem;
-    color: rgba(248, 250, 252, 0.82);
+    font-size: 0.75rem;
+    color: rgba(248, 250, 252, 0.85);
     font-weight: 600;
     text-transform: uppercase;
     max-width: 36rem;
-    line-height: 1.5;
+    line-height: 1.55;
+    margin-bottom: 0.15rem;
 }
 
 .heroTitle {
     color: #ffffff;
-    font-size: clamp(1.9rem, 4.2vw, 3.35rem);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
     font-weight: 800;
     letter-spacing: -0.035em;
-    line-height: 1.08;
+    line-height: 1.1;
     text-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
 }
 
 .heroDescription {
     color: rgba(241, 245, 249, 0.94);
-    font-size: clamp(0.98rem, 1.85vw, 1.12rem);
-    line-height: 1.62;
+    font-size: clamp(1rem, 1.9vw, 1.15rem);
+    line-height: 1.68;
     max-width: 38rem;
-    margin: 0.35rem auto 1.15rem;
+    margin: 0.5rem auto 0.25rem;
     font-weight: 450;
 }
 
 .heroDescriptionSecondary {
     color: rgba(226, 232, 240, 0.88);
-    font-size: clamp(0.9rem, 1.65vw, 1rem);
-    line-height: 1.62;
+    font-size: clamp(0.92rem, 1.7vw, 1.05rem);
+    line-height: 1.68;
     max-width: 640px;
-    margin: 0 auto 1.1rem;
+    margin: 0.35rem auto 0.5rem;
 }
 
 .heroCtas {
     display: flex;
-    gap: 0.85rem 1rem;
+    gap: 1rem 1.15rem;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1.1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .heroStats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.65rem;
+    gap: 0.85rem;
     width: min(760px, 100%);
-    margin: 0 auto;
+    margin: 0.75rem auto 0;
 }
 
 .heroStatCard {
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.26);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: var(--radius-md);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    padding: 0.72rem 0.85rem;
+    padding: 0.95rem 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -204,7 +207,8 @@
 }
 
 .heroControls {
-    margin-top: 1.35rem;
+    margin-top: 2rem;
+    padding-bottom: 0.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -325,10 +329,9 @@
 
 /* Home — brief intro (split layout, no motion on images) */
 .homeAboutSection {
-    padding: clamp(2.75rem, 6vw, 4rem) 0 clamp(3rem, 6vw, 4.5rem);
-    background:
-        radial-gradient(120% 80% at 15% 20%, rgba(232, 93, 4, 0.05) 0%, transparent 55%),
-        linear-gradient(180deg, #f8fafc 0%, #ffffff 55%);
+    padding: clamp(3.25rem, 6.5vw, 4.5rem) 0 clamp(3rem, 6vw, 4.5rem);
+    background: #ffffff;
+    border-top: 1px solid rgba(13, 27, 42, 0.08);
 }
 
 .homeAboutGrid {
@@ -1205,9 +1208,9 @@
 @media (max-width: 1024px) {
     .heroSection:global(.hero),
     .heroSection {
-        min-height: clamp(280px, 44vh, 480px);
-        padding-top: clamp(3.25rem, 7vh, 4.5rem);
-        padding-bottom: clamp(0.75rem, 1.8vh, 1.15rem);
+        min-height: clamp(380px, 72vh, 780px);
+        padding-top: clamp(4.5rem, 10vh, 6.25rem);
+        padding-bottom: clamp(2rem, 4.5vh, 3.25rem);
     }
 
     .cardImageWrapper {
@@ -1271,9 +1274,9 @@
 @media (max-width: 768px) {
     .heroSection:global(.hero),
     .heroSection {
-        min-height: clamp(260px, 42vh, 420px);
-        padding-top: clamp(3rem, 6.5vh, 4rem);
-        padding-bottom: clamp(0.65rem, 1.5vh, 1rem);
+        min-height: clamp(340px, 68vh, 640px);
+        padding-top: clamp(4rem, 9vh, 5.5rem);
+        padding-bottom: clamp(1.75rem, 4vh, 2.75rem);
     }
 
     .heroCtas {

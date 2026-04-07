@@ -10,8 +10,7 @@
 }
 
 /**
- * Гол багана ~75% өргөн, хоёр талд ижил зай (Vercel/local ижил харагдах).
- * Утасан дээр бүтэн өргөн; tablet-с дээш 75vw + төвлөрсөн.
+ * Бүтэн өргөн (viewport 100%) — header/hero бүгд дэлгэцийн өргөн дээр.
  */
 html {
   min-height: 100%;
@@ -30,15 +29,6 @@ body {
   background: #f8fafc;
   color: var(--text-dark);
   line-height: 1.6;
-}
-
-@media (min-width: 768px) {
-  body {
-    max-width: 75vw;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 0 80px rgba(13, 27, 42, 0.06);
-  }
 }
 
 a {
@@ -883,6 +873,11 @@ button.nav-dropdown-trigger:focus-visible {
     transparent 100%
   );
   pointer-events: none;
+}
+
+/* Нүүр: доод цагаан манангүй, шулуун шилжилт */
+.hero.hero-home::after {
+  display: none;
 }
 
 .hero h1 {

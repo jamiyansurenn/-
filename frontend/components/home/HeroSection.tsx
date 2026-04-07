@@ -145,7 +145,9 @@ export default function HeroSection() {
     ];
 
     return (
-        <section className={`hero ${styles.heroSection} ${reduceMotion ? styles.heroReducedMotion : ''}`}>
+        <section
+            className={`hero hero-home ${styles.heroSection} ${reduceMotion ? styles.heroReducedMotion : ''}`}
+        >
             <div className={styles.heroMedia}>
                 <div
                     className={styles.heroImageFallback}
