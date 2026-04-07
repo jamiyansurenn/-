@@ -316,7 +316,7 @@ export const getNewsBySlug = async (slug: string) => {
 };
 
 export const getTeamMembers = async () => {
-  const fallbackTeam = [
+  const devFallbackTeam = [
     {
       id: 'local-ceo',
       name: 'Б. Бат-Эрдэнэ',
@@ -339,12 +339,23 @@ export const getTeamMembers = async () => {
       image: '/images/team/director.png',
     },
   ];
+
+  const onFailure = () =>
+    process.env.NODE_ENV === 'development' ? { data: devFallbackTeam } : { data: [] };
+
+  /** Avoid axios interceptor + Next stale surprises; always hit network fresh for RSC About page. */
   try {
-    const response = await api.get('/team-members/public');
-    const data = safeGetData(response);
-    return { data: data && data.length > 0 ? data : fallbackTeam };
-  } catch (error: any) {
-    return { data: fallbackTeam };
+    const base = getApiBaseUrl();
+    const res = await fetch(`${base}/team-members/public`, {
+      cache: 'no-store',
+      headers: { Accept: 'application/json' },
+    });
+    if (!res.ok) return onFailure();
+    const data = (await res.json()) as unknown;
+    if (!Array.isArray(data)) return onFailure();
+    return { data };
+  } catch {
+    return onFailure();
   }
 };
 

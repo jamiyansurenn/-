@@ -273,8 +273,8 @@ export default async function AboutPage() {
                     (typeof member.bio === 'string' && member.bio.trim() ? member.bio.trim() : null);
                   return (
                     <AnimateOnScroll key={member.id} delay={Math.min(index, 12) * 40}>
-                      <article className="flex h-full flex-col items-center px-2 text-center sm:px-3">
-                        <div className="relative mb-6 h-36 w-36 shrink-0 overflow-hidden rounded-full bg-slate-200/60 shadow-[0_1px_3px_rgba(15,23,42,0.06)] ring-1 ring-inset ring-slate-900/[0.06] sm:mb-7 sm:h-40 sm:w-40">
+                      <article className="relative isolate flex h-full flex-col items-center px-2 text-center sm:px-3">
+                        <div className="relative z-[1] mb-6 h-36 w-36 shrink-0 overflow-hidden rounded-full bg-slate-200/60 shadow-[0_1px_3px_rgba(15,23,42,0.06)] ring-1 ring-inset ring-slate-900/[0.06] sm:mb-7 sm:h-40 sm:w-40">
                           <Image
                             src={imageUrl}
                             alt={member.name}
@@ -283,7 +283,9 @@ export default async function AboutPage() {
                             sizes="(max-width: 768px) 160px, 176px"
                           />
                         </div>
-                        <h3 className="text-base font-semibold leading-snug text-slate-900">{member.name}</h3>
+                        <h3 className="relative z-0 mt-0 text-base font-semibold leading-snug text-slate-900">
+                          {member.name}
+                        </h3>
                         {member.position ? (
                           <p className="mt-1.5 max-w-[16rem] text-sm font-normal leading-relaxed text-slate-500">
                             {member.position}
