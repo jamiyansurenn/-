@@ -27,7 +27,15 @@ export default function ContactPage() {
     setSuccess(false);
 
     try {
-      await createContactMessage(formData);
+      const result = await createContactMessage(formData);
+      if (result.error != null || result.data == null) {
+        setError(
+          (typeof result.error === 'string' ? result.error : null) ||
+            (t.pages as any)?.contact?.submitError ||
+            'Алдаа гарлаа. Дахин оролдоно уу.'
+        );
+        return;
+      }
       setSuccess(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (err: any) {

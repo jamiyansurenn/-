@@ -36,11 +36,16 @@ export default function HeroSection() {
 
     const slides = useMemo(() => {
         const list = t.home.heroSlides ?? [];
-        return list.map((s) => ({
+        return list.map((s: any) => ({
             title: s.title,
             subtitle: s.subtitle,
             description: '',
-            cta: { label: s.ctaLabel, href: '/contact' },
+            supportLine: s.supportLine,
+            cta: {
+                label: s.ctaLabel,
+                href: typeof s.ctaHref === 'string' && s.ctaHref ? s.ctaHref : '/contact',
+            },
+            ctaHref: s.ctaHref,
         }));
     }, [t]);
 

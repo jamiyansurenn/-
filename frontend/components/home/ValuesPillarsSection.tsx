@@ -6,12 +6,20 @@ import { STOCK_PILLAR_IMAGES } from '@/lib/stockConstructionImages';
 import styles from '@/app/home.module.css';
 import SectionHeader from './SectionHeader';
 
-export default function ValuesPillarsSection() {
+type Props = {
+  /** Cap pillars on home (e.g. 3) to shorten the page; omit for full list (e.g. future /values page). */
+  maxItems?: number;
+};
+
+export default function ValuesPillarsSection({ maxItems }: Props) {
   const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
   const p = (t as any).home?.pillars;
-  const items: Array<{ title: string; description: string; imageSeed?: string }> = p?.items;
-  if (!Array.isArray(items) || items.length === 0) return null;
+  const raw: Array<{ title: string; description: string; imageSeed?: string }> = p?.items;
+  if (!Array.isArray(raw) || raw.length === 0) return null;
+
+  const items =
+    typeof maxItems === 'number' && maxItems > 0 ? raw.slice(0, maxItems) : raw;
 
   return (
     <section className={styles.homePillarsSection}>

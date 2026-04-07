@@ -383,12 +383,12 @@ export const getCareers = async () => {
 };
 
 export const createContactMessage = async (data: any) => {
-  try {
-    const response = await api.post('/contact', data);
-    return { data: safeGetData(response) };
-  } catch (error: any) {
-    return { data: null, error: error.message };
+  const response: any = await api.post('/contact', data);
+  const out = safeGetData(response);
+  if (out == null) {
+    return { data: null, error: (typeof response?.error === 'string' && response.error) || 'Network error' };
   }
+  return { data: out };
 };
 
 export const getPublicPageBySlug = async (slug: string, lang?: string) => {

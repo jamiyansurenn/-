@@ -230,14 +230,16 @@ async function main() {
     });
   }
 
-  // Create sample news
+  // Optional starter post (replace placeholder copy on re-seed)
   const newsItems = [
     {
-      title: 'Мэдээ 1',
-      excerpt: 'Мэдээний товч тайлбар',
-      content: 'Мэдээний бүрэн агуулга...',
-      slug: 'news-1',
-      status: 'PUBLISHED',
+      title: 'ДААЦЫН ЦАМХАГ Групп: бүтээн байгуулалтын цогц үйлчилгээ',
+      excerpt:
+        'Орон сууц, дэд бүтэц, цамхагт кран — Улаанбаатар болон орон нутагт чанар, аюулгүй байдал, тогтвортой гүйцэтгэлээр.',
+      content:
+        'Манай компани 2009 оноос хойш барилга угсралт, өргөх механизм, барилгын материалын үйлдвэрлэл зэрэг салбарын цогц үйлчилгээг үзүүлж байна. Шинэ төсөл, түншлэлийн талаар мэдээлэл авахыг хүсвэл холбоо барих хуудас руу зочлоорой.',
+      slug: 'daatsin-tsamkhag-integrated-services',
+      status: 'PUBLISHED' as const,
       featured: true,
       publishedAt: new Date(),
     },
@@ -246,10 +248,20 @@ async function main() {
   for (const news of newsItems) {
     await prisma.news.upsert({
       where: { slug: news.slug },
-      update: {},
+      update: {
+        title: news.title,
+        excerpt: news.excerpt,
+        content: news.content,
+        status: news.status,
+        featured: news.featured,
+        publishedAt: news.publishedAt,
+      },
       create: news,
     });
   }
+
+  // Remove legacy placeholder row from older seeds (ignore if absent)
+  await prisma.news.deleteMany({ where: { slug: 'news-1' } });
 
   console.log('Seed data created successfully');
   console.log('Admin: admin@moncon.mn / admin123');

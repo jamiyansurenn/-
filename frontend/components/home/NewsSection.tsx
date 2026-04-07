@@ -22,7 +22,8 @@ function formatPublishedDate(value: string | null | undefined) {
   return `${yyyy}.${mm}.${dd}`;
 }
 
-const HOME_NEWS_LIMIT = 3;
+/** Shorter home feed for launch / less scroll */
+const HOME_NEWS_LIMIT = 2;
 
 export default function NewsSection({ news }: NewsSectionProps) {
   const { t } = useLanguage();

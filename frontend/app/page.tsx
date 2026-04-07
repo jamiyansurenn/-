@@ -6,6 +6,7 @@ import AboutSection from '@/components/home/AboutSection';
 import ValuesPillarsSection from '@/components/home/ValuesPillarsSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
 import NewsSection from '@/components/home/NewsSection';
+import { filterProductionNews } from '@/lib/newsPlaceholder';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,15 +35,17 @@ export default async function Home() {
     /* page still renders */
   }
 
+  const newsForHome = filterProductionNews(news.data as any[]);
+
   return (
     <>
       <Header />
       <main>
         <HeroSection />
         <AboutSection companyInfo={companyInfo} />
-        <ValuesPillarsSection />
+        <ValuesPillarsSection maxItems={3} />
         <ProjectsSection projects={projects.data as any[]} />
-        <NewsSection news={news.data as any[]} />
+        <NewsSection news={newsForHome} />
       </main>
       <Footer />
     </>

@@ -67,6 +67,14 @@ export const translations = {
       },
       heroSlides: [
         {
+          title: 'ДААЦЫН ЦАМХАГ Групп',
+          subtitle: 'Барилга, дэд бүтэц, өргөх механизм — Улаанбаатар болон орон нутагт',
+          ctaLabel: 'Компанийн танилцуулга',
+          ctaHref: '/about',
+          supportLine:
+            '2009 оноос хойш бүтээн байгуулалт, цамхагт кран, орон сууцны төсөл — чанар, аюулгүй байдал, тогтвортой гүйцэтгэл.',
+        },
+        {
           title: 'Buy & Back – Ашигтай, Баталгаатай Хөрөнгө оруулалт',
           subtitle: 'Buy & Back гэрээт хөтөлбөр эхэллээ',
           ctaLabel: 'Зөвлөгөө авах',
@@ -388,6 +396,14 @@ export const translations = {
       },
       heroSlides: [
         {
+          title: 'DAATSIINTSAMKHAG Group',
+          subtitle: 'Construction, infrastructure, and lifting services — nationwide delivery',
+          ctaLabel: 'About the company',
+          ctaHref: '/about',
+          supportLine:
+            'Since 2009: residential and civil projects, tower cranes, and integrated site services — built with safety, quality, and accountability.',
+        },
+        {
           title: 'Buy & Back – Profitable, Reliable Investment',
           subtitle: 'The Buy & Back contract program has launched',
           ctaLabel: 'Request a consultation',
@@ -697,6 +713,13 @@ export const translations = {
       },
       heroSlides: [
         {
+          title: '达茨因察姆哈格集团',
+          subtitle: '建筑、基础设施与塔吊一体化服务',
+          ctaLabel: '公司简介',
+          ctaHref: '/about',
+          supportLine: '自2009年起，以安全与品质为核心，在全国范围交付建筑与起重综合项目。',
+        },
+        {
           title: 'Buy & Back – 有利可图、可靠的投资',
           subtitle: 'Buy & Back 合约计划已启动',
           ctaLabel: '联系我们',
@@ -930,6 +953,14 @@ export const translations = {
           'Жильё, инфраструктура и башенные краны — комплексные решения и ответственное исполнение.',
       },
       heroSlides: [
+        {
+          title: 'Группа ДААЦЫН ЦАМХАГ',
+          subtitle: 'Строительство, инфраструктура и башенные краны',
+          ctaLabel: 'О компании',
+          ctaHref: '/about',
+          supportLine:
+            'С 2009 года — жилые и инфраструктурные проекты, комплексные услуги по башенным кранам, ответственное исполнение.',
+        },
         {
           title: 'Buy & Back – выгодные и надёжные инвестиции',
           subtitle: 'Запущена программа по договору Buy & Back',
@@ -1173,6 +1204,13 @@ export const translations = {
       },
       heroSlides: [
         {
+          title: 'DAATSIINTSAMKHAGグループ',
+          subtitle: '建設・インフラ・タワークレーンの統合サービス',
+          ctaLabel: '会社案内',
+          ctaHref: '/about',
+          supportLine: '2009年より、安全と品質を重視し、全国で建設・揚重プロジェクトを支えています。',
+        },
+        {
           title: 'Buy & Back – 有利で信頼できる投資',
           subtitle: 'Buy & Back 契約プログラムが始まりました',
           ctaLabel: 'お問い合わせ',
@@ -1405,6 +1443,13 @@ export const translations = {
         defaultSupport: '주거, 인프라, 타워크레인까지 통합 솔루션과 책임 있는 시공.',
       },
       heroSlides: [
+        {
+          title: 'DAATSIINTSAMKHAG 그룹',
+          subtitle: '건설·인프라·타워크레인 통합 서비스',
+          ctaLabel: '회사 소개',
+          ctaHref: '/about',
+          supportLine: '2009년부터 안전과 품질을 바탕으로 전국의 건설·양중 프로젝트를 수행합니다.',
+        },
         {
           title: 'Buy & Back – 수익성 있고 신뢰할 수 있는 투자',
           subtitle: 'Buy & Back 계약 프로그램이 시작되었습니다',
