@@ -18,6 +18,8 @@ const languages: LanguageItem[] = [
   { code: 'ru', country: 'Россия', label: 'Русский', region: 'Global / International', flagCode: 'ru' },
 ];
 
+const bubbleEase = [0.45, 0.05, 0.55, 0.95] as const;
+
 export default function LanguageSwitcher() {
   const router = useRouter();
   const { language, setLanguage } = useLanguage();
@@ -25,12 +27,11 @@ export default function LanguageSwitcher() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   let closeTimeout: NodeJS.Timeout;
 
-  const currentLang = languages.find(lang => lang.code === language) || languages[0];
+  const currentLang = languages.find((lang) => lang.code === language) || languages[0];
 
   const handleLanguageChange = (newLang: Language) => {
     setLanguage(newLang);
     setIsOpen(false);
-    // Refresh Next.js server components so they pick up the new cookie if needed
     router.refresh();
   };
 
@@ -40,13 +41,11 @@ export default function LanguageSwitcher() {
   };
 
   const handleMouseLeave = () => {
-    // Add a slight delay before closing to prevent accidental closes when moving mouse
     closeTimeout = setTimeout(() => {
       setIsOpen(false);
-    }, 150);
+    }, 90);
   };
 
-  // Close dropdown when clicking outside (fallback for mobile)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -68,33 +67,25 @@ export default function LanguageSwitcher() {
       onMouseLeave={handleMouseLeave}
     >
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        style={{
-          padding: '0.5rem 0.8rem',
-          background: isOpen ? 'rgba(255,255,255,0.08)' : 'transparent',
-          border: '1px solid rgba(255,255,255,0.15)',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.6rem',
-          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-          fontSize: '0.95rem',
-          borderRadius: '30px',
-          color: 'inherit'
-        }}
         className={`language-switcher-btn ${isOpen ? 'active' : ''}`}
         aria-label="Select Language"
+        aria-expanded={isOpen}
         title={currentLang.country}
       >
-        <div style={{ width: '22px', height: '16px', borderRadius: '3px', overflow: 'hidden', display: 'flex', boxShadow: '0 1px 3px rgba(0,0,0,0.2)' }}>
+        <div className="language-switcher-flag">
           <img
             src={`https://flagcdn.com/w40/${currentLang.flagCode}.png`}
-            alt={currentLang.country}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            alt=""
+            width={22}
+            height={16}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
         </div>
-        <span style={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{currentLang.code}</span>
+        <span>{currentLang.code}</span>
         <svg
+          className={`language-switcher-chevron ${isOpen ? 'language-switcher-chevron--open' : ''}`}
           width="12"
           height="12"
           viewBox="0 0 24 24"
@@ -103,11 +94,7 @@ export default function LanguageSwitcher() {
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{
-            transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-            opacity: 0.8
-          }}
+          aria-hidden
         >
           <path d="m6 9 6 6 6-6" />
         </svg>
@@ -116,107 +103,82 @@ export default function LanguageSwitcher() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 12, scale: 0.96 }}
+            className="language-switcher-panel"
+            initial={{ opacity: 0, y: 10, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.96 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, y: 6, scale: 0.98 }}
+            transition={{ duration: 0.26, ease: bubbleEase }}
             style={{
               position: 'absolute',
-              top: 'calc(100% + 0.8rem)',
+              top: 'calc(100% + 0.75rem)',
               right: 0,
               backgroundColor: '#ffffff',
               borderRadius: '16px',
-              padding: '0.6rem',
-              minWidth: '220px',
-              boxShadow: '0 20px 40px -15px rgba(0,0,0,0.15), 0 0 20px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(0,0,0,0.05)',
+              padding: '0.5rem',
+              minWidth: '228px',
               zIndex: 9999,
               display: 'flex',
               flexDirection: 'column',
               gap: '0.2rem',
-              // Use pseudo element for tooltip arrow
             }}
           >
-            {/* Tooltip triangle */}
-            <div style={{
-              position: 'absolute',
-              top: '-6px',
-              right: '30px',
-              width: '12px',
-              height: '12px',
-              backgroundColor: '#fff',
-              transform: 'rotate(45deg)',
-              boxShadow: '-2px -2px 3px rgba(0,0,0,0.02)',
-              zIndex: -1
-            }} />
+            <div
+              style={{
+                position: 'absolute',
+                top: '-6px',
+                right: '30px',
+                width: '12px',
+                height: '12px',
+                backgroundColor: '#fff',
+                transform: 'rotate(45deg)',
+                boxShadow: '-2px -2px 4px rgba(232, 93, 4, 0.06)',
+                zIndex: -1,
+              }}
+              aria-hidden
+            />
 
             {languages.map((lang) => (
               <button
                 key={lang.code}
+                type="button"
                 onClick={() => handleLanguageChange(lang.code)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.8rem',
-                  width: '100%',
-                  padding: '0.7rem 0.8rem',
-                  border: 'none',
-                  background: language === lang.code ? '#fff4eb' : 'transparent',
-                  borderRadius: '10px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  color: language === lang.code ? 'var(--primary-orange)' : '#444',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}
-                onMouseEnter={(e) => {
-                  if (language !== lang.code) {
-                    e.currentTarget.style.backgroundColor = '#f7f7f7';
-                    e.currentTarget.style.color = '#111';
-                    e.currentTarget.style.transform = 'translateX(4px)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (language !== lang.code) {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color = '#444';
-                    e.currentTarget.style.transform = 'translateX(0)';
-                  }
-                }}
+                className={`language-switcher-option${language === lang.code ? ' language-switcher-option--current' : ''}`}
               >
-                <div style={{
-                  width: '26px',
-                  height: '18px',
-                  borderRadius: '3px',
-                  overflow: 'hidden',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                  flexShrink: 0
-                }}>
+                <div className="language-switcher-option-flag">
                   <img
                     src={`https://flagcdn.com/w40/${lang.flagCode}.png`}
-                    alt={lang.country}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    alt=""
+                    width={26}
+                    height={18}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                   />
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                  <span style={{ fontSize: '0.95rem', fontWeight: language === lang.code ? 700 : 500, lineHeight: 1.2 }}>
-                    {lang.label}
-                  </span>
-                  <span style={{ fontSize: '0.75rem', color: language === lang.code ? '#fb923c' : '#888', lineHeight: 1 }}>
-                    {lang.country}
-                  </span>
+                <div className="language-switcher-option-text">
+                  <span className="language-switcher-option-label">{lang.label}</span>
+                  <span className="language-switcher-option-sub">{lang.country}</span>
                 </div>
 
                 {language === lang.code && (
                   <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
+                    initial={{ scale: 0.85, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    transition={{ type: 'spring', stiffness: 280, damping: 24 }}
                     style={{ marginLeft: 'auto' }}
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary-orange)' }}>
-                      <polyline points="20 6 9 17 4 12"></polyline>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{ color: 'var(--primary-orange)' }}
+                      aria-hidden
+                    >
+                      <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </motion.div>
                 )}

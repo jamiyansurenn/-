@@ -10,6 +10,7 @@ import SectionHeader from './SectionHeader';
 
 interface NewsSectionProps {
   news: any[];
+  loading?: boolean;
 }
 
 function formatPublishedDate(value: string | null | undefined) {
@@ -25,11 +26,40 @@ function formatPublishedDate(value: string | null | undefined) {
 /** Shorter home feed for launch / less scroll */
 const HOME_NEWS_LIMIT = 2;
 
-export default function NewsSection({ news }: NewsSectionProps) {
+function NewsFeedSkeleton() {
+  return (
+    <div className={styles.newsGridHome} aria-hidden>
+      {[0, 1].map((i) => (
+        <div key={i} className={`${styles.newsCardHome} ${styles.homeFeedSkeletonCard}`}>
+          <div className={`${styles.newsCardImageWrap} ${styles.homeFeedSkeletonShimmer}`} />
+          <div className={styles.newsCardBody}>
+            <div className={styles.homeFeedSkeletonMeta} />
+            <div className={`${styles.homeFeedSkeletonLine} ${styles.homeFeedSkeletonTitle}`} />
+            <div className={`${styles.homeFeedSkeletonLine} ${styles.homeFeedSkeletonLineWide}`} />
+            <div className={`${styles.homeFeedSkeletonLine} ${styles.homeFeedSkeletonLineMed}`} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function NewsSection({ news, loading = false }: NewsSectionProps) {
   const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
 
   const th = (t as any).home ?? {};
+
+  if (loading) {
+    return (
+      <section className={styles.newsSection} aria-busy="true" aria-label={t.pages.construction.latestNews}>
+        <div className="container">
+          <SectionHeader title={t.pages.construction.latestNews} />
+          <NewsFeedSkeleton />
+        </div>
+      </section>
+    );
+  }
 
   if (!news || news.length === 0) {
     const emptyTitle = th.newsEmptyTitle || (t.common as any).newsSectionEmpty;
@@ -70,7 +100,7 @@ export default function NewsSection({ news }: NewsSectionProps) {
                 initial: { opacity: 0.94, y: 6 },
                 whileInView: { opacity: 1, y: 0 },
                 viewport: { once: true, margin: '80px 0px' },
-                transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
+                transition: { duration: 0.24, ease: [0.22, 1, 0.36, 1] },
               })}
         >
           <SectionHeader title={t.pages.construction.latestNews} />
@@ -79,7 +109,7 @@ export default function NewsSection({ news }: NewsSectionProps) {
         <div className={styles.newsGridHome}>
           {list.map((item: any, index: number) => {
             const imageUrl = getImageUrl(item.image, 'news', index);
-            const delay = reduceMotion ? 0 : Math.min(index * 0.04, 0.1);
+            const delay = reduceMotion ? 0 : Math.min(index * 0.02, 0.05);
             return (
               <motion.article
                 key={item.id}
@@ -90,7 +120,7 @@ export default function NewsSection({ news }: NewsSectionProps) {
                       initial: { opacity: 0.94, y: 6 },
                       whileInView: { opacity: 1, y: 0 },
                       viewport: { once: true, margin: '80px 0px' },
-                      transition: { duration: 0.32, delay, ease: [0.22, 1, 0.36, 1] },
+                      transition: { duration: 0.24, delay, ease: [0.22, 1, 0.36, 1] },
                     })}
               >
                 <div className={styles.newsCardImageWrap}>

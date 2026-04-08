@@ -30,10 +30,6 @@ function AboutCollageSlot({ slot }: { slot: 0 | 1 }) {
   );
 }
 
-interface AboutSectionProps {
-  companyInfo: any;
-}
-
 const SERVICE_BULLETS_MN = [
   'Барилга угсралт',
   'Газо хөнгөн блок',
@@ -65,7 +61,7 @@ function serviceBulletsForLang(language: string, tx: any): string[] {
   return SERVICE_BULLETS_MN;
 }
 
-export default function AboutSection({ companyInfo: _companyInfo }: AboutSectionProps) {
+export default function AboutSection() {
   const { language, t } = useLanguage();
   const tx = t as any;
   const ha = tx.home?.about ?? {};
@@ -105,7 +101,7 @@ export default function AboutSection({ companyInfo: _companyInfo }: AboutSection
             ) : null}
           </AnimateOnScroll>
 
-          <AnimateOnScroll delay={80} className={styles.homeAboutContentWrap}>
+          <AnimateOnScroll delay={32} className={styles.homeAboutContentWrap}>
             <div className={styles.homeAboutContent}>
               <p className={styles.homeAboutEyebrow}>{eyebrow}</p>
               <h2 className={styles.homeAboutBrand}>{brand}</h2>

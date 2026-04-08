@@ -22,6 +22,20 @@
     opacity: 0.12;
 }
 
+.heroReducedMotion .heroStatCard:hover {
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .heroStatCard:hover {
+        transform: none;
+    }
+
+    .heroDot:hover {
+        transform: none;
+    }
+}
+
 .heroMedia {
     position: absolute;
     inset: 0;
@@ -979,6 +993,68 @@
     gap: clamp(1.25rem, 2.5vw, 2rem);
     max-width: 1200px;
     margin: 0 auto;
+}
+
+/* Home — lightweight skeletons while projects/news load client-side */
+@keyframes homeFeedShimmer {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+.homeFeedSkeletonCard {
+    pointer-events: none;
+}
+
+.homeFeedSkeletonShimmer {
+    background: linear-gradient(110deg, #eef2f6 8%, #f8fafc 18%, #eef2f6 33%);
+    background-size: 200% 100%;
+    animation: homeFeedShimmer 1.15s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .homeFeedSkeletonShimmer {
+        animation: none;
+        background: #eef2f6;
+    }
+}
+
+.homeFeedSkeletonLine {
+    height: 0.72rem;
+    border-radius: 6px;
+    background: #e8edf3;
+}
+
+.homeFeedSkeletonTitle {
+    height: 1.35rem;
+    width: 72%;
+    margin-bottom: 0.35rem;
+}
+
+.homeFeedSkeletonLineWide {
+    width: 100%;
+}
+
+.homeFeedSkeletonLineMed {
+    width: 88%;
+}
+
+.homeFeedSkeletonCta {
+    width: 38%;
+    height: 0.65rem;
+    margin-top: 0.5rem;
+}
+
+.homeFeedSkeletonMeta {
+    height: 0.62rem;
+    width: 46%;
+    border-radius: 6px;
+    background: #e8edf3;
+    margin-bottom: 0.5rem;
 }
 
 .newsGridHome {

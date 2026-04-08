@@ -10,12 +10,43 @@ import SectionHeader from './SectionHeader';
 
 interface ProjectsSectionProps {
   projects: any[];
+  /** While true, show layout + skeletons instead of blocking the whole page on API data. */
+  loading?: boolean;
 }
 
-export default function ProjectsSection({ projects }: ProjectsSectionProps) {
+function ProjectsFeedSkeleton() {
+  return (
+    <div className={styles.projectsGridHome} aria-hidden>
+      {[0, 1, 2].map((i) => (
+        <div key={i} className={`${styles.projectCardPremium} ${styles.homeFeedSkeletonCard}`}>
+          <div className={`${styles.projectCardImageShell} ${styles.homeFeedSkeletonShimmer}`} />
+          <div className={styles.projectCardBody}>
+            <div className={`${styles.homeFeedSkeletonLine} ${styles.homeFeedSkeletonTitle}`} />
+            <div className={`${styles.homeFeedSkeletonLine} ${styles.homeFeedSkeletonLineWide}`} />
+            <div className={`${styles.homeFeedSkeletonLine} ${styles.homeFeedSkeletonLineMed}`} />
+            <div className={`${styles.homeFeedSkeletonLine} ${styles.homeFeedSkeletonCta}`} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function ProjectsSection({ projects, loading = false }: ProjectsSectionProps) {
   const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
   const tx = t as any;
+
+  if (loading) {
+    return (
+      <section className={styles.projectsSectionHome} aria-busy="true" aria-label={t.home.projects.title}>
+        <div className="container">
+          <SectionHeader title={t.home.projects.title} subtitle={t.home.projects.description} />
+          <ProjectsFeedSkeleton />
+        </div>
+      </section>
+    );
+  }
 
   if (!projects || projects.length === 0) {
     return (
@@ -43,7 +74,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                 initial: { opacity: 0.94, y: 6 },
                 whileInView: { opacity: 1, y: 0 },
                 viewport: { once: true, margin: '80px 0px' },
-                transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
+                transition: { duration: 0.24, ease: [0.22, 1, 0.36, 1] },
               })}
         >
           <SectionHeader title={t.home.projects.title} subtitle={t.home.projects.description} />
@@ -52,7 +83,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
         <div className={styles.projectsGridHome}>
           {projects.slice(0, 3).map((project: any, index: number) => {
             const imageUrl = getImageUrl(resolveProjectCoverImage(project), 'building', index);
-            const delay = reduceMotion ? 0 : Math.min(index * 0.04, 0.1);
+            const delay = reduceMotion ? 0 : Math.min(index * 0.02, 0.05);
             return (
               <motion.article
                 key={project.id}
@@ -63,7 +94,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                       initial: { opacity: 0.94, y: 6 },
                       whileInView: { opacity: 1, y: 0 },
                       viewport: { once: true, margin: '80px 0px' },
-                      transition: { duration: 0.32, delay, ease: [0.22, 1, 0.36, 1] },
+                      transition: { duration: 0.24, delay, ease: [0.22, 1, 0.36, 1] },
                     })}
               >
                 <div className={styles.projectCardImageShell}>

@@ -185,11 +185,14 @@ export default function HeroSection() {
                                 ? false
                                 : heroSlideEnterGen.current === 0
                                   ? false
-                                  : { opacity: 0.92, y: 4 }
+                                  : { opacity: 0, y: 10 }
                         }
                         animate={{ opacity: 1, y: 0 }}
-                        exit={reduceMotion ? undefined : { opacity: 0, y: -4 }}
-                        transition={{ duration: reduceMotion ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] }}
+                        exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
+                        transition={{
+                            duration: reduceMotion ? 0 : 0.28,
+                            ease: [0.22, 1, 0.36, 1],
+                        }}
                     >
                         {brandEyebrow ? <span className={styles.heroEyebrow}>{brandEyebrow}</span> : null}
                         <h1 className={styles.heroTitle}>{currentSlide.title}</h1>

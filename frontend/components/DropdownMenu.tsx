@@ -4,8 +4,8 @@ import { useState, useRef, useEffect, useCallback, useId } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-const OPEN_DELAY_MS = 100;
-const CLOSE_DELAY_MS = 240;
+const OPEN_DELAY_MS = 48;
+const CLOSE_DELAY_MS = 140;
 
 interface DropdownItem {
   labelKey: string;

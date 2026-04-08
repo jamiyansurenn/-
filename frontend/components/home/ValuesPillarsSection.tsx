@@ -31,14 +31,14 @@ export default function ValuesPillarsSection({ maxItems }: Props) {
                 initial: { opacity: 0.94, y: 6 },
                 whileInView: { opacity: 1, y: 0 },
                 viewport: { once: true, margin: '80px 0px' },
-                transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
+                transition: { duration: 0.24, ease: [0.22, 1, 0.36, 1] },
               })}
         >
           <SectionHeader title={p.title} subtitle={p.subtitle} />
         </motion.div>
         <div className={styles.homePillarsGrid}>
           {items.map((item, index) => {
-            const delay = reduceMotion ? 0 : Math.min(index * 0.04, 0.1);
+            const delay = reduceMotion ? 0 : Math.min(index * 0.02, 0.05);
             return (
               <motion.article
                 key={`${item.title}-${index}`}
@@ -49,7 +49,7 @@ export default function ValuesPillarsSection({ maxItems }: Props) {
                       initial: { opacity: 0.94, y: 6 },
                       whileInView: { opacity: 1, y: 0 },
                       viewport: { once: true, margin: '80px 0px' },
-                      transition: { duration: 0.32, delay, ease: [0.22, 1, 0.36, 1] },
+                      transition: { duration: 0.24, delay, ease: [0.22, 1, 0.36, 1] },
                     })}
               >
                 <div className={styles.homePillarImageWrap}>
