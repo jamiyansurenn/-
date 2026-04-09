@@ -1,9 +1,6 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/next"
-    }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "npm ci --prefix frontend --include=dev || npm ci --include=dev",
+  "buildCommand": "npm run build --prefix frontend || npm run build"
 }
