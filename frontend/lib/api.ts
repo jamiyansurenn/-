@@ -10,7 +10,9 @@ const getApiTimeoutMs = () => {
   const raw = process.env.NEXT_PUBLIC_API_TIMEOUT_MS;
   const n = raw ? parseInt(raw, 10) : NaN;
   if (!Number.isNaN(n) && n >= 5000) return n;
-  if (process.env.CI === 'true') return 12000;
+  // Vercel often does not set CI; `next build` still must not wait on cold/slow APIs (worker ~60s cap).
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+  if (process.env.CI === 'true' || isBuildPhase) return 12000;
   return 120000;
 };
 

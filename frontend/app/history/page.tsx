@@ -9,6 +9,8 @@ import PageHero from '@/components/corporate/PageHero';
 import SectionBlock from '@/components/corporate/SectionBlock';
 import { getCmsPage } from '@/lib/page-cms';
 
+export const dynamic = 'force-dynamic';
+
 export default async function HistoryPage() {
   const companyInfo = await getCompanyInfo().catch(() => ({ data: null }));
   const t = await getTranslations();
