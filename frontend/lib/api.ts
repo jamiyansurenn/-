@@ -318,43 +318,40 @@ export const getNewsBySlug = async (slug: string) => {
 };
 
 export const getTeamMembers = async () => {
-  const devFallbackTeam = [
-    {
-      id: 'local-ceo',
-      name: 'Б. Бат-Эрдэнэ',
-      position: 'Ерөнхий захирал',
-      bio: 'Төслийн гүйцэтгэл, аюулгүй байдал, чанарын стандартыг талбай дээр бодитой хэрэгжүүлэхэд манлайлдаг.',
-      image:
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 'local-marketing',
-      name: 'О. Номин-Эрдэнэ',
-      position: 'Маркетингийн захирал',
-      bio: 'Брэнд, харилцагчийн туршлагыг сайжруулах стратеги болон олон сувагт харилцааг хариуцдаг.',
-      image:
-        'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 'local-director',
-      name: 'Г. Энхбаатар',
-      position: 'Захирал',
-      bio: 'Компанийн урт хугацааны чиг хандлага, үнэт зүйлийг тодорхойлож, түншлэлээ бэхжүүлнэ.',
-      image:
-        'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 'local-engineer',
-      name: 'Э. Отгонбаяр',
-      position: 'Ерөнхий инженер',
-      bio: 'Техникийн стандарт, чанарын хяналт, төслийн инженерийн зохион байгуулалтыг хариуцдаг.',
-      image:
-        'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80',
-    },
-  ];
+  const normalize = (input: unknown) => {
+    if (!Array.isArray(input)) return [];
+    const seenId = new Set<string>();
+    const seenNamePos = new Set<string>();
+    const out: any[] = [];
+    for (const member of input) {
+      if (!member || typeof member !== 'object') continue;
+      const id = typeof (member as any).id === 'string' ? (member as any).id.trim() : '';
+      const name = typeof (member as any).name === 'string' ? (member as any).name.trim() : '';
+      if (!name) continue;
+      const position =
+        typeof (member as any).position === 'string' ? (member as any).position.trim() : '';
+      const status = typeof (member as any).status === 'string' ? (member as any).status : '';
+      if (status && status !== 'PUBLISHED') continue;
 
-  const onFailure = () =>
-    process.env.NODE_ENV === 'development' ? { data: devFallbackTeam } : { data: [] };
+      const namePosKey = `${name.toLowerCase()}|${position.toLowerCase()}`;
+      if (id && seenId.has(id)) continue;
+      if (seenNamePos.has(namePosKey)) continue;
+      if (id) seenId.add(id);
+      seenNamePos.add(namePosKey);
+      out.push(member);
+    }
+    out.sort((a, b) => {
+      const ao = typeof a?.order === 'number' ? a.order : 0;
+      const bo = typeof b?.order === 'number' ? b.order : 0;
+      if (ao !== bo) return ao - bo;
+      const an = typeof a?.name === 'string' ? a.name : '';
+      const bn = typeof b?.name === 'string' ? b.name : '';
+      return an.localeCompare(bn);
+    });
+    return out;
+  };
+
+  const onFailure = () => ({ data: [] as any[] });
 
   /** Avoid axios interceptor + Next stale surprises; always hit network fresh for RSC About page. */
   try {
@@ -365,8 +362,7 @@ export const getTeamMembers = async () => {
     });
     if (!res.ok) return onFailure();
     const data = (await res.json()) as unknown;
-    if (!Array.isArray(data)) return onFailure();
-    return { data };
+    return { data: normalize(data) };
   } catch {
     return onFailure();
   }
