@@ -9,10 +9,24 @@ const SpeedInsights = dynamic(
   { ssr: false }
 );
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+function resolveMetadataBase(): URL {
+  const vercel = process.env.VERCEL_URL?.trim();
+  let candidate =
+    vercel && vercel.length > 0
+      ? `https://${vercel.replace(/^https?:\/\//i, '')}`
+      : process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'http://localhost:3000';
+  if (!/^https?:\/\//i.test(candidate)) {
+    candidate = `https://${candidate}`;
+  }
+  try {
+    return new URL(candidate);
+  } catch {
+    return new URL('http://localhost:3000');
+  }
+}
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: resolveMetadataBase(),
   title: {
     default: 'ДААЦЫН ЦАМХАГ Групп',
     template: '%s | ДААЦЫН ЦАМХАГ Групп',
