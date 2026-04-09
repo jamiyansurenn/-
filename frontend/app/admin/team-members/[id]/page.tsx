@@ -111,6 +111,27 @@ export default function TeamMemberEditPage() {
         return;
       }
 
+      const savedId = (response as any)?.data?.id || id;
+      if (!isNew && savedId) {
+        const verify = await getTeamMember(String(savedId));
+        if ((verify as any)?.error != null || verify?.data == null) {
+          setError('Хадгалалтын дараах шалгалт амжилтгүй боллоо. Дахин оролдоно уу.');
+          return;
+        }
+        const saved = verify.data as any;
+        const expectedImage = normalizedImage || '';
+        const actualImage = typeof saved.image === 'string' ? saved.image.trim() : '';
+        if (
+          (saved.name || '') !== payload.name ||
+          (saved.position || '') !== payload.position ||
+          (saved.status || '') !== payload.status ||
+          actualImage !== expectedImage
+        ) {
+          setError('Өөрчлөлтүүд өгөгдлийн санд бүрэн хадгалагдсангүй. Дахин хадгална уу.');
+          return;
+        }
+      }
+
       router.push('/admin/team-members');
     } catch (error: any) {
       setError(error.response?.data?.message || 'Алдаа гарлаа');

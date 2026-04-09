@@ -318,67 +318,6 @@ export const getNewsBySlug = async (slug: string) => {
 };
 
 export const getTeamMembers = async () => {
-  const normalize = (input: unknown) => {
-    if (!Array.isArray(input)) return [];
-    const byId = new Map<string, any>();
-    const byNamePos = new Map<string, any>();
-    const toTime = (v: unknown) => {
-      if (typeof v !== 'string') return 0;
-      const t = Date.parse(v);
-      return Number.isFinite(t) ? t : 0;
-    };
-    const score = (m: any) => {
-      const updated = toTime(m?.updatedAt);
-      const created = toTime(m?.createdAt);
-      const hasImage = typeof m?.image === 'string' && m.image.trim() ? 1 : 0;
-      // Prefer latest updates first; image as weak tie-breaker.
-      return updated * 10 + created + hasImage;
-    };
-
-    for (const member of input) {
-      if (!member || typeof member !== 'object') continue;
-      const id = typeof (member as any).id === 'string' ? (member as any).id.trim() : '';
-      const name = typeof (member as any).name === 'string' ? (member as any).name.trim() : '';
-      if (!name) continue;
-      const position =
-        typeof (member as any).position === 'string' ? (member as any).position.trim() : '';
-      const status = typeof (member as any).status === 'string' ? (member as any).status : '';
-      if (status && status !== 'PUBLISHED') continue;
-
-      const namePosKey = `${name.toLowerCase()}|${position.toLowerCase()}`;
-      if (id) {
-        const prevById = byId.get(id);
-        if (!prevById || score(member) >= score(prevById)) {
-          byId.set(id, member);
-        }
-      }
-    }
-
-    const withId = Array.from(byId.values());
-    for (const member of withId) {
-      const name = typeof member?.name === 'string' ? member.name.trim() : '';
-      const position = typeof member?.position === 'string' ? member.position.trim() : '';
-      const key = `${name.toLowerCase()}|${position.toLowerCase()}`;
-      const prev = byNamePos.get(key);
-      if (!prev || score(member) >= score(prev)) {
-        byNamePos.set(key, member);
-      }
-    }
-    const out = Array.from(byNamePos.values());
-    out.sort((a, b) => {
-      const ao = typeof a?.order === 'number' ? a.order : 0;
-      const bo = typeof b?.order === 'number' ? b.order : 0;
-      if (ao !== bo) return ao - bo;
-      const au = toTime(a?.updatedAt);
-      const bu = toTime(b?.updatedAt);
-      if (au !== bu) return bu - au;
-      const an = typeof a?.name === 'string' ? a.name : '';
-      const bn = typeof b?.name === 'string' ? b.name : '';
-      return an.localeCompare(bn);
-    });
-    return out;
-  };
-
   const onFailure = () => ({ data: [] as any[] });
 
   /** Avoid axios interceptor + Next stale surprises; always hit network fresh for RSC About page. */
@@ -390,7 +329,7 @@ export const getTeamMembers = async () => {
     });
     if (!res.ok) return onFailure();
     const data = (await res.json()) as unknown;
-    return { data: normalize(data) };
+    return { data: Array.isArray(data) ? data : [] };
   } catch {
     return onFailure();
   }

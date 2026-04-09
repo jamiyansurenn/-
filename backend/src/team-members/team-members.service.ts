@@ -18,7 +18,7 @@ export class TeamMembersService {
     const where = published ? { status: 'PUBLISHED' } : {};
     return this.prisma.teamMember.findMany({
       where,
-      orderBy: { order: 'asc' },
+      orderBy: [{ order: 'asc' }, { updatedAt: 'desc' }],
     });
   }
 

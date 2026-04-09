@@ -5,27 +5,6 @@ import { getTeamMembers, deleteTeamMember, updateTeamMember } from '@/lib/admin-
 import Link from 'next/link';
 import styles from '../admin.module.css';
 
-function normalizeMembers(input: unknown): any[] {
-  const list = Array.isArray(input) ? input : [];
-  const byId = new Map<string, any>();
-  for (const item of list) {
-    const id = item?.id;
-    if (typeof id !== 'string' || !id) continue;
-    // If backend accidentally returns duplicates, keep the latest occurrence.
-    byId.set(id, item);
-  }
-  const out = Array.from(byId.values());
-  out.sort((a, b) => {
-    const ao = typeof a?.order === 'number' ? a.order : 0;
-    const bo = typeof b?.order === 'number' ? b.order : 0;
-    if (ao !== bo) return ao - bo;
-    const an = typeof a?.name === 'string' ? a.name : '';
-    const bn = typeof b?.name === 'string' ? b.name : '';
-    return an.localeCompare(bn);
-  });
-  return out;
-}
-
 export default function TeamMembersPage() {
   const [members, setMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,7 +18,7 @@ export default function TeamMembersPage() {
     try {
       const response = await getTeamMembers();
       const list = response?.data;
-      setMembers(normalizeMembers(list));
+      setMembers(Array.isArray(list) ? list : []);
     } catch (error) {
       console.error('Failed to load team members:', error);
       setError('Багийн гишүүдийг уншихад алдаа гарлаа.');
