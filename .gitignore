@@ -7,6 +7,8 @@ dist/
 build/
 .next/
 out/
+# Copied from frontend/public by `scripts/sync-root-public.cjs` (monorepo root deploy)
+/public/
 *.tsbuildinfo
 
 # Environment variables
