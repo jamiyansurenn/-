@@ -49,6 +49,11 @@ export default function AdminLoginPage() {
       <div className={styles.loginCard}>
         <h1 className={styles.loginTitle}>Админ нэвтрэх</h1>
         <p className={styles.loginSubtitle}>Сайтын агуулгыг удирдах хэсэг</p>
+        {process.env.NEXT_PUBLIC_SHOW_ADMIN_LOGIN_HINT === 'true' ? (
+          <p className={styles.loginSubtitle} style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
+            Анхны нэвтрэлт: admin@moncon.mn / admin123 (production дээр нууц үгээ заавал солино)
+          </p>
+        ) : null}
         {error && (
           <div className={styles.alert}>
             {error}

@@ -59,7 +59,10 @@ if [ "$RUN_PRISMA_SEED" = "1" ] || [ "$RUN_PRISMA_SEED" = "true" ]; then
   echo "Running prisma seed..."
   npm run prisma:seed
 else
-  echo "Skipping seed (RUN_PRISMA_SEED=1 once for first deploy)."
+  echo "Skipping full seed (RUN_PRISMA_SEED=1 for demo content)."
 fi
+
+echo "Ensuring admin user (empty DB or FORCE_RESET_ADMIN=1)..."
+node ./scripts/ensure-admin-user.cjs
 
 exec node dist/src/main

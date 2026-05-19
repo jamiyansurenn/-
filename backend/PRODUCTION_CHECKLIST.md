@@ -4,7 +4,8 @@
 
 - Set `DATABASE_URL` to managed PostgreSQL connection string
 - **Deploy note:** Render uses `prisma db push` because existing migration history is SQLite-shaped. For a clean production story, add a PostgreSQL migration baseline and switch the build back to `prisma migrate deploy`.
-- Seed **once** on Render: set `RUN_PRISMA_SEED=1` for a single deploy, then unset. Do **not** seed every deploy (overwrites were fixed in seed.ts for team rows).
+- **Admin login:** `admin@moncon.mn` / `admin123` (auto-created on deploy if no users). Wrong password: one deploy with `FORCE_RESET_ADMIN=1`, then remove it.
+- Seed **demo content** once: `RUN_PRISMA_SEED=1`, then unset. Full seed is optional; admin is created by `ensure-admin-user.cjs` when the users table is empty.
 - Web service and Postgres must be the **same region** (yours: **Oregon**). `DATABASE_INTERNAL_HOST_SUFFIX=oregon-postgres.render.com`
 - `DATABASE_CONNECTION_MODE=auto` (default): tests real PostgreSQL auth (`pg`) across internal/external URLs and SSL modes.
 - **If deploy still fails:** Render → Postgres → **Connect** → copy **External Database URL** → Web Service env **`DATABASE_EXTERNAL_URL`** → redeploy.
