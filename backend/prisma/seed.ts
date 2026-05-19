@@ -235,14 +235,8 @@ async function main() {
   for (const m of leadershipTeam) {
     await prisma.teamMember.upsert({
       where: { id: m.id },
-      update: {
-        name: m.name,
-        position: m.position,
-        bio: m.bio,
-        image: m.image,
-        order: m.order,
-        status: m.status,
-      },
+      // Never overwrite production edits on redeploy — only create missing starter rows.
+      update: {},
       create: m,
     });
   }

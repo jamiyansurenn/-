@@ -26,15 +26,12 @@ services:
         generateValue: true
       - key: CORS_ORIGIN
         sync: false
+      - key: DATABASE_INTERNAL_HOST_SUFFIX
+        value: singapore-postgres.render.com
       - key: STORAGE_DRIVER
-        value: s3
-      - key: S3_REGION
-        sync: false
-      - key: S3_BUCKET
-        sync: false
-      - key: S3_ACCESS_KEY_ID
-        sync: false
-      - key: S3_SECRET_ACCESS_KEY
-        sync: false
-      - key: S3_PUBLIC_BASE_URL
-        sync: false
+        value: local
+      # First deploy only: set RUN_PRISMA_SEED=1 once, then remove or set to 0.
+      - key: RUN_PRISMA_SEED
+        value: "0"
+      - key: SEED_RESET_DEFAULT_PASSWORDS
+        value: "false"

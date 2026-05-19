@@ -4,7 +4,8 @@
 
 - Set `DATABASE_URL` to managed PostgreSQL connection string
 - **Deploy note:** Render uses `prisma db push` because existing migration history is SQLite-shaped. For a clean production story, add a PostgreSQL migration baseline and switch the build back to `prisma migrate deploy`.
-- Seed once (optional): `npm run prisma:seed`
+- Seed **once** on Render: set `RUN_PRISMA_SEED=1` for a single deploy, then unset. Do **not** seed every deploy (overwrites were fixed in seed.ts for team rows).
+- Singapore Postgres: `DATABASE_INTERNAL_HOST_SUFFIX=singapore-postgres.render.com`
 
 ## Object Storage (S3)
 
