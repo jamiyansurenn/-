@@ -20,8 +20,8 @@ COPY backend ./backend
 
 WORKDIR /app/backend
 
-# Generate Prisma client during build.
-RUN npx prisma generate
+# Use the project's Prisma version (avoid npx pulling a mismatched CLI).
+RUN ./node_modules/.bin/prisma generate
 
 # Build NestJS (creates `dist/`)
 RUN npm run build

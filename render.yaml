@@ -3,6 +3,7 @@
 databases:
   - name: daatsin-tsamkhag-db
     plan: free
+    region: singapore
     databaseName: moncon
     user: moncon
 
@@ -12,6 +13,7 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     plan: free
+    region: singapore
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -30,6 +32,9 @@ services:
       # Default: keep internal host dpg-xxxxx-a from linked Postgres — do not expand.
       - key: DATABASE_INTERNAL_HOST_SUFFIX
         value: singapore-postgres.render.com
+      # auto: probe internal dpg-*-a, fallback to external host + sslmode=require
+      - key: DATABASE_CONNECTION_MODE
+        value: auto
       - key: STORAGE_DRIVER
         value: local
       # First deploy only: set RUN_PRISMA_SEED=1 once, then remove or set to 0.

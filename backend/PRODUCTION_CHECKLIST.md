@@ -5,8 +5,10 @@
 - Set `DATABASE_URL` to managed PostgreSQL connection string
 - **Deploy note:** Render uses `prisma db push` because existing migration history is SQLite-shaped. For a clean production story, add a PostgreSQL migration baseline and switch the build back to `prisma migrate deploy`.
 - Seed **once** on Render: set `RUN_PRISMA_SEED=1` for a single deploy, then unset. Do **not** seed every deploy (overwrites were fixed in seed.ts for team rows).
-- Singapore Postgres: link DB in same region; **Internal URL** host is `dpg-xxxxx-a` (do not expand to `*.postgres.render.com` on Render — causes P1017).
-- Optional: `DATABASE_EXPAND_HOST=1` only when connecting from outside Render with a short hostname.
+- Web service and Postgres must be the **same region** (e.g. Singapore). `render.yaml` sets `region: singapore` for new resources.
+- `DATABASE_CONNECTION_MODE=auto` (default): TCP-probe internal `dpg-xxxxx-a`, then external `*.postgres.render.com` + `sslmode=require`.
+- `DATABASE_INTERNAL_HOST_SUFFIX` must match the **database** region (e.g. `singapore-postgres.render.com`), not the web service if they differ.
+- Free Postgres **Suspended** → Resume in Render Dashboard before deploy.
 - If deploy exits at `prisma db push`: check logs; entrypoint retries with `--accept-data-loss`. Broken schema once: `RESET_DATABASE=1` (wipes data), deploy, then remove.
 
 ## Object Storage (S3)
