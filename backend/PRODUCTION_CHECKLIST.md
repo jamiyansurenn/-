@@ -6,6 +6,7 @@
 - **Deploy note:** Render uses `prisma db push` because existing migration history is SQLite-shaped. For a clean production story, add a PostgreSQL migration baseline and switch the build back to `prisma migrate deploy`.
 - Seed **once** on Render: set `RUN_PRISMA_SEED=1` for a single deploy, then unset. Do **not** seed every deploy (overwrites were fixed in seed.ts for team rows).
 - Singapore Postgres: `DATABASE_INTERNAL_HOST_SUFFIX=singapore-postgres.render.com`
+- If deploy exits at `prisma db push`: check logs for the Prisma error line; entrypoint retries and uses `--accept-data-loss`. Broken schema once: `RESET_DATABASE=1` (wipes data), deploy, then remove that env var.
 
 ## Object Storage (S3)
 

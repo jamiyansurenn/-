@@ -18,7 +18,6 @@ if [ -z "$JWT_SECRET" ]; then
   exit 1
 fi
 
-# Singapore (ap-southeast-1) Postgres internal host suffix — NOT Oregon.
 postgres_suffix() {
   if [ -n "$DATABASE_INTERNAL_HOST_SUFFIX" ]; then
     printf '%s' "$DATABASE_INTERNAL_HOST_SUFFIX"
@@ -53,17 +52,51 @@ with_ssl_if_needed() {
 }
 export DATABASE_URL="$(with_ssl_if_needed "$DATABASE_URL")"
 
-echo "Running prisma db push..."
-if ! npx prisma db push 2>&1; then
-  echo "============================================================"
-  echo "ERROR: prisma db push failed."
-  echo "Check DATABASE_URL (Internal URL from Render Postgres, same region)."
-  echo "Set DATABASE_INTERNAL_HOST_SUFFIX=$SUFFIX if hostname expansion is wrong."
-  echo "============================================================"
-  exit 1
+with_connect_timeout() {
+  u="$1"
+  case "$u" in
+    *connect_timeout=*) printf '%s\n' "$u" ;;
+    *\?*) printf '%s\n' "${u}&connect_timeout=30" ;;
+    *) printf '%s\n' "${u}?connect_timeout=30" ;;
+  esac
+}
+export DATABASE_URL="$(with_connect_timeout "$DATABASE_URL")"
+
+echo "Prisma $(npx prisma -v 2>/dev/null | head -n 1 || echo unknown)"
+echo "DATABASE host: $(node -e "try{const u=new URL(process.env.DATABASE_URL.replace(/^postgres(ql)?:/i,'http:'));console.log(u.hostname)}catch{console.log('?')}")"
+
+PUSH_FLAGS="--accept-data-loss --skip-generate"
+if [ "$RESET_DATABASE" = "1" ] || [ "$RESET_DATABASE" = "true" ]; then
+  echo "WARNING: RESET_DATABASE=1 — prisma db push --force-reset"
+  PUSH_FLAGS="--force-reset --accept-data-loss --skip-generate"
 fi
 
-# Seed only when explicitly requested (first deploy). Default OFF so admin edits persist.
+run_db_push() {
+  npx prisma db push $PUSH_FLAGS
+}
+
+echo "Running prisma db push ($PUSH_FLAGS)..."
+TRIES=0
+MAX_TRIES="${DB_PUSH_MAX_TRIES:-12}"
+while true; do
+  if run_db_push 2>&1; then
+    echo "prisma db push OK"
+    break
+  fi
+  TRIES=$((TRIES + 1))
+  if [ "$TRIES" -ge "$MAX_TRIES" ]; then
+    echo "============================================================"
+    echo "ERROR: prisma db push failed after $TRIES attempts."
+    echo "Render → Postgres → use Internal Database URL (same region as web service)."
+    echo "DATABASE_INTERNAL_HOST_SUFFIX=$SUFFIX"
+    echo "One-time fix if schema is broken: set RESET_DATABASE=1 (wipes DB), deploy once, remove it."
+    echo "============================================================"
+    exit 1
+  fi
+  echo "DB push failed (attempt $TRIES/$MAX_TRIES), retry in 5s..."
+  sleep 5
+done
+
 if [ "$RUN_PRISMA_SEED" = "1" ] || [ "$RUN_PRISMA_SEED" = "true" ]; then
   echo "Running prisma seed (RUN_PRISMA_SEED)..."
   npm run prisma:seed
