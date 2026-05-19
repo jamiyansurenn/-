@@ -1,5 +1,5 @@
-/** Production API when NEXT_PUBLIC_API_URL is unset (set explicitly on Vercel to your backend URL). */
-const DEFAULT_PROD_API = 'https://cmk5p5ciod.onrender.com';
+/** Production API when NEXT_PUBLIC_API_URL is unset — must match your live Render web service. */
+const DEFAULT_PROD_API = 'https://daatsin-tsamkhag-backend.onrender.com';
 
 const LOCAL_API = 'http://localhost:3001';
 

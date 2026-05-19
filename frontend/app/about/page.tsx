@@ -246,7 +246,7 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {teamMembers.data && teamMembers.data.length > 0 ? (
+        {Array.isArray(teamMembers.data) && teamMembers.data.length > 0 ? (
           <section
             className="border-t border-slate-200/70 bg-[#fafafa] py-20 md:py-24 lg:py-28"
             aria-labelledby="leadership-heading"

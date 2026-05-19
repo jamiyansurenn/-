@@ -13,8 +13,34 @@ const getApiTimeoutMs = () => {
   // Vercel often does not set CI; `next build` still must not wait on cold/slow APIs (worker ~60s cap).
   const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
   if (process.env.CI === 'true' || isBuildPhase) return 12000;
-  return 120000;
+  // Runtime SSR: long waits hit Vercel limits and trigger the error page on /about.
+  return 20000;
 };
+
+/** fetch with timeout so RSC pages do not hang on dead/wrong API hosts. */
+export async function fetchPublicJson<T = unknown>(
+  path: string,
+  timeoutMs = 18000,
+): Promise<{ data: T | null; ok: boolean }> {
+  const base = getApiBaseUrl();
+  const url = path.startsWith('http') ? path : `${base}${path.startsWith('/') ? path : `/${path}`}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, {
+      cache: 'no-store',
+      headers: { Accept: 'application/json' },
+      signal: controller.signal,
+    });
+    if (!res.ok) return { data: null, ok: false };
+    const data = (await res.json()) as T;
+    return { data, ok: true };
+  } catch {
+    return { data: null, ok: false };
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 const api = axios.create({
   baseURL: getApiBaseUrl(),
@@ -318,21 +344,8 @@ export const getNewsBySlug = async (slug: string) => {
 };
 
 export const getTeamMembers = async () => {
-  const onFailure = () => ({ data: [] as any[] });
-
-  /** Avoid axios interceptor + Next stale surprises; always hit network fresh for RSC About page. */
-  try {
-    const base = getApiBaseUrl();
-    const res = await fetch(`${base}/team-members/public`, {
-      cache: 'no-store',
-      headers: { Accept: 'application/json' },
-    });
-    if (!res.ok) return onFailure();
-    const data = (await res.json()) as unknown;
-    return { data: Array.isArray(data) ? data : [] };
-  } catch {
-    return onFailure();
-  }
+  const { data } = await fetchPublicJson<unknown[]>('/team-members/public');
+  return { data: Array.isArray(data) ? data : [] };
 };
 
 export const getPartners = async () => {
@@ -379,10 +392,10 @@ export const createContactMessage = async (data: any) => {
 };
 
 export const getPublicPageBySlug = async (slug: string, lang?: string) => {
-  try {
-    const response = await api.get(`/pages/${slug}/public`, { params: { lang } });
-    return { data: safeGetData(response) };
-  } catch (error: any) {
-    return { data: null, error: error.message || 'Network error' };
+  const qs = lang ? `?lang=${encodeURIComponent(lang)}` : '';
+  const { data, ok } = await fetchPublicJson(`/pages/${slug}/public${qs}`);
+  if (!ok || data == null) {
+    return { data: null, error: 'Network error' };
   }
+  return { data };
 };
