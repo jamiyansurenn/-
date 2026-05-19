@@ -32,7 +32,9 @@ services:
       # Default: keep internal host dpg-xxxxx-a from linked Postgres — do not expand.
       - key: DATABASE_INTERNAL_HOST_SUFFIX
         value: singapore-postgres.render.com
-      # auto: probe internal dpg-*-a, fallback to external host + sslmode=require
+      # Optional: paste External Database URL from Postgres → Connect (fixes P1017)
+      - key: DATABASE_EXTERNAL_URL
+        sync: false
       - key: DATABASE_CONNECTION_MODE
         value: auto
       - key: STORAGE_DRIVER
