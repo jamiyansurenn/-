@@ -13,7 +13,7 @@ import {
   formatValuesForDisplay,
 } from '@/lib/aboutContentParse';
 import PageHero from '@/components/corporate/PageHero';
-import { getCmsPage } from '@/lib/page-cms';
+import { getCmsPage, type CmsPageRecord } from '@/lib/page-cms';
 import { AboutHighlightGlyph, AboutServiceGlyph } from '@/components/about/AboutIcons';
 import TeamMemberAvatar from '@/components/about/TeamMemberAvatar';
 
@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic';
 export default async function AboutPage() {
   const t = await getTranslations();
   const lang = await getLanguage();
-  let cmsPage = null;
+  let cmsPage: CmsPageRecord | null = null;
   try {
     cmsPage = await getCmsPage('about');
   } catch {
@@ -83,7 +83,7 @@ export default async function AboutPage() {
     <>
       <Header />
       <main>
-        <PageHero title={(cmsPage?.title as string) || t.pages.about.title} backgroundImage={getImageUrl(undefined, 'default', 1)} />
+        <PageHero title={cmsPage?.title || t.pages.about.title} backgroundImage={getImageUrl(undefined, 'default', 1)} />
 
         <section className={contentStyles.section}>
           <div className="container">
