@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import AnimateOnScroll from '@/components/AnimateOnScroll';
 import { getCompanyInfo, getTeamMembers } from '@/lib/api';
 import Image from 'next/image';
-import { getImageUrl } from '@/lib/imagePlaceholder';
+import { getImageUrl, getTeamMemberDisplayImage } from '@/lib/imagePlaceholder';
 import { getLanguage, getTranslations } from '@/lib/getLanguage';
 import contentStyles from '@/app/about/aboutContent.module.css';
 import { mergeCompanyAboutBlocks } from '@/lib/companyAboutMerge';
@@ -262,7 +262,7 @@ export default async function AboutPage() {
               </header>
               <div className="mx-auto grid max-w-6xl grid-cols-1 gap-x-10 gap-y-14 sm:gap-y-16 md:grid-cols-2 md:gap-x-12 xl:grid-cols-4 xl:gap-x-14 xl:gap-y-20">
                 {teamMembers.data.map((member: any, index: number) => {
-                  const imageUrl = getImageUrl(member.image, 'team', index);
+                  const imageUrl = getTeamMemberDisplayImage(member.image);
                   const subtitle =
                     typeof member.company === 'string' && member.company.trim()
                       ? member.company.trim()
@@ -275,7 +275,7 @@ export default async function AboutPage() {
                   return (
                     <AnimateOnScroll key={member.id} delay={Math.min(index, 12) * 40}>
                       <article className="flex h-full flex-col items-center px-2 text-center sm:px-3">
-                        <TeamMemberAvatar src={imageUrl} alt={member.name} index={index} />
+                        <TeamMemberAvatar src={imageUrl ?? ''} alt={member.name} />
                         <h3 className="mt-0 text-base font-semibold leading-snug text-slate-900">
                           {member.name}
                         </h3>

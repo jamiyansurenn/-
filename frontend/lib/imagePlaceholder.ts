@@ -106,6 +106,35 @@ export function resolveImageFieldToUrl(raw: string | null | undefined): string |
   return resolveStoredImageToUrl(normalized);
 }
 
+/**
+ * Value to persist in DB: relative `/uploads/...` or full https URL (S3/CDN).
+ * Strips API host prefix so production can change `NEXT_PUBLIC_API_URL` without breaking rows.
+ */
+export function imagePathForDatabase(raw: string | null | undefined): string | undefined {
+  if (raw == null) return undefined;
+  let s = normalizeStoredImageUrl(String(raw).trim());
+  if (!s) return undefined;
+  const apiBase = getApiBaseUrl().replace(/\/$/, '');
+  if (s.startsWith(apiBase)) {
+    s = s.slice(apiBase.length);
+    if (!s.startsWith('/')) s = `/${s}`;
+  }
+  if (s.startsWith('/uploads/') || s.startsWith('uploads/')) {
+    return s.startsWith('/') ? s : `/${s}`;
+  }
+  if (/^https?:\/\//i.test(s) || s.startsWith('data:')) {
+    return s;
+  }
+  return undefined;
+}
+
+/** Leadership: only show uploaded/stored image — never random stock faces. */
+export function getTeamMemberDisplayImage(
+  imageUrl: string | null | undefined
+): string | null {
+  return resolveImageFieldToUrl(imageUrl);
+}
+
 /** Cover image: main `image` field, else first entry in `images` (array or JSON string). */
 export function resolveProjectCoverImage(project: {
   image?: string | null;

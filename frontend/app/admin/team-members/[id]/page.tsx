@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter, useParams } from 'next/navigation';
 import { getTeamMember, createTeamMember, updateTeamMember, uploadFile } from '@/lib/admin-api';
-import { getImageUrl, resolveImageFieldToUrl } from '@/lib/imagePlaceholder';
+import { imagePathForDatabase, resolveImageFieldToUrl } from '@/lib/imagePlaceholder';
 import styles from '../../admin.module.css';
 
 export default function TeamMemberEditPage() {
@@ -43,12 +43,14 @@ export default function TeamMemberEditPage() {
         return;
       }
       const member = response.data;
-      const safeImage = resolveImageFieldToUrl(member.image) ?? '';
+      // Form stores DB path (/uploads/...) — not API-prefixed URL — so saves stay portable.
+      const dbImage =
+        typeof member.image === 'string' ? member.image.trim() : '';
       setFormData({
         name: member.name || '',
         position: member.position || '',
         bio: member.bio || '',
-        image: safeImage,
+        image: dbImage,
         email: member.email || '',
         phone: member.phone || '',
         linkedin: member.linkedin || '',
@@ -90,12 +92,12 @@ export default function TeamMemberEditPage() {
     setSaving(true);
     setError('');
     try {
-      const normalizedImage = resolveImageFieldToUrl(formData.image.trim());
+      const dbImagePath = imagePathForDatabase(formData.image);
       const payload = {
         name: formData.name.trim(),
         position: formData.position.trim(),
         bio: formData.bio.trim() || undefined,
-        image: normalizedImage || undefined,
+        image: dbImagePath,
         email: formData.email.trim() || undefined,
         phone: formData.phone.trim() || undefined,
         linkedin: formData.linkedin.trim() || undefined,
@@ -119,13 +121,14 @@ export default function TeamMemberEditPage() {
           return;
         }
         const saved = verify.data as any;
-        const expectedImage = normalizedImage || '';
+        const expectedImage = dbImagePath || '';
         const actualImage = typeof saved.image === 'string' ? saved.image.trim() : '';
+        const norm = (p: string) => imagePathForDatabase(p) || '';
         if (
           (saved.name || '') !== payload.name ||
           (saved.position || '') !== payload.position ||
           (saved.status || '') !== payload.status ||
-          actualImage !== expectedImage
+          norm(actualImage) !== norm(expectedImage)
         ) {
           setError('Өөрчлөлтүүд өгөгдлийн санд бүрэн хадгалагдсангүй. Дахин хадгална уу.');
           return;
@@ -180,9 +183,13 @@ export default function TeamMemberEditPage() {
         <div className="form-group">
           <label>Зураг</label>
           <input type="file" accept="image/*" onChange={handleFileUpload} />
-          {formData.image && (
-            <img src={getImageUrl(formData.image, 'team', 0)} alt="Preview" className={styles.imagePreview} />
-          )}
+          {resolveImageFieldToUrl(formData.image) ? (
+            <img
+              src={resolveImageFieldToUrl(formData.image)!}
+              alt="Preview"
+              className={styles.imagePreview}
+            />
+          ) : null}
         </div>
         <div className="form-group">
           <label>Имэйл</label>

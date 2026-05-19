@@ -1,12 +1,32 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { UploadService } from '../upload/upload.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
-// Status is now String in SQLite: "DRAFT" or "PUBLISHED"
 
 @Injectable()
 export class TeamMembersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
+
+  private async deleteStoredImageIfAny(image?: string | null) {
+    if (!image || typeof image !== 'string') return;
+    const trimmed = image.trim();
+    if (!trimmed) return;
+    // Only delete files we own on this API (/uploads/* or bare filename). Skip external URLs.
+    const isOwned =
+      trimmed.startsWith('/uploads/') ||
+      trimmed.startsWith('uploads/') ||
+      (!trimmed.includes('://') && !trimmed.startsWith('/images/'));
+    if (!isOwned) return;
+    try {
+      await this.uploadService.deleteFile(trimmed);
+    } catch {
+      /* file may already be gone (e.g. Render redeploy) */
+    }
+  }
 
   create(createTeamMemberDto: CreateTeamMemberDto) {
     return this.prisma.teamMember.create({
@@ -33,15 +53,29 @@ export class TeamMembersService {
     if (!existing) {
       throw new NotFoundException('Team member not found');
     }
-    return this.prisma.teamMember.update({
+    const updated = await this.prisma.teamMember.update({
       where: { id },
       data: updateTeamMemberDto,
     });
+    if (
+      updateTeamMemberDto.image !== undefined &&
+      existing.image &&
+      updateTeamMemberDto.image !== existing.image
+    ) {
+      await this.deleteStoredImageIfAny(existing.image);
+    }
+    return updated;
   }
 
-  remove(id: string) {
-    return this.prisma.teamMember.delete({
+  async remove(id: string) {
+    const existing = await this.findOne(id);
+    if (!existing) {
+      throw new NotFoundException('Team member not found');
+    }
+    const removed = await this.prisma.teamMember.delete({
       where: { id },
     });
+    await this.deleteStoredImageIfAny(existing.image);
+    return removed;
   }
 }
