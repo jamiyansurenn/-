@@ -22,7 +22,12 @@ export const dynamic = 'force-dynamic';
 export default async function AboutPage() {
   const t = await getTranslations();
   const lang = await getLanguage();
-  const cmsPage = await getCmsPage('about');
+  let cmsPage = null;
+  try {
+    cmsPage = await getCmsPage('about');
+  } catch {
+    cmsPage = null;
+  }
   const tx = t as any;
   const pa = tx.pages?.about ?? {};
 
