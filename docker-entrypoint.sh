@@ -31,7 +31,7 @@ if [ "$TRIES" -ge 24 ]; then
   echo "============================================================"
   echo "ERROR: Cannot authenticate to Postgres."
   echo "1. Render → Postgres → Resume if Suspended"
-  echo "2. Web + DB same region (Singapore)"
+  echo "2. Web + DB same region (e.g. Oregon → oregon-postgres.render.com)"
   echo "3. Paste External Database URL into DATABASE_EXTERNAL_URL env var"
   echo "============================================================"
   exit 1

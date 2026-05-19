@@ -7,10 +7,23 @@ const { Client } = require('pg');
 const raw = process.env.DATABASE_URL;
 const externalOverride = process.env.DATABASE_EXTERNAL_URL;
 const mode = (process.env.DATABASE_CONNECTION_MODE || 'auto').toLowerCase();
-const suffix =
-  process.env.DATABASE_INTERNAL_HOST_SUFFIX ||
-  process.env.DATABASE_POSTGRES_SUFFIX ||
-  'singapore-postgres.render.com';
+function defaultPostgresSuffix() {
+  if (process.env.DATABASE_INTERNAL_HOST_SUFFIX?.trim()) {
+    return process.env.DATABASE_INTERNAL_HOST_SUFFIX.trim();
+  }
+  if (process.env.DATABASE_POSTGRES_SUFFIX?.trim()) {
+    return process.env.DATABASE_POSTGRES_SUFFIX.trim();
+  }
+  const r = (process.env.RENDER_REGION || '').toLowerCase();
+  if (r.includes('singapore') || r.includes('ap-southeast')) return 'singapore-postgres.render.com';
+  if (r.includes('frankfurt') || r.includes('eu-central')) return 'frankfurt-postgres.render.com';
+  if (r.includes('ohio')) return 'ohio-postgres.render.com';
+  if (r.includes('virginia')) return 'virginia-postgres.render.com';
+  if (r.includes('oregon')) return 'oregon-postgres.render.com';
+  return 'oregon-postgres.render.com';
+}
+
+const suffix = defaultPostgresSuffix();
 const probeOnly = process.argv.includes('--probe');
 
 function hostFromUrl(url) {

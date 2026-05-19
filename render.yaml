@@ -3,7 +3,7 @@
 databases:
   - name: daatsin-tsamkhag-db
     plan: free
-    region: singapore
+    region: oregon
     databaseName: moncon
     user: moncon
 
@@ -13,7 +13,7 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     plan: free
-    region: singapore
+    region: oregon
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -31,7 +31,7 @@ services:
       # Only used when DATABASE_EXPAND_HOST=1 (external-style URL from outside Render).
       # Default: keep internal host dpg-xxxxx-a from linked Postgres — do not expand.
       - key: DATABASE_INTERNAL_HOST_SUFFIX
-        value: singapore-postgres.render.com
+        value: oregon-postgres.render.com
       # Optional: paste External Database URL from Postgres → Connect (fixes P1017)
       - key: DATABASE_EXTERNAL_URL
         sync: false
